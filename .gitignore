@@ -1,0 +1,12 @@
+node_modules/
+.env
+*.log
+.claude/
+reports/
+raportzpobierania.txt
+full_scrape.js
+Prompt.md
+PROMPT_AI_HANDOVER.md
+public/img/galerie/
+Kosciol/
+Kosciol_clean/

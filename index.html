@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Parafia Najświętszego Serca Pana Jezusa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Source+Sans+3:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#b8c7e7",
+                        "secondary-container": "#ffdc8e",
+                        "on-surface": "#1b1c1c",
+                        "surface-dim": "#dcd9d9",
+                        "outline-variant": "#c5c6ce",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e4e2e1",
+                        "on-primary-fixed-variant": "#384762",
+                        "surface-tint": "#505f7a",
+                        "tertiary-fixed": "#e6e2db",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "on-primary-fixed": "#0b1b34",
+                        "inverse-surface": "#303030",
+                        "inverse-primary": "#b8c7e7",
+                        "primary-container": "#1a2942",
+                        "secondary-fixed-dim": "#e4c278",
+                        "on-background": "#1b1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e4e2e1",
+                        "secondary": "#745b1b",
+                        "on-primary-container": "#8290ae",
+                        "surface-container-high": "#eae7e7",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#151511",
+                        "tertiary-container": "#2a2925",
+                        "primary-fixed": "#d6e3ff",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#ffdf9b",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#92908a",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "surface": "#fcf9f8",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#795f1f",
+                        "on-surface-variant": "#44474d",
+                        "background": "#fcf9f8",
+                        "on-secondary-fixed-variant": "#5a4302",
+                        "surface-bright": "#fcf9f8",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "outline": "#75777e",
+                        "primary": "#04142c",
+                        "surface-container-low": "#f6f3f2",
+                        "on-secondary-fixed": "#251a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "32px",
+                        "margin-mobile": "24px",
+                        "section-gap": "128px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "container-max": "1120px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["EB Garamond", "serif"],
+                        "body-md": ["Source Sans 3", "sans-serif"],
+                        "headline-sm": ["EB Garamond", "serif"],
+                        "headline-lg": ["EB Garamond", "serif"],
+                        "label-sm": ["Source Sans 3", "sans-serif"],
+                        "body-lg": ["Source Sans 3", "sans-serif"],
+                        "headline-md": ["EB Garamond", "serif"],
+                        "label-lg": ["Source Sans 3", "sans-serif"],
+                        "display-lg": ["EB Garamond", "serif"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "400" }],
+                        "label-lg": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .sacral-gradient {
+            background: linear-gradient(to top, rgba(4, 20, 44, 0.9) 0%, rgba(4, 20, 44, 0.4) 50%, rgba(4, 20, 44, 0) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary selection:text-on-secondary">
+<!-- TopNavBar -->
+<nav class="docked full-width top-0 sticky z-50 bg-surface/90 dark:bg-primary/90 backdrop-blur-md border-b border-outline-variant dark:border-primary-container flat no shadows transition-all duration-300">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-4">
+<div class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-primary-fixed">
+                Sacred Silence
+            </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-lg text-label-lg text-secondary dark:text-secondary-fixed font-bold border-b-2 border-secondary scale-95 duration-200" href="#">Msze święte</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-on-primary-fixed-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Ogłoszenia</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-on-primary-fixed-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Sakramenty</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-on-primary-fixed-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Historia</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-on-primary-fixed-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Galeria</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant dark:text-on-primary-fixed-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-300" href="#">Kontakt</a>
+<button class="bg-secondary text-on-secondary font-label-lg text-label-lg px-6 py-3 rounded-DEFAULT hover:bg-secondary/90 transition-colors">Wesprzyj</button>
+</div>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOe7z4Y46-HKLDj6iYit6oEgotosKluGSL0edAu1raT01FXqSPNkzxf7EuJwCxZJ8WAu7d7MIdspCiqjGJgB9JHqbVNH2vmiui2TcVVBJhNuSVbYiCx8BWUHQQgmk4WEbE75Af6NUxxh68kkpi7wYbnsnPWl6SbGrdfKxQvz7EQARfR43ydAyCTbFG_NaXmje718RpZ_rK2kH6p9UccF9DogZ_lIH2Q9rFefC4igCQPZOoBKorVxopmhkA2GOg09a2fzpmFGT4ttBX"/>
+<div class="absolute inset-0 sacral-gradient z-10"></div>
+</div>
+<div class="relative z-20 text-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col items-center mt-20">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-primary mb-6 drop-shadow-lg">
+                Parafia Najświętszego Serca Pana Jezusa
+            </h1>
+<p class="font-headline-sm text-headline-sm text-secondary-fixed italic mb-12 max-w-2xl drop-shadow-md">
+                "Pan jest pasterzem moim, nie brak mi niczego."
+            </p>
+<div class="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
+<button class="bg-primary text-on-primary font-label-lg text-label-lg px-8 py-4 rounded-DEFAULT hover:bg-primary/90 transition-colors border border-transparent">
+                    Msze święte
+                </button>
+<button class="bg-transparent text-on-primary font-label-lg text-label-lg px-8 py-4 rounded-DEFAULT hover:bg-surface/10 transition-colors border border-on-primary">
+                    Ogłoszenia parafialne
+                </button>
+</div>
+</div>
+</header>
+<!-- Information Grid Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface">
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Column 1: Najbliższe Msze -->
+<div class="border border-outline-variant p-8 flex flex-col gap-6 bg-surface-bright">
+<div class="flex items-center gap-3 border-b border-outline-variant pb-4">
+<span class="material-symbols-outlined text-secondary text-3xl">church</span>
+<h2 class="font-headline-md text-headline-md text-primary">Najbliższe Msze</h2>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center text-on-surface-variant font-body-lg text-body-lg">
+<span>Niedziela</span>
+<span class="font-semibold text-primary">07:00, 09:00, 11:00, 18:00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant font-body-lg text-body-lg">
+<span>Dni Powszednie</span>
+<span class="font-semibold text-primary">07:00, 18:00</span>
+</div>
+</div>
+</div>
+<!-- Column 2: Ogłoszenia -->
+<div class="border border-outline-variant p-8 flex flex-col gap-6 bg-surface-bright">
+<div class="flex items-center gap-3 border-b border-outline-variant pb-4">
+<span class="material-symbols-outlined text-secondary text-3xl">notifications</span>
+<h2 class="font-headline-md text-headline-md text-primary">Ogłoszenia</h2>
+</div>
+<ul class="flex flex-col gap-4 font-body-md text-body-md text-on-surface-variant">
+<li class="flex gap-3 items-start">
+<span class="text-secondary text-xl mt-1 leading-none">♦</span>
+<p>Zbiórka na remont dachu w najbliższą niedzielę.</p>
+</li>
+<li class="flex gap-3 items-start">
+<span class="text-secondary text-xl mt-1 leading-none">♦</span>
+<p>Spotkanie dla bierzmowanych w piątek po wieczornej Mszy.</p>
+</li>
+<li class="flex gap-3 items-start">
+<span class="text-secondary text-xl mt-1 leading-none">♦</span>
+<p>Kancelaria parafialna nieczynna we wtorek rano.</p>
+</li>
+</ul>
+<a class="mt-auto font-label-lg text-label-lg text-secondary hover:underline self-start uppercase tracking-wider" href="#">Wszystkie ogłoszenia</a>
+</div>
+<!-- Column 3: Aktualności -->
+<div class="flex flex-col gap-6 h-full">
+<div class="flex items-center gap-3 border-b border-outline-variant pb-4">
+<span class="material-symbols-outlined text-secondary text-3xl">article</span>
+<h2 class="font-headline-md text-headline-md text-primary">Aktualności</h2>
+</div>
+<div class="border border-outline-variant flex-grow flex flex-col bg-surface-bright group overflow-hidden relative">
+<img alt="Wydarzenie parafialne" class="w-full h-48 object-cover filter saturate-50 group-hover:saturate-100 transition-all duration-500" data-alt="A softly lit scene inside a classical church showing a group of parishioners gathered during an evening service, warm candlelight illuminating the ancient stone walls and wooden pews. The atmosphere is solemn, communal, and serene, fitting a sacral minimalist aesthetic with deep navy shadows and cream highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh5vevZrg0G6rBRzm_Kp8H47oaxs2wwcDylRqkxjRQKnV2YKwsU4owIYqDtnpOMqWKWd_PIYq5oIUS86FhnqlNn0V6tca8XGGGkWHq2jhXhQIh1H1kfImJz9f2giSSXJf3SCgXlE_0VlaNUvVF_JLFYKSaW-8fDP9SD3hvJvo0sVzVCf6gfGlHjFUtMabtJAV75GRYLUrUftO-Z3Zkx0bcC3LQTE3X-x_aWntxrtEtzRVZMAvd4YmTgeEgiuLXKPSnUQNooqOF08PE"/>
+<div class="p-6 flex flex-col flex-grow">
+<span class="font-label-sm text-label-sm text-secondary mb-2 uppercase">15 Października 2024</span>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-3">Wieczór Uwielbienia</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">Zapraszamy na wspólną modlitwę śpiewem przed Najświętszym Sakramentem.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Anniversary Section -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container-low border-y border-outline-variant">
+<div class="max-w-container-max mx-auto text-center">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-16">
+                100 lat parafii
+            </h2>
+<div class="relative w-full py-12">
+<!-- Timeline Line -->
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant -translate-y-1/2 hidden md:block"></div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+<!-- Event 1 -->
+<div class="flex flex-col items-center bg-surface-container-low md:bg-transparent px-4">
+<div class="w-4 h-4 bg-secondary rotate-45 mb-6 hidden md:block"></div>
+<span class="font-headline-sm text-headline-sm text-secondary mb-2">1924</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[200px]">Erekcja parafii i pierwsza Msza św. w tymczasowej kaplicy.</p>
+</div>
+<!-- Event 2 -->
+<div class="flex flex-col items-center bg-surface-container-low md:bg-transparent px-4">
+<div class="w-4 h-4 bg-secondary rotate-45 mb-6 hidden md:block"></div>
+<span class="font-headline-sm text-headline-sm text-secondary mb-2">1938</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[200px]">Konsekracja obecnego kościoła.</p>
+</div>
+<!-- Event 3 -->
+<div class="flex flex-col items-center bg-surface-container-low md:bg-transparent px-4">
+<div class="w-4 h-4 bg-secondary rotate-45 mb-6 hidden md:block"></div>
+<span class="font-headline-sm text-headline-sm text-secondary mb-2">1980</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[200px]">Generalny remont nawy głównej i organów.</p>
+</div>
+<!-- Event 4 -->
+<div class="flex flex-col items-center bg-surface-container-low md:bg-transparent px-4">
+<div class="w-4 h-4 bg-secondary rotate-45 mb-6 hidden md:block"></div>
+<span class="font-headline-sm text-headline-sm text-secondary mb-2">2024</span>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[200px]">Jubileusz stulecia wspólnoty parafialnej.</p>
+</div>
+</div>
+</div>
+<button class="mt-12 bg-transparent text-primary font-label-lg text-label-lg px-8 py-4 rounded-DEFAULT hover:bg-primary/5 transition-colors border border-primary uppercase tracking-wider">
+                Poznaj historię
+            </button>
+</div>
+</section>
+<!-- Gallery Section (Masonry-like concept using Grid) -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface">
+<div class="max-w-container-max mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-primary text-center mb-16">Galeria</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-unit">
+<!-- 3 Top -->
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img alt="Krucyfiks" class="w-full h-full object-cover filter saturate-50 hover:saturate-100 transition-all duration-700" data-alt="A close-up shot of an ancient, intricately carved wooden crucifix bathed in a single ray of warm sunlight inside a quiet, high-ceilinged stone church. The composition is highly symmetric, emphasizing spiritual focus and sacral minimalism. The colors lean towards deep shadows, rich wood tones, and soft golden light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuWKcP1Yr5xPra4Y4_ESWaNrcHicEwsmhCc64o4tLlBMcC3Ak8AQQ0hYMD-PQGAUUavC_wmit0HnjgQGM0ZXjDIK-bjceLN5CnQ0iwkajebmh-97yWEQWegXzbldp3GCYBPxjPDT0JgF9u_mYVBDhXKvcsmXq0CRrFR2vkhj9070I7VF2HosXok0rQCwqCDouMStolJ2cNjtjsPQBplB6MicP7-5ag6poFE4ChceVisuyBS8JYxQkja-OPFvNkClIbzFyWSRy54uPi"/>
+</div>
+<div class="aspect-square md:col-span-2 bg-surface-container overflow-hidden">
+<img alt="Wnętrze kościoła" class="w-full h-full object-cover filter saturate-50 hover:saturate-100 transition-all duration-700" data-alt="A wide architectural shot of the interior nave of a grand cathedral. Expansive white walls stretch upwards to ribbed vaults, while rows of dark wooden pews sit empty, creating a vast sense of sacred space and breath. The lighting is diffused, giving the scene a serene, light-mode, minimalist dignity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0_kSTaDOH6JWaV8PRFzTRHPji27Nm58TNDaQn7JsTCGTFvk3gO_J6ZSdKVurMacB56qggnpIu22L6ZbaMnIrV1L6O05Rno8S73os583Aa3QTvvfqdnhnhQPNY7JQzNSg_dj8B-HndI42C2v25u5d4xVsWKFEdvKZFkmVArbrO9zJYPZHopmiU1UPcrvOaZNKvcXpBD-sixsweY9hv25jXJA6n3elu1vRcPQBKi_OHn0g7Sae0RnDj-kSyfWECC87qIpEpHGhIPB3J"/>
+</div>
+<!-- 2 Middle -->
+<div class="aspect-video md:aspect-auto md:h-96 md:col-span-2 bg-surface-container overflow-hidden">
+<img alt="Świeca" class="w-full h-full object-cover filter saturate-50 hover:saturate-100 transition-all duration-700" data-alt="A close-up of a lit candle on an ornate brass stand in a dim, silent alcove of a church. The flame is crisp and bright, contrasting sharply against the deep navy and dark grey background. The mood is deeply contemplative and prayerful, fitting a sacral minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKH3tioI-kw0VJCTEAkJ7hz3J3fYfBUKTiAg6_A-sWMZ7_SIc-jJYO6Feg3Z0eWfnZenGlcUXdtVIvTgoh7iA14dDZQIGlJTqQKqp7hH2o2TxUPGjw7SVFoF15ntwzEHyVXIzNEFvjD-WFg4VPifb3xiWMcTOcmOaipOZ8jeYRGy4tPP61yEg1z6e51_Cg7XvXm7oGIt9aGgVg0h1Sn4c60JPPp6pYN0w4pE0qG2OzAKG90wjehFqiXpKfsjWeuKoWZXQCdt-o5SO1"/>
+</div>
+<div class="aspect-square md:h-96 bg-surface-container overflow-hidden">
+<img alt="Witraż" class="w-full h-full object-cover filter saturate-50 hover:saturate-100 transition-all duration-700" data-alt="A detailed view of a stained glass window depicting an abstract, geometric religious motif. Soft daylight filters through the colored glass, projecting muted hues onto the cream-colored stone wall adjacent to it. The design lacks decorative clutter, focusing on the pure interplay of light, color, and stone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2bKyFBq7tgjqLD0miOkvljQCp7dCh8WiM3aZ8j2FqSpjm3Z2IJhEe7HSuCTM-N2a3ahWyY_3_QyWuzqoWBcnjlSkG-hTgbzF223B3vrkG_Pn_toFLQ23V6-ogEx0EN9TCNzGyyZIf2eQBPZjGoGCNVPweypDSAAK6Sbu3hO7tEOo9fpd9ivzc9iE8SYim2AFQp4j4h8jHI4_KH-M8-tUwarGe3c8eVxmYcs7DLsFL92ZeXiE-ZTj3nJfFMZb1Qy9YKsgcAty-3Do9"/>
+</div>
+<!-- 3 Bottom -->
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img alt="Księga" class="w-full h-full object-cover filter saturate-50 hover:saturate-100 transition-all duration-700" data-alt="An open, ancient liturgical book with aged parchment pages resting on a simple stone altar. The book is illuminated by a narrow beam of ethereal, cool light. The surrounding space is vast and empty, embodying architectural clarity and the sacredness of the word." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv_9q2YhT07yi_1ts8LAg2Lu4mQ4moDk0GuNUp825rEn09UKPje0LrCQHjXMz-Ro0QGW05EO7FJsksWfipSerie_ON9MnkZMg9xM3M1-iHNiYOv1Y9T0Mqd7tGTH4IsexEH8ilIteGvIP_5FR6IpYuwVPsvCkcKQhOgKUz0U2BIF_VjEqjcOQPfCPQCNJ-QK92-9lmcsJONvurZD55mBEXV5XLcBOXjNd5viabB4-BoSPPDfpeZU8C61tuvti0bAZSy_F6RBlApOj5"/>
+</div>
+<div class="aspect-square bg-surface-container overflow-hidden">
+<img alt="Kolumna" class="w-full h-full object-cover filter saturate-50 hover:saturate-100 transition-all duration-700" data-alt="A minimal shot of a single stone pillar reaching towards a high arched ceiling. The texture of the old stone is prominent, colored in pale cream tones against subtle grey shadows. The composition reflects permanence and grounded presence without any modern distractions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEpbSObjJLkajkeFE_kme9vzyG6LxA8O3TsKLpfoRMquNsIVQH4VT4HihwrPZSz6xIiNDq3ahEttndmvQh6j-BWnVk35jesWgy8gWVASER5m8hhxBjdKGJZJnKJejlwQoaPHDULB_suq9KQmffKzaomHk1UpIz-Meewhf8X4I3t31m9YMv6kHvJ07sq2Em4bRHXUbgNPNFJrmXVS9BwvMx5pOLK7rHnFpaT6PiO8tOuZOeF_zeUtpOBYT-HTIGL6asXdihtMqzxjyU"/>
+</div>
+<div class="aspect-square bg-surface-container overflow-hidden flex items-center justify-center p-8 border border-outline-variant bg-surface-bright group cursor-pointer">
+<div class="text-center">
+<span class="material-symbols-outlined text-secondary text-4xl mb-4 group-hover:scale-110 transition-transform">photo_library</span>
+<p class="font-headline-sm text-headline-sm text-primary">Zobacz pełną galerię</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-primary dark:bg-tertiary-container grid grid-cols-1 md:grid-cols-3 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flat no shadows border-t-0">
+<div class="flex flex-col gap-6">
+<div class="font-headline-md text-headline-md text-secondary-fixed">
+                Sacred Silence
+            </div>
+<p class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant">
+                Parafia Najświętszego Serca Pana Jezusa
+            </p>
+<p class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant opacity-80 hover:opacity-100 transition-all">
+                ul. Kościelna 1<br/>
+                00-000 Miasto
+            </p>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-headline-sm text-headline-sm text-on-primary dark:text-on-tertiary-container mb-2">Na skróty</h4>
+<a class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant hover:text-on-primary dark:hover:text-on-tertiary transition-opacity" href="#">Polityka Prywatności</a>
+<a class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant hover:text-on-primary dark:hover:text-on-tertiary transition-opacity" href="#">Mapa Strony</a>
+<a class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant hover:text-on-primary dark:hover:text-on-tertiary transition-opacity" href="#">Intencje</a>
+<a class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant hover:text-on-primary dark:hover:text-on-tertiary transition-opacity" href="#">Archiwum</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-headline-sm text-headline-sm text-on-primary dark:text-on-tertiary-container mb-2">Kontakt</h4>
+<p class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed">call</span>
+                +48 123 456 789
+            </p>
+<p class="font-body-md text-body-md text-on-primary-container dark:text-on-tertiary-fixed-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed">mail</span>
+                kancelaria@parafia.pl
+            </p>
+<div class="mt-8 font-body-md text-body-md text-on-primary dark:text-on-tertiary-container opacity-60 text-sm">
+                © 2024 Parafia Najświętszego Serca Pana Jezusa. Projekt Sacred Silence.
+            </div>
+</div>
+</footer>
+</body></html>
