@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dokumenty · Panel Parafii NSPJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .doc-section{margin-bottom:32px}
+  .doc-section h2{font-size:1.05rem;margin:0 0 4px}
+  .doc-section .sub{color:var(--ink-soft);font-size:.86rem;margin:0 0 16px}
+  .doc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .doc-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:10px}
+  .doc-card h3{margin:0;font-size:.98rem}
+  .doc-card .desc{color:var(--ink-soft);font-size:.84rem;margin:0}
+  .doc-search-wrap{position:relative}
+  .doc-search-wrap input{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:inherit}
+  .doc-search-wrap input:focus{outline:none;border-color:var(--copper)}
+  .doc-results{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--white);border:1px solid var(--line);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:240px;overflow-y:auto;z-index:20;display:none}
+  .doc-results.show{display:block}
+  .doc-results .res{padding:9px 12px;cursor:pointer;font-size:.86rem;border-bottom:1px solid var(--line)}
+  .doc-results .res:last-child{border-bottom:none}
+  .doc-results .res:hover{background:var(--bg)}
+  .doc-results .res .when{color:var(--ink-soft);font-size:.78rem;margin-top:1px}
+  .doc-results .empty{padding:12px;color:var(--ink-soft);font-size:.84rem;text-align:center}
+  .doc-card .hint{font-size:.78rem;color:var(--ink-soft)}
+  .static-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .static-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:8px}
+  .static-card h3{margin:0;font-size:.95rem}
+  .static-card .desc{color:var(--ink-soft);font-size:.83rem;flex:1;margin:0}
+  .static-card .actions{display:flex;gap:8px;margin-top:2px}
+  .static-card .actions .btn{flex:1;justify-content:center}
+  .future-note{background:var(--beige);border:1px dashed var(--line);border-radius:8px;padding:20px;color:var(--ink-soft);font-size:.88rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0"><div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div></div>
+    <nav>
+      <a href="index.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>Pulpit</a>
+      <div class="nav-section">Strona WWW</div>
+      <a href="aktualnosci.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>Aktualności</a>
+      <a href="ogloszenia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>Ogłoszenia parafialne</a>
+      <a href="galeria.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Galeria</a>
+      <a href="strony-statyczne.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 0 0-1H5a.5.5 0 0 0-.5.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/></svg>Strony statyczne</a>
+      <div class="nav-section">Wspólnota</div>
+      <a href="intencje.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>Intencje mszalne</a>
+      <a href="sakramenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>Sakramenty</a>
+      <a href="pogrzeby.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
+      <a href="parafianie.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>Parafianie</a>
+      <a href="dokumenty.html" class="active"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
+      <div class="nav-section">System</div>
+      <a href="#"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>Raporty</a>
+      <a href="ustawienia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>Ustawienia parafii</a>
+    </nav>
+    <div class="user"><div class="user-avatar">TŻ</div><div class="user-name">ks. Tomasz Żołna<small>Proboszcz · <a href="login.html">Wyloguj</a></small></div></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs"><a href="index.html">Pulpit</a><span>/</span><b>Dokumenty</b></div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Dokumenty</h1>
+          <div class="lead">Zaświadczenia, wydruki i eksporty w jednym miejscu</div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Zaświadczenia dla konkretnej osoby</h2>
+        <p class="sub">Wpisz imię i nazwisko, wybierz osobę z listy — dokument wygeneruje się od razu, bez szukania w tabeli.</p>
+        <div class="doc-cards">
+          <div class="doc-card">
+            <h3>Zgłoszenie Pogrzebu</h3>
+            <p class="desc">Szuka w rejestrze Pogrzebów.</p>
+            <div class="doc-search-wrap">
+              <input type="text" id="search-pogrzeby" placeholder="Imię i nazwisko zmarłego…" autocomplete="off">
+              <div class="doc-results" id="results-pogrzeby"></div>
+            </div>
+          </div>
+          <div class="doc-card">
+            <h3>Świadectwo Chrztu</h3>
+            <p class="desc">Szuka w rejestrze Sakramentów — chrzciny.</p>
+            <div class="doc-search-wrap">
+              <input type="text" id="search-chrzest" placeholder="Imię i nazwisko ochrzczonego…" autocomplete="off">
+              <div class="doc-results" id="results-chrzest"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Eksporty zbiorcze</h2>
+        <p class="sub">Listy i raporty z całych rejestrów — dostępne w widoku każdego modułu (CSV, brandowany PDF).</p>
+        <div class="static-cards">
+          <div class="static-card">
+            <h3>Parafianie</h3>
+            <p class="desc">Pełna kartoteka albo zaznaczone osoby — eksport CSV i PDF.</p>
+            <div class="actions"><a href="parafianie.html" class="btn btn-secondary sm">Otwórz Parafianie →</a></div>
+          </div>
+          <div class="static-card">
+            <h3>Pogrzeby</h3>
+            <p class="desc">Rejestr pogrzebów — eksport CSV i brandowany PDF.</p>
+            <div class="actions"><a href="pogrzeby.html" class="btn btn-secondary sm">Otwórz Pogrzeby →</a></div>
+          </div>
+          <div class="static-card">
+            <h3>Sakramenty</h3>
+            <p class="desc">Rejestr sakramentów (per typ) — eksport CSV i brandowany PDF.</p>
+            <div class="actions"><a href="sakramenty.html" class="btn btn-secondary sm">Otwórz Sakramenty →</a></div>
+          </div>
+          <div class="static-card">
+            <h3>Intencje mszalne</h3>
+            <p class="desc">Intencje na wybrany tydzień — eksport do Word i PDF z logo, jedna strona.</p>
+            <div class="actions"><a href="intencje.html" class="btn btn-secondary sm">Otwórz Intencje →</a></div>
+          </div>
+          <div class="static-card">
+            <h3>Ogłoszenia parafialne</h3>
+            <p class="desc">Ogłoszenia tygodnia — wydruk do PDF.</p>
+            <div class="actions"><a href="ogloszenia.html" class="btn btn-secondary sm">Otwórz Ogłoszenia →</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Szablony na przyszłość</h2>
+        <div class="future-note">Tu pojawią się kolejne szablony dokumentów (np. zaświadczenia, zgody), gdy ksiądz określi, jakie są potrzebne.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="assets/admin.js"></script>
+<script>
+(function(){
+  'use strict';
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function fmtDate(str){
+    if(!str) return '';
+    var p=str.split('-');
+    if(p.length!==3) return str;
+    return p[2]+'.'+p[1]+'.'+p[0];
+  }
+  function norm(s){ return String(s||'').toLowerCase(); }
+
+  var _pogrzeby = [];
+  var _chrzciny = [];
+
+  Promise.all([
+    fetch('/api/pogrzeby').then(function(r){ return r.json(); }),
+    fetch('/api/sakramenty').then(function(r){ return r.json(); })
+  ]).then(function(results){
+    _pogrzeby = Array.isArray(results[0]) ? results[0] : [];
+    _chrzciny = Array.isArray(results[1]) ? results[1].filter(function(r){ return r.type === 'chrzciny'; }) : [];
+  }).catch(function(){});
+
+  function setupSearch(inputId, resultsId, getRecords, labelFn, subFn, onPick){
+    var input = document.getElementById(inputId);
+    var box = document.getElementById(resultsId);
+    if(!input || !box) return;
+
+    function render(){
+      var q = norm(input.value).trim();
+      if(!q){ box.classList.remove('show'); box.innerHTML=''; return; }
+      var records = getRecords();
+      var matches = records.filter(function(r){
+        return norm(labelFn(r)).indexOf(q) !== -1;
+      }).slice(0, 8);
+      if(!matches.length){
+        box.innerHTML = '<div class="empty">Nie znaleziono osoby</div>';
+      } else {
+        box.innerHTML = matches.map(function(r, i){
+          return '<div class="res" data-i="'+i+'"><div>'+esc(labelFn(r))+'</div><div class="when">'+esc(subFn(r))+'</div></div>';
+        }).join('');
+        Array.prototype.forEach.call(box.querySelectorAll('.res'), function(el, i){
+          el.addEventListener('click', function(){
+            onPick(matches[i]);
+            box.classList.remove('show');
+            input.value='';
+          });
+        });
+      }
+      box.classList.add('show');
+    }
+
+    input.addEventListener('input', render);
+    input.addEventListener('focus', render);
+    document.addEventListener('click', function(e){
+      if(e.target !== input) box.classList.remove('show');
+    });
+  }
+
+  setupSearch('search-pogrzeby', 'results-pogrzeby',
+    function(){ return _pogrzeby; },
+    function(r){ return [r.imie, r.nazwisko].filter(Boolean).join(' '); },
+    function(r){ return r.data_pogrzebu ? 'Pogrzeb: ' + fmtDate(r.data_pogrzebu) : 'data nieustalona'; },
+    function(r){ window.printZgloszeniePogrzebuDoc(r); }
+  );
+
+  setupSearch('search-chrzest', 'results-chrzest',
+    function(){ return _chrzciny; },
+    function(r){ return [r.imie, r.nazwisko].filter(Boolean).join(' '); },
+    function(r){ return r.datachrztu ? 'Chrzest: ' + fmtDate(r.datachrztu) : 'data nieustalona'; },
+    function(r){ window.printSwiadectwoChrztuDoc(r); }
+  );
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galeria · Panel Parafii NSPJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:1100px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:680px){.gallery-grid{grid-template-columns:1fr}}
+
+  .gcard{background:var(--white);border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:box-shadow .15s}
+  .gcard:hover{box-shadow:0 8px 28px -8px rgba(0,0,0,.14)}
+  .gcard.is-featured{border-color:var(--amber,#c8952a);box-shadow:0 0 0 2px rgba(200,149,42,.18)}
+
+  .gcard-cover{height:160px;background-size:cover;background-position:center;background-color:var(--beige-deep);position:relative}
+  .gcard-cover .badge-count{position:absolute;top:10px;right:10px;background:rgba(43,37,32,.82);color:#fff;padding:3px 9px;border-radius:4px;font-size:.76rem;font-weight:700}
+  .gcard-cover .btn-feat{
+    position:absolute;top:8px;left:8px;background:none;border:none;cursor:pointer;
+    font-size:1.1rem;opacity:.55;transition:opacity .15s,transform .15s;padding:4px;line-height:1
+  }
+  .gcard-cover .btn-feat:hover{opacity:1;transform:scale(1.2)}
+  .gcard-cover .btn-feat.active{opacity:1}
+
+  .gcard-body{padding:14px 16px 12px}
+  .gcard-body h4{font-family:'Playfair Display',serif;font-size:1rem;margin:0 0 5px;color:var(--ink);line-height:1.25}
+  .gcard-meta{font-size:.78rem;color:var(--ink-soft);display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+  .gcard-actions{display:flex;gap:6px}
+  .gcard-actions .btn{padding:5px 11px;font-size:.78rem}
+
+  .no-results{text-align:center;padding:60px 20px;color:var(--ink-soft)}
+  .no-results svg{width:48px;height:48px;opacity:.3;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto}
+
+  /* Modal */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(43,37,32,.55);z-index:900;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--white);border-radius:10px;width:520px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(43,37,32,.28)}
+  .modal-head{padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between}
+  .modal-head h3{font-family:'Playfair Display',serif;font-size:1.2rem;margin:0;color:var(--ink)}
+  .modal-body{padding:20px 24px 24px}
+  .modal-foot{padding:0 24px 20px;display:flex;gap:10px;justify-content:flex-end}
+  .btn-close-modal{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:1.3rem;padding:4px 8px;line-height:1;border-radius:4px}
+  .btn-close-modal:hover{background:var(--beige)}
+
+  .pos-btn{padding:4px 11px;font-size:.8rem;border:1px solid var(--line);background:var(--white);border-radius:4px;cursor:pointer;color:var(--ink-soft);transition:all .15s;white-space:nowrap}
+  .pos-btn.active,.pos-btn:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .cover-strip{height:110px;border-radius:6px;border:1px solid var(--line);background:var(--beige-deep);background-size:cover;margin-bottom:10px;transition:background .2s}
+
+  .photo-thumb-pick{
+    aspect-ratio:1;border-radius:4px;border:2px solid transparent;
+    background-size:cover;background-position:center;cursor:pointer;
+    position:relative;overflow:hidden;transition:border-color .15s,box-shadow .15s
+  }
+  .photo-thumb-pick:hover{border-color:var(--copper)}
+  .photo-thumb-pick.is-cover{border-color:#c8952a;box-shadow:0 0 0 1px #c8952a}
+  .photo-thumb-pick .remove-btn{
+    display:none;position:absolute;top:2px;right:2px;width:18px;height:18px;
+    background:rgba(122,31,43,.88);color:#fff;border:none;border-radius:50%;
+    font-size:.55rem;cursor:pointer;line-height:1;align-items:center;justify-content:center;padding:0
+  }
+  .photo-thumb-pick:hover .remove-btn{display:flex}
+  .cover-label{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);background:rgba(200,149,42,.92);color:#fff;font-size:.5rem;padding:1px 4px;border-radius:2px;white-space:nowrap;pointer-events:none}
+  .photos-scroll{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-height:220px;overflow-y:auto;padding:2px}
+
+  .toggle-row{display:flex;align-items:center;gap:10px;padding:6px 0}
+  .toggle-row label{font-size:.9rem;font-weight:600;color:var(--ink);cursor:pointer}
+  input[type="checkbox"].toggle{width:38px;height:20px;appearance:none;background:var(--line);border-radius:10px;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
+  input[type="checkbox"].toggle:checked{background:var(--green,#3a7d44)}
+  input[type="checkbox"].toggle::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  input[type="checkbox"].toggle:checked::after{left:20px}
+
+  .filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+  .filter-bar select,.filter-bar input{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 10px;font-size:.88rem;background:var(--white);color:var(--ink);cursor:pointer}
+  .filter-bar label{font-size:.85rem;color:var(--ink-soft);display:flex;align-items:center;gap:6px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0"><div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div></div>
+    <nav>
+      <a href="index.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>Pulpit</a>
+      <div class="nav-section">Strona WWW</div>
+      <a href="aktualnosci.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>Aktualności</a>
+      <a href="ogloszenia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>Ogłoszenia parafialne</a>
+      <a href="galeria.html" class="active"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Galeria</a>
+      <a href="strony-statyczne.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 0 0-1H5a.5.5 0 0 0-.5.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/></svg>Strony statyczne</a>
+      <div class="nav-section">Wspólnota</div>
+      <a href="intencje.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>Intencje mszalne</a>
+      <a href="sakramenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 1 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>Sakramenty</a>
+      <a href="pogrzeby.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
+      <a href="parafianie.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>Parafianie</a>
+      <a href="dokumenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
+      <div class="nav-section">System</div>
+      <a href="#"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>Raporty</a>
+      <a href="ustawienia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>Ustawienia parafii</a>
+    </nav>
+    <div class="user"><div class="user-avatar">TŻ</div><div class="user-name">ks. Tomasz Żołna<small>Proboszcz · <a href="login.html">Wyloguj</a></small></div></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs"><a href="index.html">Pulpit</a><span>/</span><b>Galeria</b></div>
+      <div class="topbar-right">
+        <a href="../strony/galeria.html" target="_blank" class="btn btn-ghost" style="font-size:.82rem">
+          <svg fill="currentColor" viewBox="0 0 16 16" style="width:13px;height:13px;margin-right:4px"><path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 9H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/><path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/></svg>
+          Podgląd strony
+        </a>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Galeria parafii</h1>
+          <div class="lead" id="stats-lead">Ładowanie…</div>
+        </div>
+        <div class="right">
+          <button class="btn btn-primary" onclick="openModal()">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
+            Nowa galeria
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <select id="filter-rok" onchange="renderGrid()">
+          <option value="">Wszystkie lata</option>
+        </select>
+        <select id="filter-status" onchange="renderGrid()">
+          <option value="">Wszystkie</option>
+          <option value="pub">Publiczne</option>
+          <option value="draft">Szkice</option>
+        </select>
+        <label>
+          <input type="checkbox" id="filter-featured" onchange="renderGrid()">
+          Tylko wyróżnione ⭐
+        </label>
+      </div>
+
+      <div class="gallery-grid" id="gallery-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" style="width:620px">
+    <div class="modal-head">
+      <h3 id="modal-title">Nowa galeria</h3>
+      <button class="btn-close-modal" onclick="closeModal()" title="Zamknij">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="m-id">
+
+      <div class="form-grid" style="grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-row" style="margin:0">
+          <label class="form-label">Tytuł galerii *</label>
+          <input type="text" class="form-input" id="m-tytul" placeholder="np. Odpust parafialny 2024">
+        </div>
+        <div class="form-row" style="margin:0">
+          <label class="form-label">Data wydarzenia</label>
+          <input type="date" class="form-input" id="m-data">
+        </div>
+      </div>
+      <div class="form-row" style="margin-top:10px">
+        <label class="form-label">Opis (opcjonalny)</label>
+        <textarea class="form-input" id="m-opis" rows="2" placeholder="Krótki opis galerii…" style="resize:vertical"></textarea>
+      </div>
+
+      <!-- SEKCJA ZDJĘCIA -->
+      <div style="margin-top:14px;border-top:1px solid var(--line);padding-top:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+          <span style="font-weight:700;font-size:.9rem;color:var(--ink)">Zdjęcia galerii <span id="m-photo-count" style="font-weight:400;color:var(--ink-soft);font-size:.82rem"></span></span>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span style="font-size:.78rem;color:var(--ink-soft)">Pozycja okładki:</span>
+            <div style="display:flex;gap:3px">
+              <button class="pos-btn" data-pos="20%"  onclick="setCoverPos('20%')">1/5</button>
+              <button class="pos-btn" data-pos="40%"  onclick="setCoverPos('40%')">2/5</button>
+              <button class="pos-btn" data-pos="60%"  onclick="setCoverPos('60%')">3/5</button>
+              <button class="pos-btn" data-pos="80%"  onclick="setCoverPos('80%')">4/5</button>
+              <button class="pos-btn" data-pos="100%" onclick="setCoverPos('100%')">5/5</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Folder field -->
+        <div class="form-row" style="margin-bottom:10px">
+          <label class="form-label">Nazwa folderu galerii</label>
+          <input type="text" class="form-input" id="m-folder" placeholder="np. odpust-parafialny-2024" oninput="onFolderChange()">
+          <small class="form-hint">Podfolder w <code>public/img/galerie/</code> &mdash; wpisz przed uploadem zdjęć</small>
+        </div>
+
+        <!-- Upload zdjęć -->
+        <div class="form-row" style="margin-bottom:12px">
+          <label class="form-label">Wgraj zdjęcia z komputera</label>
+          <input type="file" id="m-upload-input" multiple accept="image/*" style="display:none" onchange="handleUploadFiles(this.files)">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button type="button" class="btn btn-secondary" id="btn-upload-photos" onclick="triggerUpload()">
+              <svg fill="currentColor" viewBox="0 0 16 16" style="width:13px;height:13px;margin-right:5px;flex-shrink:0"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/></svg>
+              Wybierz zdjęcia…
+            </button>
+            <span id="upload-status" style="font-size:.8rem;color:var(--ink-soft)"></span>
+          </div>
+          <small class="form-hint" id="upload-hint">Upload działa po wdrożeniu na serwer (sacrum.wideart.agency)</small>
+        </div>
+
+        <!-- Cover preview strip -->
+        <div class="cover-strip" id="m-cover-strip" style="background-position:center"></div>
+
+        <!-- Photo picker grid -->
+        <div class="photos-scroll" id="m-photo-grid"></div>
+        <p style="font-size:.76rem;color:var(--ink-soft);margin:8px 0 0">
+          Kliknij zdjęcie = ustaw jako okładkę &nbsp;·&nbsp; × = usuń z listy galerii &nbsp;·&nbsp; Plik na dysku <em>nie</em> jest kasowany.
+        </p>
+      </div>
+
+      <!-- Toggles -->
+      <div style="display:flex;gap:24px;margin-top:14px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px">
+        <div class="toggle-row">
+          <input type="checkbox" class="toggle" id="m-pinned">
+          <label for="m-pinned">📌 Przypnij na górze</label>
+        </div>
+        <div class="toggle-row">
+          <input type="checkbox" class="toggle" id="m-featured">
+          <label for="m-featured">⭐ Wyróżniona (strona główna)</label>
+        </div>
+        <div class="toggle-row">
+          <input type="checkbox" class="toggle" id="m-opublikowana">
+          <label for="m-opublikowana">Opublikowana</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Anuluj</button>
+      <button class="btn btn-primary" onclick="saveModal()">Zapisz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var allData = [];
+
+function loadData() {
+  return fetch('/api/galerie')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { allData = Array.isArray(data) ? data : []; })
+    .catch(function() { allData = []; });
+}
+
+function fmtDate(s) {
+  if (!s) return '-';
+  var p = s.split('-');
+  if (p.length < 3) return s;
+  return p[2]+'.'+p[1]+'.'+p[0];
+}
+
+function genId() {
+  return 'gal-' + Date.now();
+}
+
+// ─── STATS ────────────────────────────────────────────────
+function updateStats() {
+  var total = allData.length;
+  var pub   = allData.filter(function(g){return g.opublikowana;}).length;
+  var feat  = allData.filter(function(g){return g.featured;}).length;
+  var photos = allData.reduce(function(s,g){return s+(g.zdjecia?g.zdjecia.length:0);},0);
+  document.getElementById('stats-lead').innerHTML =
+    '<b>'+total+'</b> galerii · <b>'+photos+'</b> zdjęć · <b>'+pub+'</b> publicznych · <b>'+feat+'</b> wyróżnionych';
+}
+
+// ─── FILTER YEARS ─────────────────────────────────────────
+function populateYears() {
+  var years = [];
+  allData.forEach(function(g){
+    var y = g.data ? g.data.substring(0,4) : null;
+    if (y && years.indexOf(y) < 0) years.push(y);
+  });
+  years.sort().reverse();
+  var sel = document.getElementById('filter-rok');
+  sel.innerHTML = '<option value="">Wszystkie lata</option>';
+  years.forEach(function(y){
+    sel.innerHTML += '<option value="'+y+'">'+y+'</option>';
+  });
+}
+
+// ─── RENDER GRID ──────────────────────────────────────────
+function renderGrid() {
+  var rokFilter      = document.getElementById('filter-rok').value;
+  var statusFilter   = document.getElementById('filter-status').value;
+  var featuredFilter = document.getElementById('filter-featured').checked;
+
+  var filtered = allData.filter(function(g) {
+    if (rokFilter && (!g.data || g.data.substring(0,4) !== rokFilter)) return false;
+    if (statusFilter === 'pub'   && !g.opublikowana) return false;
+    if (statusFilter === 'draft' &&  g.opublikowana) return false;
+    if (featuredFilter && !g.featured) return false;
+    return true;
+  });
+
+  // Sort: pinned first, then newest
+  filtered.sort(function(a,b){
+    if (a.pinned && !b.pinned) return -1;
+    if (!a.pinned && b.pinned) return 1;
+    return (b.data||'').localeCompare(a.data||'');
+  });
+
+  var grid = document.getElementById('gallery-grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results" style="grid-column:1/-1"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Brak galerii dla wybranych filtrów</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(function(g) {
+    var coverPos = normPos(g.cover_pos);
+    var coverStyle = (g.cover ? 'background-image:url(\'../'+g.cover+'\');' : '') + 'background-position:center '+coverPos;
+    var count = g.zdjecia ? g.zdjecia.length : 0;
+    var featClass = g.featured ? ' is-featured' : '';
+    var featIcon  = g.featured ? '⭐' : '☆';
+    var featTitle = g.featured ? 'Usuń z wyróżnionych' : 'Wyróżnij na stronie głównej';
+    var pinBadge  = g.pinned ? '<div style="position:absolute;bottom:8px;left:8px;background:rgba(43,37,32,.82);color:#fff;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700">📌 Przypięta</div>' : '';
+    var statusBadge = g.opublikowana
+      ? '<span class="pill-badge pub">● Publiczna</span>'
+      : '<span class="pill-badge draft">● Szkic</span>';
+    return '<div class="gcard'+featClass+'" data-id="'+g.id+'">'
+      +'<div class="gcard-cover" style="'+coverStyle+'">'
+      +'<div class="badge-count">'+count+' zdjęć</div>'
+      +'<button class="btn-feat'+(g.featured?' active':'')+'" title="'+featTitle+'" onclick="toggleFeatured(\''+g.id+'\')" data-id="'+g.id+'">'+featIcon+'</button>'
+      +pinBadge
+      +'</div>'
+      +'<div class="gcard-body">'
+      +'<h4>'+g.tytul+'</h4>'
+      +'<div class="gcard-meta"><span>'+fmtDate(g.data)+'</span>'+statusBadge+'</div>'
+      +'<div class="gcard-actions">'
+      +'<button class="btn btn-secondary" onclick="editGallery(\''+g.id+'\')">Edytuj</button>'
+      +'<button class="btn btn-danger" onclick="deleteGallery(\''+g.id+'\')">Usuń</button>'
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ─── TOGGLE FEATURED ──────────────────────────────────────
+function toggleFeatured(id) {
+  var g = allData.find(function(x){return x.id===id;});
+  if (!g) return;
+  var updated = Object.assign({}, g, { featured: !g.featured });
+  fetch('/api/galerie/' + id, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updated)
+  }).then(function(r){ return r.json(); }).then(function(saved) {
+    var idx = allData.findIndex(function(x){return x.id===id;});
+    if (idx >= 0) allData[idx] = saved;
+    updateStats();
+    renderGrid();
+  });
+}
+
+// ─── DELETE ───────────────────────────────────────────────
+function deleteGallery(id) {
+  var g = allData.find(function(x){return x.id===id;});
+  if (!g) return;
+  if (!confirm('Usunąć galerię „'+g.tytul+'"?\n\nZdjęcia na dysku nie zostaną usunięte.')) return;
+  fetch('/api/galerie/' + id, { method: 'DELETE' })
+    .then(function(r){ return r.json(); })
+    .then(function() {
+      allData = allData.filter(function(x){return x.id!==id;});
+      updateStats();
+      populateYears();
+      renderGrid();
+    });
+}
+
+// ─── MODAL STATE ──────────────────────────────────────────
+var editingId    = null;
+var modalPhotos  = [];
+var modalCover   = '';
+var modalFolder  = '';
+var modalCoverPos = '40%';
+
+// Konwersja starych wartości (top/center/bottom) na procenty
+function normPos(p) {
+  if (!p || p === 'center') return '40%';
+  if (p === 'top')    return '20%';
+  if (p === 'bottom') return '80%';
+  return p; // już jest procentem
+}
+
+function openModal(id) {
+  editingId = id || null;
+  var g = id ? allData.find(function(x){return x.id===id;}) : null;
+  document.getElementById('modal-title').textContent = g ? 'Edytuj galerię' : 'Nowa galeria';
+  document.getElementById('m-id').value             = g ? g.id : '';
+  document.getElementById('m-tytul').value          = g ? g.tytul : '';
+  document.getElementById('m-data').value           = g ? (g.data||'') : '';
+  document.getElementById('m-opis').value           = g ? (g.opis||'') : '';
+  document.getElementById('m-folder').value         = g ? (g.folder||'') : '';
+  document.getElementById('m-pinned').checked       = g ? !!g.pinned : false;
+  document.getElementById('m-featured').checked     = g ? !!g.featured : false;
+  document.getElementById('m-opublikowana').checked = g ? !!g.opublikowana : true;
+
+  modalFolder   = g ? (g.folder||'') : '';
+  modalPhotos   = g ? (g.zdjecia ? g.zdjecia.slice() : []) : [];
+  modalCoverPos = normPos(g ? g.cover_pos : null);
+
+  // Extract cover filename from full path
+  if (g && g.cover) {
+    var parts = g.cover.split('/');
+    modalCover = parts[parts.length - 1];
+  } else {
+    modalCover = modalPhotos.length ? modalPhotos[0] : '';
+  }
+
+  updatePosButtons();
+  renderModalPhotos();
+  updateCoverStrip();
+  if(window.fpSync)window.fpSync();
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('m-tytul').focus(); }, 50);
+}
+
+function editGallery(id) { openModal(id); }
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+// Zmiana folderu - odśwież miniatury
+function onFolderChange() {
+  modalFolder = document.getElementById('m-folder').value.trim();
+  renderModalPhotos();
+  updateCoverStrip();
+}
+
+// ─── PHOTO PICKER ─────────────────────────────────────────
+function renderModalPhotos() {
+  var count = document.getElementById('m-photo-count');
+  count.textContent = '(' + modalPhotos.length + ' zdjęć)';
+  var grid = document.getElementById('m-photo-grid');
+  if (!modalPhotos.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;color:var(--ink-soft);font-size:.82rem;padding:10px 0">'
+      + 'Brak zdjęć w tej galerii.</div>';
+    return;
+  }
+  grid.innerHTML = modalPhotos.map(function(fname) {
+    var src = '../public/img/galerie/' + modalFolder + '/' + fname;
+    var isCover = (fname === modalCover);
+    return '<div class="photo-thumb-pick'+(isCover?' is-cover':'')+'"'
+      +' style="background-image:url(\''+src+'\')"'
+      +' onclick="selectModalCover(\''+fname+'\')"'
+      +' title="Kliknij aby ustawić jako okładkę">'
+      +'<button class="remove-btn" onclick="removeModalPhoto(event,\''+fname+'\')" title="Usuń z galerii">✕</button>'
+      +(isCover ? '<div class="cover-label">COVER</div>' : '')
+      +'</div>';
+  }).join('');
+}
+
+function selectModalCover(fname) {
+  modalCover = fname;
+  renderModalPhotos();
+  updateCoverStrip();
+}
+
+function removeModalPhoto(e, fname) {
+  e.stopPropagation();
+  if (!confirm('Usunąć "'+fname+'" z listy galerii?\n(Plik na dysku pozostaje nienaruszony.)')) return;
+  modalPhotos = modalPhotos.filter(function(f){return f!==fname;});
+  if (modalCover === fname) modalCover = modalPhotos.length ? modalPhotos[0] : '';
+  renderModalPhotos();
+  updateCoverStrip();
+}
+
+// ─── COVER POSITION ───────────────────────────────────────
+function setCoverPos(pos) {
+  modalCoverPos = pos;
+  updatePosButtons();
+  updateCoverStrip();
+}
+
+function updatePosButtons() {
+  document.querySelectorAll('.pos-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.pos === modalCoverPos);
+  });
+}
+
+function updateCoverStrip() {
+  var strip = document.getElementById('m-cover-strip');
+  if (modalCover && modalFolder) {
+    strip.style.backgroundImage = 'url(\'../public/img/galerie/'+modalFolder+'/'+modalCover+'\')';
+  } else {
+    strip.style.backgroundImage = '';
+  }
+  strip.style.backgroundPosition = 'center ' + modalCoverPos;
+}
+
+// ─── SAVE ─────────────────────────────────────────────────
+function saveModal() {
+  var tytul = document.getElementById('m-tytul').value.trim();
+  if (!tytul) { alert('Podaj tytuł galerii.'); document.getElementById('m-tytul').focus(); return; }
+
+  var folder    = document.getElementById('m-folder').value.trim();
+  var coverPath = (modalCover && folder) ? 'public/img/galerie/'+folder+'/'+modalCover : '';
+  var body = {
+    tytul:        tytul,
+    data:         document.getElementById('m-data').value,
+    opis:         document.getElementById('m-opis').value.trim(),
+    folder:       folder,
+    cover:        coverPath,
+    cover_pos:    modalCoverPos,
+    zdjecia:      modalPhotos,
+    opublikowana: document.getElementById('m-opublikowana').checked,
+    featured:     document.getElementById('m-featured').checked,
+    pinned:       document.getElementById('m-pinned').checked
+  };
+
+  var btn = document.querySelector('.modal-foot .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Zapisuję…'; }
+
+  var req;
+  if (editingId) {
+    body.slug = folder || editingId;
+    req = fetch('/api/galerie/' + editingId, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  } else {
+    body.slug = folder || tytul.toLowerCase().replace(/[\s]+/g,'-').replace(/[^a-z0-9-]/g,'');
+    req = fetch('/api/galerie', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  }
+
+  req.then(function(r){ return r.json(); }).then(function(saved) {
+    if (saved.error) { alert('Błąd: ' + saved.error); return; }
+    if (editingId) {
+      var idx = allData.findIndex(function(x){return x.id===editingId;});
+      if (idx >= 0) allData[idx] = saved; else allData.unshift(saved);
+    } else {
+      allData.unshift(saved);
+    }
+    updateStats();
+    populateYears();
+    renderGrid();
+    closeModal();
+  }).catch(function() {
+    alert('Błąd połączenia z serwerem.');
+  }).finally(function() {
+    if (btn) { btn.disabled = false; btn.textContent = 'Zapisz'; }
+  });
+}
+
+// ─── UPLOAD ZDJĘĆ ────────────────────────────────────────
+function triggerUpload() {
+  var folder = document.getElementById('m-folder').value.trim();
+  if (!folder) {
+    alert('Najpierw wpisz nazwę folderu galerii, żeby wiedzieć gdzie zapisać zdjęcia.');
+    document.getElementById('m-folder').focus();
+    return;
+  }
+  document.getElementById('m-upload-input').value = '';
+  document.getElementById('m-upload-input').click();
+}
+
+function handleUploadFiles(files) {
+  if (!files || !files.length) return;
+  var folder = document.getElementById('m-folder').value.trim();
+  var status = document.getElementById('upload-status');
+  var hint   = document.getElementById('upload-hint');
+  var btn    = document.getElementById('btn-upload-photos');
+
+  status.style.color = 'var(--ink-soft)';
+  status.textContent = 'Wysyłanie ' + files.length + ' pliku/plików…';
+  btn.disabled = true;
+  hint.style.display = 'none';
+
+  var fd = new FormData();
+  fd.append('folder', folder);
+  for (var i = 0; i < files.length; i++) fd.append('files', files[i]);
+
+  fetch('/api/galeria/upload', { method: 'POST', body: fd })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      btn.disabled = false;
+      if (data.error) {
+        status.style.color = 'var(--red,#c0392b)';
+        status.textContent = '✕ ' + data.error;
+        return;
+      }
+      if (data.folder) {
+        modalFolder = data.folder;
+        document.getElementById('m-folder').value = data.folder;
+      }
+      var added = 0;
+      (data.zdjecia || []).forEach(function(fname) {
+        if (modalPhotos.indexOf(fname) < 0) { modalPhotos.push(fname); added++; }
+      });
+      if (!modalCover && modalPhotos.length) modalCover = modalPhotos[0];
+      status.style.color = 'var(--green,#3a7d44)';
+      status.textContent = '✓ Wgrano ' + added + ' zdjęć.';
+      renderModalPhotos();
+      updateCoverStrip();
+    })
+    .catch(function() {
+      btn.disabled = false;
+      status.style.color = 'var(--red,#c0392b)';
+      status.textContent = '✕ Błąd – upload dostępny tylko na serwerze.';
+    });
+}
+
+// ─── KEYBOARD ─────────────────────────────────────────────
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ─── INIT ─────────────────────────────────────────────────
+loadData().then(function() {
+  updateStats();
+  populateYears();
+  renderGrid();
+});
+</script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

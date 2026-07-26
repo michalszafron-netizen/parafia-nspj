@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wspólnoty parafialne · Panel Parafii NSPJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .groups-layout{display:grid;grid-template-columns:240px 1fr;gap:18px;align-items:start}
+  @media (max-width:900px){.groups-layout{grid-template-columns:1fr}}
+
+  .grp-switch{background:var(--white);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .grp-switch button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px;border:none;background:transparent;border-bottom:1px solid var(--line);text-align:left;cursor:pointer;font-size:.86rem;color:var(--ink-soft);font-family:inherit}
+  .grp-switch button:last-child{border-bottom:none}
+  .grp-switch button:hover{background:var(--bg)}
+  .grp-switch button.active{background:var(--bg);color:var(--burgundy);font-weight:700;border-left:3px solid var(--burgundy);padding-left:13px}
+  .grp-switch button .cnt{font-size:.74rem;background:var(--beige);color:var(--ink-soft);padding:1px 8px;border-radius:10px;font-weight:700;flex-shrink:0}
+  .grp-switch button.active .cnt{background:var(--burgundy);color:#fff}
+
+  .editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .editor-head h2{margin:0 0 2px}
+  .editor-head .sub{color:var(--ink-soft);font-size:.86rem}
+
+  .member-row{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+  .member-row:last-child{border-bottom:none}
+  .member-row input[type=text]{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;color:var(--ink);background:var(--white);font-family:inherit}
+  .member-row input.m-role{flex:.7}
+  .member-row input[type=text]:focus{outline:none;border-color:var(--burgundy)}
+  .member-row .m-del{width:32px;height:32px;flex-shrink:0;border-radius:6px;border:1px solid var(--line);background:var(--white);color:var(--ink-soft);cursor:pointer;display:grid;place-items:center}
+  .member-row .m-del:hover{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+
+  .add-member-row{display:flex;gap:8px;align-items:center;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+  .add-member-row input[type=text]{flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:inherit}
+  .add-member-row input.m-role{flex:.7}
+
+  .empty-members{padding:28px 0;text-align:center;color:var(--ink-soft);font-size:.88rem}
+
+  .section-title{font-size:1rem;margin:24px 0 10px;padding-top:18px;border-top:1px solid var(--line)}
+  .section-title:first-of-type{margin-top:18px;padding-top:0;border-top:none}
+  .section-title .section-hint{font-size:.78rem;font-weight:400;color:var(--ink-soft)}
+
+  .count-box{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:6px}
+  .count-box label{display:block;font-size:.82rem;font-weight:700;color:var(--ink-soft);margin-bottom:8px}
+  .count-row{display:flex;gap:8px}
+  .count-row input[type=number]{width:90px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:inherit}
+  .count-row input[type=text]{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:inherit}
+  .count-row input:focus{outline:none;border-color:var(--burgundy)}
+  .count-hint{margin:8px 0 0;font-size:.78rem;color:var(--ink-soft)}
+
+  .struct-row{display:flex;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+  .struct-row:last-child{border-bottom:none}
+  .struct-row input[type=text]{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;font-family:inherit}
+  .struct-row input[type=number]{width:80px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;font-family:inherit}
+  .struct-row input:focus{outline:none;border-color:var(--burgundy)}
+  .struct-row .m-del{width:32px;height:32px;flex-shrink:0;border-radius:6px;border:1px solid var(--line);background:var(--white);color:var(--ink-soft);cursor:pointer;display:grid;place-items:center}
+  .struct-row .m-del:hover{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+
+  #toast{
+    position:fixed;bottom:28px;right:28px;z-index:9999;
+    background:var(--ink);color:#fff;padding:13px 20px;border-radius:8px;
+    font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:10px;
+    transform:translateY(80px);opacity:0;transition:all .25s cubic-bezier(.34,1.56,.64,1);
+    pointer-events:none;max-width:340px
+  }
+  #toast.show{transform:translateY(0);opacity:1}
+  #toast.success{background:#15803d}
+  #toast.error{background:#b91c1c}
+  #toast svg{flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0"><div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div></div>
+    <nav>
+      <a href="index.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>Pulpit</a>
+      <div class="nav-section">Strona WWW</div>
+      <a href="aktualnosci.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>Aktualności</a>
+      <a href="ogloszenia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>Ogłoszenia parafialne</a>
+      <a href="galeria.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Galeria</a>
+      <a href="strony-statyczne.html" class="active"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 0 0-1H5a.5.5 0 0 0-.5.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/></svg>Strony statyczne</a>
+      <div class="nav-section">Wspólnota</div>
+      <a href="intencje.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>Intencje mszalne</a>
+      <a href="sakramenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>Sakramenty</a>
+      <a href="pogrzeby.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
+      <a href="parafianie.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>Parafianie</a>
+      <a href="dokumenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
+      <div class="nav-section">System</div>
+      <a href="#"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>Raporty</a>
+      <a href="ustawienia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>Ustawienia parafii</a>
+    </nav>
+    <div class="user"><div class="user-avatar">TŻ</div><div class="user-name">ks. Tomasz Żołna<small>Proboszcz · <a href="login.html">Wyloguj</a></small></div></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs"><a href="index.html">Pulpit</a><span>/</span><a href="strony-statyczne.html">Strony statyczne</a><span>/</span><b>Wspólnoty parafialne</b></div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Wspólnoty parafialne</h1>
+          <div class="lead">Skład grup — dodawaj i usuwaj osoby, zmiany widać od razu na stronie publicznej</div>
+        </div>
+      </div>
+
+      <div class="groups-layout">
+        <div class="grp-switch" id="grp-switch"></div>
+
+        <div class="card">
+          <div class="editor-head">
+            <div>
+              <h2 id="grp-title">—</h2>
+              <div class="sub" id="grp-count">—</div>
+            </div>
+            <a href="#" id="view-on-site" target="_blank" class="btn btn-secondary sm">Zobacz na stronie →</a>
+          </div>
+
+          <div class="count-box">
+            <label for="count-number">Liczba osób (odznaka widoczna na stronie)</label>
+            <div class="count-row">
+              <input type="number" id="count-number" min="0" step="1">
+              <input type="text" id="count-unit" placeholder="np. osób, ministrantów, tercjarzy">
+            </div>
+            <p class="count-hint">Niezależna od listy osób poniżej — możesz podać samą liczbę, bez wymieniania nazwisk.</p>
+          </div>
+
+          <h3 class="section-title">Skład grupy <span class="section-hint">— osoby wymienione z imienia</span></h3>
+          <div id="members-list"></div>
+
+          <div class="add-member-row">
+            <input type="text" id="new-m-name" placeholder="Imię i nazwisko">
+            <input type="text" id="new-m-role" class="m-role" list="role-options" placeholder="Funkcja (opcjonalnie)">
+            <button type="button" class="btn btn-primary sm" id="btn-add-member">Dodaj</button>
+          </div>
+
+          <h3 class="section-title">Struktura grupy <span class="section-hint">— opcjonalny podział na podgrupy z liczebnością (np. Kandydaci, Animatorzy)</span></h3>
+          <div id="structure-list"></div>
+
+          <div class="add-member-row">
+            <input type="text" id="new-s-label" list="structure-options" placeholder="Nazwa podgrupy (np. Kandydaci)">
+            <input type="number" id="new-s-count" min="0" step="1" placeholder="Liczba" style="flex:.4">
+            <button type="button" class="btn btn-primary sm" id="btn-add-structure">Dodaj</button>
+          </div>
+
+          <datalist id="role-options"></datalist>
+          <datalist id="structure-options"></datalist>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast">
+  <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+<script src="assets/admin.js"></script>
+<script>
+  const GROUP_META = [
+    { slug: 'rada-parafialna', label: 'Rada parafialna' },
+    { slug: 'ministranci', label: 'Ministranci' },
+    { slug: 'schola', label: 'Schola Parafialna' },
+    { slug: 'dzieci-maryi', label: 'Dzieci Maryi' },
+    { slug: 'zywy-rozaniec', label: 'Żywy Różaniec' },
+    { slug: 'franciszkanie', label: 'Franciszkański ZŚ' },
+    { slug: 'charytatywny', label: 'Zespół Charytatywny' }
+  ];
+
+  async function apiFetch(url, opts) {
+    const r = await fetch(url, opts);
+    if (!r.ok) throw new Error(r.statusText);
+    return r.json();
+  }
+
+  async function saveData() {
+    try {
+      await apiFetch('/api/wspolnoty/' + currentGroup, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(groups[currentGroup])});
+    } catch(e) { showToast('Błąd zapisu: ' + e.message, 'error'); }
+  }
+
+  let groups = {};
+  let currentGroup = GROUP_META[0].slug;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function genId() {
+    return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  function renderSwitch() {
+    const wrap = document.getElementById('grp-switch');
+    wrap.innerHTML = GROUP_META.map(function (g) {
+      const n = (groups[g.slug] && groups[g.slug].count) || 0;
+      return '<button type="button" class="' + (g.slug === currentGroup ? 'active' : '') + '" data-slug="' + g.slug + '">' +
+        esc(g.label) + '<span class="cnt">' + n + '</span></button>';
+    }).join('');
+    wrap.querySelectorAll('button').forEach(function (btn) {
+      btn.addEventListener('click', function () { switchGroup(btn.dataset.slug); });
+    });
+  }
+
+  function switchGroup(slug) {
+    currentGroup = slug;
+    renderSwitch();
+    renderEditor();
+  }
+
+  function renderEditor() {
+    const meta = GROUP_META.find(function (g) { return g.slug === currentGroup; });
+    document.getElementById('grp-title').textContent = meta.label;
+    document.getElementById('view-on-site').href = '../strony/wspolnoty.html#' + currentGroup;
+    renderCountBox();
+    renderMembers();
+    renderStructureList();
+    renderRoleOptions();
+    renderStructureOptions();
+  }
+
+  function renderCountBox() {
+    const g = groups[currentGroup];
+    document.getElementById('count-number').value = g.count || 0;
+    document.getElementById('count-unit').value = g.countUnit || 'osób';
+    document.getElementById('grp-count').textContent = (g.count || 0) + ' ' + (g.countUnit || 'osób') + ' (wg liczby manualnej)';
+  }
+
+  function updateCount(field, value) {
+    const g = groups[currentGroup];
+    if (field === 'count') {
+      const n = parseInt(value, 10);
+      g.count = isNaN(n) || n < 0 ? 0 : n;
+    } else {
+      g.countUnit = value.trim() || 'osób';
+    }
+    saveData();
+    renderSwitch();
+    document.getElementById('grp-count').textContent = (g.count || 0) + ' ' + (g.countUnit || 'osób') + ' (wg liczby manualnej)';
+    showToast('✓ Zapisano', 'success');
+  }
+
+  document.getElementById('count-number').addEventListener('change', function (e) { updateCount('count', e.target.value); });
+  document.getElementById('count-unit').addEventListener('change', function (e) { updateCount('countUnit', e.target.value); });
+
+  // ── Skład grupy (osoby z imienia) ──────────────────────────────────────
+  function renderMembers() {
+    const list = groups[currentGroup].members || [];
+    const wrap = document.getElementById('members-list');
+    if (!list.length) {
+      wrap.innerHTML = '<div class="empty-members">Brak osób w tej grupie — dodaj pierwszą osobę poniżej.</div>';
+      return;
+    }
+    wrap.innerHTML = list.map(function (m) {
+      return '<div class="member-row" data-id="' + m.id + '">' +
+        '<input type="text" class="m-name" value="' + esc(m.name) + '" placeholder="Imię i nazwisko">' +
+        '<input type="text" class="m-role" list="role-options" value="' + esc(m.role || '') + '" placeholder="Funkcja (opcjonalnie)">' +
+        '<button type="button" class="m-del" title="Usuń osobę"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg></button>' +
+        '</div>';
+    }).join('');
+
+    wrap.querySelectorAll('.member-row').forEach(function (row) {
+      const id = row.dataset.id;
+      row.querySelector('.m-name').addEventListener('change', function (e) { updateMember(id, 'name', e.target.value); });
+      row.querySelector('.m-role').addEventListener('change', function (e) { updateMember(id, 'role', e.target.value); });
+      row.querySelector('.m-del').addEventListener('click', function () { deleteMember(id); });
+    });
+  }
+
+  function updateMember(id, field, value) {
+    const list = groups[currentGroup].members || [];
+    const m = list.find(function (x) { return x.id === id; });
+    if (!m) return;
+    m[field] = value;
+    saveData();
+    renderRoleOptions();
+    showToast('✓ Zapisano', 'success');
+  }
+
+  function deleteMember(id) {
+    groups[currentGroup].members = (groups[currentGroup].members || []).filter(function (m) { return m.id !== id; });
+    saveData();
+    renderMembers();
+    showToast('Osoba usunięta', 'success');
+  }
+
+  function addMember() {
+    const nameInput = document.getElementById('new-m-name');
+    const roleInput = document.getElementById('new-m-role');
+    const name = nameInput.value.trim();
+    if (!name) { nameInput.focus(); return; }
+    const role = roleInput.value.trim();
+    if (!groups[currentGroup].members) groups[currentGroup].members = [];
+    groups[currentGroup].members.push({ id: genId(), name: name, role: role });
+    saveData();
+    nameInput.value = ''; roleInput.value = '';
+    renderMembers();
+    renderRoleOptions();
+    nameInput.focus();
+    showToast('✓ Osoba dodana', 'success');
+  }
+
+  document.getElementById('btn-add-member').addEventListener('click', addMember);
+  ['new-m-name', 'new-m-role'].forEach(function (id) {
+    document.getElementById(id).addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); addMember(); }
+    });
+  });
+
+  function renderRoleOptions() {
+    const roles = new Set();
+    GROUP_META.forEach(function (g) {
+      (groups[g.slug].members || []).forEach(function (m) {
+        if (m.role && m.role.trim()) roles.add(m.role.trim());
+      });
+    });
+    document.getElementById('role-options').innerHTML = Array.from(roles).sort().map(function (r) {
+      return '<option value="' + esc(r) + '">';
+    }).join('');
+  }
+
+  // ── Struktura grupy (podgrupy z liczebnością, bez imion) ───────────────
+  function renderStructureList() {
+    const list = groups[currentGroup].structure || [];
+    const wrap = document.getElementById('structure-list');
+    if (!list.length) {
+      wrap.innerHTML = '<div class="empty-members">Brak podziału na podgrupy — opcjonalnie dodaj poziom (np. Kandydaci) poniżej.</div>';
+      return;
+    }
+    wrap.innerHTML = list.map(function (s) {
+      return '<div class="struct-row" data-id="' + s.id + '">' +
+        '<input type="text" class="s-label" list="structure-options" value="' + esc(s.label) + '" placeholder="Nazwa podgrupy">' +
+        '<input type="number" class="s-count" min="0" step="1" value="' + (Number(s.count) || 0) + '">' +
+        '<button type="button" class="m-del" title="Usuń podgrupę"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg></button>' +
+        '</div>';
+    }).join('');
+
+    wrap.querySelectorAll('.struct-row').forEach(function (row) {
+      const id = row.dataset.id;
+      row.querySelector('.s-label').addEventListener('change', function (e) { updateStructure(id, 'label', e.target.value); });
+      row.querySelector('.s-count').addEventListener('change', function (e) { updateStructure(id, 'count', e.target.value); });
+      row.querySelector('.m-del').addEventListener('click', function () { deleteStructure(id); });
+    });
+  }
+
+  function updateStructure(id, field, value) {
+    const list = groups[currentGroup].structure || [];
+    const s = list.find(function (x) { return x.id === id; });
+    if (!s) return;
+    if (field === 'count') {
+      const n = parseInt(value, 10);
+      s.count = isNaN(n) || n < 0 ? 0 : n;
+    } else {
+      s.label = value;
+    }
+    saveData();
+    renderStructureOptions();
+    showToast('✓ Zapisano', 'success');
+  }
+
+  function deleteStructure(id) {
+    groups[currentGroup].structure = (groups[currentGroup].structure || []).filter(function (s) { return s.id !== id; });
+    saveData();
+    renderStructureList();
+    showToast('Podgrupa usunięta', 'success');
+  }
+
+  function addStructure() {
+    const labelInput = document.getElementById('new-s-label');
+    const countInput = document.getElementById('new-s-count');
+    const label = labelInput.value.trim();
+    if (!label) { labelInput.focus(); return; }
+    const n = parseInt(countInput.value, 10);
+    if (!groups[currentGroup].structure) groups[currentGroup].structure = [];
+    groups[currentGroup].structure.push({ id: genId(), label: label, count: isNaN(n) || n < 0 ? 0 : n });
+    saveData();
+    labelInput.value = ''; countInput.value = '';
+    renderStructureList();
+    renderStructureOptions();
+    labelInput.focus();
+    showToast('✓ Podgrupa dodana', 'success');
+  }
+
+  document.getElementById('btn-add-structure').addEventListener('click', addStructure);
+  ['new-s-label', 'new-s-count'].forEach(function (id) {
+    document.getElementById(id).addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); addStructure(); }
+    });
+  });
+
+  function renderStructureOptions() {
+    const labels = new Set();
+    GROUP_META.forEach(function (g) {
+      (groups[g.slug].structure || []).forEach(function (s) {
+        if (s.label && s.label.trim()) labels.add(s.label.trim());
+      });
+    });
+    document.getElementById('structure-options').innerHTML = Array.from(labels).sort().map(function (l) {
+      return '<option value="' + esc(l) + '">';
+    }).join('');
+  }
+
+  let toastTimer = null;
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.className = 'show ' + (type || 'success');
+    document.getElementById('toast-msg').textContent = msg;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.className = ''; }, 2200);
+  }
+
+  (async function() {
+    try {
+      groups = await apiFetch('/api/wspolnoty');
+      // Upewnij się że każda grupa ma wymagane pola
+      GROUP_META.forEach(function(g) {
+        if (!groups[g.slug]) groups[g.slug] = { count:0, countUnit:'osób', members:[], structure:[] };
+        if (!Array.isArray(groups[g.slug].members))   groups[g.slug].members   = [];
+        if (!Array.isArray(groups[g.slug].structure)) groups[g.slug].structure = [];
+      });
+      renderSwitch();
+      renderEditor();
+    } catch(e) { showToast('Błąd ładowania: ' + e.message, 'error'); }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulpit · Panel Parafii NSPJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .activity{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+  .timeline{list-style:none;padding:0;margin:0}
+  /* Alert zgłoszeń parafian */
+  .pend-alert{background:rgba(184,122,74,.08);border:1.5px solid var(--copper,#b87a4a);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .pa-ic{flex-shrink:0;width:36px;height:36px;background:var(--copper,#b87a4a);border-radius:50%;display:grid;place-items:center;color:#fff}
+  .pa-txt{flex:1;font-size:.9rem;color:var(--ink,#2b2520)}
+  .pa-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--burgundy,#7a1f2b);margin-right:4px}
+  .timeline li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .timeline li:last-child{border-bottom:none}
+  .timeline .dot{width:34px;height:34px;border-radius:50%;background:var(--beige);display:grid;place-items:center;color:var(--burgundy);flex-shrink:0}
+  .timeline .info{flex:1;font-size:.9rem}
+  .timeline .info b{color:var(--ink)}
+  .timeline .info .when{font-size:.78rem;color:var(--ink-soft);margin-top:2px}
+  .quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .qa{
+    padding:18px 16px;background:var(--white);border:1px solid var(--line);border-radius:6px;
+    cursor:pointer;display:flex;flex-direction:column;gap:8px;text-align:left;
+    transition:all .12s;text-decoration:none
+  }
+  .qa:hover{border-color:var(--copper);background:var(--bg);transform:translateY(-1px)}
+  .qa svg{width:22px;height:22px;color:var(--burgundy)}
+  .qa .lbl{font-weight:600;color:var(--ink);font-size:.92rem;line-height:1.2}
+  .qa .sub{font-size:.78rem;color:var(--ink-soft)}
+  .upcoming{list-style:none;padding:0;margin:0}
+  .upcoming li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .upcoming li:last-child{border-bottom:none}
+  .upcoming .day{
+    width:54px;text-align:center;flex-shrink:0;
+    background:var(--bg);border-radius:6px;padding:8px 0;border:1px solid var(--line)
+  }
+  .upcoming .day .d{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--burgundy);line-height:1}
+  .upcoming .day .m{font-size:.7rem;color:var(--ink-soft);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+  .upcoming .det{flex:1}
+  .upcoming .det b{display:block;color:var(--ink);font-size:.92rem}
+  .upcoming .det .t{font-size:.8rem;color:var(--ink-soft);margin-top:2px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0">
+      <div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div>
+    </div>
+    <nav>
+      <a href="index.html" class="active">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>
+        Pulpit
+      </a>
+
+      <div class="nav-section">Strona WWW</div>
+      <a href="aktualnosci.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>
+        Aktualności
+        
+      </a>
+      <a href="ogloszenia.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1zM5.5 2v4.901a.5.5 0 0 1-.045.207L2.434 13.5h11.132l-3.021-6.392a.5.5 0 0 1-.045-.207V2z"/></svg>
+        Ogłoszenia parafialne
+      </a>
+      <a href="galeria.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1 12.45V3a1 1 0 0 1 1-1z"/></svg>
+        Galeria
+      </a>
+      <a href="strony-statyczne.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.5.5 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3zM15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5z"/></svg>
+        Strony statyczne
+      </a>
+
+      <div class="nav-section">Wspólnota</div>
+      <a href="intencje.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>
+        Intencje mszalne
+      </a>
+      <a href="sakramenty.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>
+        Sakramenty
+        
+      </a>
+      <a href="pogrzeby.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
+      <a href="parafianie.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4"/></svg>
+        Parafianie
+        
+      </a>
+      <a href="dokumenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
+
+      <div class="nav-section">System</div>
+      <a href="#">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>
+        Raporty
+      </a>
+      <a href="ustawienia.html">
+        <svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52z"/></svg>
+        Ustawienia parafii
+      </a>
+    </nav>
+    <div class="user">
+      <div class="user-avatar">TŻ</div>
+      <div class="user-name">ks. Tomasz Żołna<small>Proboszcz · <a href="login.html">Wyloguj</a></small></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs"><b>Pulpit</b></div>
+      <div class="actions">
+        <!-- Szukaj w panelu — ukryte: brak jasnego zakresu (nic nie przeszukuje), kod zostaje na przyszłość -->
+        <div class="search" style="display:none">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+          <input type="text" placeholder="Szukaj w panelu (Ctrl+K)">
+        </div>
+        <!-- C2: "Podgląd strony" i "Powiadomienia" — ukryte do decyzji projektowej, kod zostaje na przyszłość -->
+        <button class="icon-btn" title="Podgląd strony" style="display:none"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/></svg></button>
+        <button class="icon-btn" title="Powiadomienia" style="display:none"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Dzień dobry, ks. Tomasz</h1>
+          <div class="lead">Środa, 13 maja 2026 · Wspomnienie św. Andrzeja Boboli</div>
+        </div>
+        <div class="right">
+          <a href="aktualnosci-edit.html" class="btn btn-primary">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
+            Dodaj aktualność
+          </a>
+          <a href="../index.html" class="btn btn-secondary" target="_blank">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/><path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/></svg>
+            Zobacz stronę
+          </a>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat">
+          <div class="info">
+            <div class="lbl">Aktualności</div>
+            <div class="num" id="stat-akt-num">-</div>
+            <div class="delta" id="stat-akt-delta">ładowanie…</div>
+          </div>
+          <div class="ic"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/></svg></div>
+        </div>
+        <div class="stat">
+          <div class="info">
+            <div class="lbl">Parafianie</div>
+            <div class="num" id="stat-par-num">-</div>
+            <div class="delta" id="stat-par-delta">w rejestrze</div>
+          </div>
+          <div class="ic"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4"/></svg></div>
+        </div>
+        <div class="stat">
+          <div class="info">
+            <div class="lbl">Intencje na ten tydzień</div>
+            <div class="num" id="stat-int-num">-</div>
+            <div class="delta" id="stat-int-delta">ładowanie…</div>
+          </div>
+          <div class="ic"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg></div>
+        </div>
+        <div class="stat">
+          <div class="info">
+            <div class="lbl">Wizyty na stronie (30 dni)</div>
+            <div class="num">3 247</div>
+            <div class="delta"><b>+18%</b> wzgl. poprz. miesiąca</div>
+          </div>
+          <div class="ic"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Alert: oczekujące zgłoszenia od parafian -->
+      <div id="pend-alert" class="pend-alert" style="display:none">
+        <div class="pa-ic">
+          <svg fill="currentColor" viewBox="0 0 16 16" width="16" height="16"><path d="M14 2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 11.5V3a1 1 0 0 1 1-1zm-2.5 8.5a.5.5 0 0 0 0-1h-7a.5.5 0 0 0 0 1zm0-3a.5.5 0 0 0 0-1h-7a.5.5 0 0 0 0 1zm-7-3h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0 0 1z"/></svg>
+        </div>
+        <div class="pa-txt">
+          <span class="pa-num" id="pa-num">0</span>
+          <span id="pa-label">parafian złożyło prośbę o intencję mszalną</span> — <b>oczekuje na akceptację</b>
+        </div>
+        <a href="intencje.html" class="btn btn-primary sm">Przejdź do zgłoszeń →</a>
+      </div>
+
+      <div class="activity">
+        <!-- LEWA: ostatnia aktywność -->
+        <div class="card">
+          <div class="card-head">
+            <h3>Ostatnia aktywność</h3>
+            <a href="#" class="btn btn-ghost sm">Pełny dziennik →</a>
+          </div>
+          <ul class="timeline" id="timeline">
+            <li style="padding:14px 0;color:var(--ink-soft);font-size:.88rem">Wczytywanie aktywności…</li>
+          </ul>
+        </div>
+
+        <!-- PRAWA: szybkie akcje + nadchodzące -->
+        <div>
+          <div class="card">
+            <div class="card-head"><h3>Szybkie akcje</h3></div>
+            <div class="quick-actions">
+              <a href="aktualnosci-edit.html" class="qa">
+                <svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
+                <div class="lbl">Nowa aktualność</div>
+                <div class="sub">Wpis + zdjęcia</div>
+              </a>
+              <a href="ogloszenia.html" class="qa">
+                <svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>
+                <div class="lbl">Ogłoszenia tygodnia</div>
+                <div class="sub">Tekst + PDF</div>
+              </a>
+              <a href="galeria.html" class="qa">
+                <svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>
+                <div class="lbl">Nowa galeria</div>
+                <div class="sub">Drag & drop foto</div>
+              </a>
+              <a href="intencje.html" class="qa">
+                <svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5"/></svg>
+                <div class="lbl">Intencje + druk</div>
+                <div class="sub">Kalendarz + PDF/Word</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Nadchodzące wydarzenia</h3></div>
+            <ul class="upcoming" id="upcoming">
+              <li style="padding:14px 0;color:var(--ink-soft);font-size:.88rem">Wczytywanie…</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(async function(){
+  'use strict';
+  var today = new Date();
+  var todayStr = today.toISOString().slice(0,10);
+
+  var DOW    = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
+  var MGEN   = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+  var MSHORT = ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'];
+
+  /* ── nagłówek - data ── */
+  var leadEl = document.querySelector('.lead');
+  if(leadEl) leadEl.textContent = DOW[today.getDay()]+', '+today.getDate()+' '+MGEN[today.getMonth()]+' '+today.getFullYear();
+
+  /* ── helpers ── */
+  function ls(key){ try{ var r=localStorage.getItem(key); return r?JSON.parse(r):null; }catch(e){ return null; } }
+  function relTime(ds){
+    if(!ds) return '';
+    try{
+      var d=new Date(ds.length===10?ds+'T12:00:00':ds);
+      var diff=Math.floor((today-d)/86400000);
+      if(diff<0)  return 'za '+Math.abs(diff)+' dni';
+      if(diff===0) return 'dzisiaj';
+      if(diff===1) return 'wczoraj';
+      if(diff<7)   return diff+' dni temu';
+      if(diff<30)  return Math.floor(diff/7)+' tyg. temu';
+      return d.toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'});
+    }catch(e){ return ''; }
+  }
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  var ICO={
+    news:'<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>',
+    ann: '<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1zM5.5 2v4.901a.5.5 0 0 1-.045.207L2.434 13.5h11.132l-3.021-6.392a.5.5 0 0 1-.045-.207V2z"/></svg>',
+    cal: '<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>',
+    sakr:'<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>',
+    pogr:'<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>',
+    par: '<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4"/></svg>'
+  };
+
+  /* ---- dane z API ---- */
+  var _ap=function(url){return fetch(url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});};
+  var _res=await Promise.all([_ap('/api/aktualnosci'),_ap('/api/ogloszenia'),_ap('/api/intencje'),_ap('/api/pogrzeby'),_ap('/api/sakramenty'),_ap('/api/parafianie'),_ap('/api/intencje/pending')]);
+  var akt  = _res[0];
+  var ogl  = _res[1];
+  var intt = _res[2];
+  var pogr = _res[3];
+  var sakr = _res[4];
+  var para = _res[5];
+  var pend = _res[6];
+
+  /* ══ STATS ══════════════════════════════════════ */
+  // Aktualności
+  if(Array.isArray(akt)){
+    var mo=todayStr.slice(0,7);
+    var moCnt=akt.filter(function(a){ return (a.date||'').startsWith(mo); }).length;
+    var n=document.getElementById('stat-akt-num');   if(n) n.textContent=akt.length;
+    var d=document.getElementById('stat-akt-delta'); if(d) d.innerHTML='<b>+'+moCnt+'</b> w tym miesiącu';
+  }
+  // Parafianie
+  if(Array.isArray(para)){
+    var active=para.filter(function(p){ return p.status!=='Nieaktywny'&&p.status!=='nieaktywny'; });
+    var yr=todayStr.slice(0,4);
+    var newYr=para.filter(function(p){ return (p.data_dolaczenia||'').startsWith(yr); }).length;
+    var n=document.getElementById('stat-par-num');   if(n) n.textContent=active.length;
+    var d=document.getElementById('stat-par-delta'); if(d) d.innerHTML='<b>+'+newYr+'</b> w tym roku';
+  }
+  // Intencje - bieżący tydzień
+  if(Array.isArray(intt)){
+    var mon=new Date(today); var dow=today.getDay()===0?6:today.getDay()-1; mon.setDate(today.getDate()-dow);
+    var sun=new Date(mon); sun.setDate(mon.getDate()+6);
+    var monS=mon.toISOString().slice(0,10); var sunS=sun.toISOString().slice(0,10);
+    var wk=intt.filter(function(a){ return a.date&&a.date>=monS&&a.date<=sunS; });
+    var n=document.getElementById('stat-int-num');   if(n) n.textContent=wk.length;
+    var d=document.getElementById('stat-int-delta'); if(d) d.textContent='w bieżącym tygodniu';
+  }
+
+  /* ══ ALERT: ZGŁOSZENIA OD PARAFIAN ══════════════ */
+  if (Array.isArray(pend) && pend.length) {
+    var alertEl = document.getElementById('pend-alert');
+    var numEl   = document.getElementById('pa-num');
+    var lblEl   = document.getElementById('pa-label');
+    if (alertEl) alertEl.style.display = 'flex';
+    if (numEl)   numEl.textContent = pend.length;
+    if (lblEl)   lblEl.textContent = pend.length === 1
+      ? 'parafianin złożył(-a) prośbę o intencję mszalną'
+      : 'parafian złożyło prośbę o intencję mszalną';
+  }
+
+  /* ══ OSTATNIA AKTYWNOŚĆ ════════════════════════ */
+  var acts=[];
+  // Aktualności
+  if(Array.isArray(akt)){
+    akt.filter(function(a){return a.date;}).sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,2).forEach(function(a){
+      acts.push({date:a.date,mod:'Aktualności',ico:'news',
+        html:'<b>ks. Tomasz Żołna</b> opublikował aktualność: <i>„'+esc(a.title||'-')+'"</i>'});
+    });
+  }
+  // Ogłoszenia
+  if(Array.isArray(ogl)){
+    ogl.filter(function(a){return a.date&&a.status==='published';}).sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,1).forEach(function(a){
+      acts.push({date:a.date,mod:'Ogłoszenia',ico:'ann',
+        html:'<b>ks. Tomasz Żołna</b> opublikował ogłoszenia: <i>„'+esc(a.title||'-')+'"</i>'});
+    });
+  }
+  // Intencje
+  if(Array.isArray(intt)){
+    intt.filter(function(a){return a.date;}).sort(function(a,b){return(b.date||'').localeCompare(a.date||'');}).slice(0,1).forEach(function(a){
+      var ds=new Date(a.date+'T12:00:00').toLocaleDateString('pl-PL',{day:'numeric',month:'long'});
+      acts.push({date:a.date,mod:'Intencje',ico:'cal',
+        html:'Dodano intencję mszalną na <i>'+esc(ds)+(a.time?', godz. '+esc(a.time):'')+' - '+esc(a.intention||'')+'</i>'});
+    });
+  }
+  // Zgłoszenia od parafian
+  if(Array.isArray(pend)){
+    pend.sort(function(a,b){return(b.submitted_at||'').localeCompare(a.submitted_at||'');}).slice(0,2).forEach(function(p){
+      var dateStr=(p.submitted_at||todayStr).slice(0,10);
+      var ds=new Date(p.date+'T12:00:00').toLocaleDateString('pl-PL',{day:'numeric',month:'long'});
+      acts.push({date:dateStr,mod:'Intencje',ico:'cal',
+        html:'<b>'+esc(p.imie||'Parafianin')+'</b> złożył(-a) prośbę o intencję na <i>'+esc(ds)+(p.time?', godz. '+esc(p.time):'')+' — '+esc(p.intention||'')+'</i>'});
+    });
+  }
+  // Pogrzeby
+  if(Array.isArray(pogr)){
+    pogr.filter(function(p){return p.data_pogrzebu||p.data_zgonu;}).sort(function(a,b){
+      return((b.data_pogrzebu||b.data_zgonu||'').localeCompare(a.data_pogrzebu||a.data_zgonu||''));
+    }).slice(0,1).forEach(function(p){
+      var name=esc(((p.imie||'')+' '+(p.nazwisko||'')).trim());
+      acts.push({date:p.data_pogrzebu||p.data_zgonu,mod:'Pogrzeby',ico:'pogr',
+        html:'Zarejestrowano zgłoszenie pogrzebu: <b>'+name+'</b>'});
+    });
+  }
+  // Sakramenty (płaska tablica z polem type: bierzmowanie/chrzciny/sluby/komunia;
+  // bierzmowanie nie ma daty ceremonii w danych, więc nie da się go tu pokazać)
+  if(Array.isArray(sakr)){
+    var allS=[];
+    sakr.filter(function(s){return s.type==='chrzciny';}).forEach(function(s){allS.push({d:s.datachrztu,type:'Chrzest',name:((s.imie||'')+' '+(s.nazwisko||'')).trim()});});
+    sakr.filter(function(s){return s.type==='sluby';}).forEach(function(s){allS.push({d:s.datasl,type:'Ślub',name:((s.oblubieniec||'')+(s.oblubienica?' i '+s.oblubienica:''))});});
+    sakr.filter(function(s){return s.type==='komunia';}).forEach(function(s){allS.push({d:s.datakom,type:'Komunia',name:((s.imie||'')+' '+(s.nazwisko||'')).trim()});});
+    allS.filter(function(s){return s.d;}).sort(function(a,b){return(b.d||'').localeCompare(a.d||'');}).slice(0,1).forEach(function(s){
+      acts.push({date:s.d,mod:'Sakramenty',ico:'sakr',
+        html:'Zarejestrowano sakrament - <b>'+s.type+'</b>: '+esc(s.name)});
+    });
+  }
+  // Parafianie
+  if(Array.isArray(para)){
+    para.filter(function(p){return p.data_dolaczenia;}).sort(function(a,b){return(b.data_dolaczenia||'').localeCompare(a.data_dolaczenia||'');}).slice(0,1).forEach(function(p){
+      var name=esc(((p.imie||'')+' '+(p.nazwisko||'')).trim());
+      acts.push({date:p.data_dolaczenia,mod:'Parafianie',ico:'par',
+        html:'Dodano parafianina: <b>'+name+'</b>'});
+    });
+  }
+  // Sortuj po min(data, dziś) — przyszłe daty (np. data ślubu za 73 dni) nie wypychają się na górę
+  acts.forEach(function(a){ a.sortDate = (a.date||'') > todayStr ? todayStr : (a.date||''); });
+  acts.sort(function(a,b){ return (b.sortDate||'').localeCompare(a.sortDate||''); });
+
+  function renderTimeline(list) {
+    var tlEl = document.getElementById('timeline');
+    if (!tlEl) return;
+    tlEl.innerHTML = list.length
+      ? list.map(function(a){
+          return '<li><div class="dot">'+ICO[a.ico]+'</div><div class="info"><div>'+a.html+'</div><div class="when">'+relTime(a.date)+' · '+a.mod+'</div></div></li>';
+        }).join('')
+      : '<li style="padding:14px 0;color:var(--ink-soft)">Brak aktywności w rejestrach</li>';
+  }
+  renderTimeline(acts.slice(0, 5));
+
+  var journalBtn = document.querySelector('.card-head .btn-ghost');
+  if (journalBtn) {
+    if (acts.length <= 5) {
+      journalBtn.style.visibility = 'hidden';
+    } else {
+      var dzExpanded = false;
+      journalBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        dzExpanded = !dzExpanded;
+        renderTimeline(dzExpanded ? acts : acts.slice(0, 5));
+        journalBtn.textContent = dzExpanded ? 'Zwiń ↑' : 'Pełny dziennik →';
+      });
+    }
+  }
+
+  /* ══ NADCHODZĄCE WYDARZENIA ════════════════════ */
+  var evts=[];
+  if(Array.isArray(sakr)){
+    sakr.filter(function(s){return s.type==='komunia'&&s.datakom&&s.datakom>=todayStr;}).forEach(function(s){
+      evts.push({date:s.datakom,label:'Pierwsza Komunia',sub:esc(((s.imie||'')+' '+(s.nazwisko||'')).trim())});
+    });
+    sakr.filter(function(s){return s.type==='sluby'&&s.datasl&&s.datasl>=todayStr;}).forEach(function(s){
+      var nm=esc([s.oblubieniec,s.oblubienica].filter(Boolean).join(' & '));
+      evts.push({date:s.datasl,label:'Ślub',sub:nm});
+    });
+    sakr.filter(function(s){return s.type==='chrzciny'&&s.datachrztu&&s.datachrztu>=todayStr;}).forEach(function(s){
+      evts.push({date:s.datachrztu,label:'Chrzest',sub:esc(((s.imie||'')+' '+(s.nazwisko||'')).trim())});
+    });
+  }
+  if(Array.isArray(pogr)){
+    pogr.filter(function(p){return p.data_pogrzebu&&p.data_pogrzebu>=todayStr;}).forEach(function(p){
+      var name=esc(((p.imie||'')+' '+(p.nazwisko||'')).trim());
+      evts.push({date:p.data_pogrzebu,label:'Pogrzeb',
+        sub:name+(p.godzina?' · godz. '+esc(p.godzina):'')+(p.kaplan?' · '+esc(p.kaplan):'')});
+    });
+  }
+  evts.sort(function(a,b){return(a.date||'').localeCompare(b.date||'');});
+  evts=evts.slice(0,5);
+  var upEl=document.getElementById('upcoming');
+  if(upEl){
+    upEl.innerHTML=evts.length?evts.map(function(ev){
+      var d=new Date(ev.date+'T12:00:00');
+      return '<li><div class="day"><div class="d">'+d.getDate()+'</div><div class="m">'+MSHORT[d.getMonth()]+'</div></div>'+
+        '<div class="det"><b>'+ev.label+'</b><div class="t">'+ev.sub+'</div></div></li>';
+    }).join(''):'<li style="padding:14px 0;color:var(--ink-soft);font-size:.88rem">Brak nadchodzących wydarzeń w rejestrach</li>';
+  }
+})();
+</script>
+
+<script src="assets/admin.js"></script>
+</body>
+</html>

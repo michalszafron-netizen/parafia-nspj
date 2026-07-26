@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kapłani · Panel Parafii NSPJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .priest-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:16px}
+  .priest-card-head{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+  .priest-card-head input.p-role{width:170px;flex-shrink:0}
+  .priest-card-head input.p-name{flex:1}
+  .priest-card-head input[type=text]{padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:.92rem;font-family:inherit;color:var(--ink)}
+  .priest-card-head input[type=text]:focus{outline:none;border-color:var(--burgundy)}
+  .priest-card-actions{display:flex;gap:4px;flex-shrink:0}
+  .priest-card-actions button{width:32px;height:32px;border-radius:6px;border:1px solid var(--line);background:var(--white);color:var(--ink-soft);cursor:pointer;display:grid;place-items:center}
+  .priest-card-actions button:hover{background:var(--bg)}
+  .priest-card-actions button.p-del:hover{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+  .priest-card-actions button:disabled{opacity:.35;cursor:default}
+  .priest-card-actions button:disabled:hover{background:var(--white)}
+  .priest-card label{display:block;font-size:.78rem;font-weight:700;color:var(--ink-soft);margin:14px 0 5px}
+  .priest-card input.p-photo,.priest-card textarea.p-bio{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;font-family:inherit;color:var(--ink)}
+  .priest-card input.p-photo:focus,.priest-card textarea.p-bio:focus{outline:none;border-color:var(--burgundy)}
+  .priest-card textarea.p-bio{min-height:120px;resize:vertical;line-height:1.5}
+  .priest-card .p-hint{margin:5px 0 0;font-size:.78rem;color:var(--ink-soft)}
+
+  .add-priest-bar{margin-top:10px}
+
+  .empty-members{padding:28px 0;text-align:center;color:var(--ink-soft);font-size:.88rem}
+
+  .history-note{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:24px;font-size:.86rem;color:var(--ink-soft)}
+
+  #toast{
+    position:fixed;bottom:28px;right:28px;z-index:9999;
+    background:var(--ink);color:#fff;padding:13px 20px;border-radius:8px;
+    font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:10px;
+    transform:translateY(80px);opacity:0;transition:all .25s cubic-bezier(.34,1.56,.64,1);
+    pointer-events:none;max-width:340px
+  }
+  #toast.show{transform:translateY(0);opacity:1}
+  #toast.success{background:#15803d}
+  #toast.error{background:#b91c1c}
+  #toast svg{flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0"><div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div></div>
+    <nav>
+      <a href="index.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>Pulpit</a>
+      <div class="nav-section">Strona WWW</div>
+      <a href="aktualnosci.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>Aktualności</a>
+      <a href="ogloszenia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>Ogłoszenia parafialne</a>
+      <a href="galeria.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Galeria</a>
+      <a href="strony-statyczne.html" class="active"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 0 0-1H5a.5.5 0 0 0-.5.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/></svg>Strony statyczne</a>
+      <div class="nav-section">Wspólnota</div>
+      <a href="intencje.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>Intencje mszalne</a>
+      <a href="sakramenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>Sakramenty</a>
+      <a href="pogrzeby.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
+      <a href="parafianie.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>Parafianie</a>
+      <a href="dokumenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
+      <div class="nav-section">System</div>
+      <a href="#"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>Raporty</a>
+      <a href="ustawienia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>Ustawienia parafii</a>
+    </nav>
+    <div class="user"><div class="user-avatar">TŻ</div><div class="user-name">ks. Tomasz Żołna<small>Proboszcz · <a href="login.html">Wyloguj</a></small></div></div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs"><a href="index.html">Pulpit</a><span>/</span><a href="strony-statyczne.html">Strony statyczne</a><span>/</span><b>Kapłani</b></div>
+    </div>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Kapłani</h1>
+          <div class="lead">Obecni duszpasterze — dodawaj, edytuj i usuwaj profile, zmiany widać od razu na stronie publicznej</div>
+        </div>
+        <a href="../strony/duszpasterstwo.html" target="_blank" class="btn btn-secondary sm">Zobacz na stronie →</a>
+      </div>
+
+      <div class="card">
+        <div id="priests-list"></div>
+        <div class="add-priest-bar">
+          <button type="button" class="btn btn-primary sm" id="btn-add-priest">+ Dodaj duszpasterza</button>
+        </div>
+
+        <div class="history-note">
+          Historyczne listy księży (proboszczowie, wikariusze, księża pochodzący z parafii) nie są tu edytowalne — to archiwalny zapis, który zmienia się raz na kilka lat. Jeśli trzeba go poprawić, zgłoś to do zmiany bezpośrednio w kodzie strony.
+        </div>
+
+        <datalist id="role-options"></datalist>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast">
+  <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+<script src="assets/admin.js"></script>
+<script>
+  async function apiFetch(url, opts) {
+    const r = await fetch(url, opts);
+    if (!r.ok) throw new Error(r.statusText);
+    return r.json();
+  }
+
+  let priests = [];
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function genId() {
+    return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  function renderList() {
+    const wrap = document.getElementById('priests-list');
+    if (!priests.length) {
+      wrap.innerHTML = '<div class="empty-members">Brak duszpasterzy — dodaj pierwszy profil poniżej.</div>';
+      renderRoleOptions();
+      return;
+    }
+    wrap.innerHTML = priests.map(function (p, i) {
+      return '<div class="priest-card" data-id="' + p.id + '">' +
+        '<div class="priest-card-head">' +
+        '<input type="text" class="p-role" list="role-options" value="' + esc(p.role) + '" placeholder="Funkcja (np. Proboszcz)">' +
+        '<input type="text" class="p-name" value="' + esc(p.name) + '" placeholder="Imię i nazwisko">' +
+        '<div class="priest-card-actions">' +
+        '<button type="button" class="p-up" title="Przenieś wyżej"' + (i === 0 ? ' disabled' : '') + '><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/></svg></button>' +
+        '<button type="button" class="p-down" title="Przenieś niżej"' + (i === priests.length - 1 ? ' disabled' : '') + '><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M7.646 11.354a.5.5 0 0 0 .708 0l6-6a.5.5 0 0 0-.708-.708L8 10.293 2.354 4.646a.5.5 0 0 0-.708.708z"/></svg></button>' +
+        '<button type="button" class="p-del" title="Usuń duszpasterza"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/></svg></button>' +
+        '</div></div>' +
+        '<label>Zdjęcie (URL, opcjonalnie)</label>' +
+        '<input type="text" class="p-photo" value="' + esc(p.photo || '') + '" placeholder="https://...">' +
+        '<p class="p-hint">Pozostaw puste, jeśli profil ma się wyświetlać bez zdjęcia (na całą szerokość).</p>' +
+        '<label>Biografia</label>' +
+        '<textarea class="p-bio" placeholder="Krótka biografia...">' + esc(p.bio || '') + '</textarea>' +
+        '<p class="p-hint">Pusty wiersz między akapitami = nowy akapit na stronie.</p>' +
+        '</div>';
+    }).join('');
+
+    wrap.querySelectorAll('.priest-card').forEach(function (card) {
+      const id = card.dataset.id;
+      card.querySelector('.p-role').addEventListener('change', function (e) { updatePriest(id, 'role', e.target.value); });
+      card.querySelector('.p-name').addEventListener('change', function (e) { updatePriest(id, 'name', e.target.value); });
+      card.querySelector('.p-photo').addEventListener('change', function (e) { updatePriest(id, 'photo', e.target.value); });
+      card.querySelector('.p-bio').addEventListener('change', function (e) { updatePriest(id, 'bio', e.target.value); });
+      card.querySelector('.p-up').addEventListener('click', function () { moveUp(id); });
+      card.querySelector('.p-down').addEventListener('click', function () { moveDown(id); });
+      card.querySelector('.p-del').addEventListener('click', function () { deletePriest(id); });
+    });
+
+    renderRoleOptions();
+  }
+
+  async function updatePriest(id, field, value) {
+    const p = priests.find(function (x) { return x.id === id; });
+    if (!p) return;
+    p[field] = value;
+    try {
+      await apiFetch('/api/kaplani/' + id, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(p)});
+      if (field === 'role') renderRoleOptions();
+      showToast('✓ Zapisano', 'success');
+    } catch(e) { showToast('Błąd zapisu: ' + e.message, 'error'); }
+  }
+
+  async function moveUp(id) {
+    const i = priests.findIndex(function (x) { return x.id === id; });
+    if (i <= 0) return;
+    const sortA = priests[i - 1].sort_order, sortB = priests[i].sort_order;
+    const tmp = priests[i - 1]; priests[i - 1] = priests[i]; priests[i] = tmp;
+    priests[i - 1].sort_order = sortA; priests[i].sort_order = sortB;
+    try {
+      await Promise.all([
+        apiFetch('/api/kaplani/' + priests[i-1].id, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(priests[i-1])}),
+        apiFetch('/api/kaplani/' + priests[i].id,   {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(priests[i])})
+      ]);
+    } catch(e) { showToast('Błąd zapisu: ' + e.message, 'error'); }
+    renderList();
+  }
+
+  async function moveDown(id) {
+    const i = priests.findIndex(function (x) { return x.id === id; });
+    if (i === -1 || i >= priests.length - 1) return;
+    const sortA = priests[i].sort_order, sortB = priests[i + 1].sort_order;
+    const tmp = priests[i + 1]; priests[i + 1] = priests[i]; priests[i] = tmp;
+    priests[i].sort_order = sortA; priests[i + 1].sort_order = sortB;
+    try {
+      await Promise.all([
+        apiFetch('/api/kaplani/' + priests[i].id,     {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(priests[i])}),
+        apiFetch('/api/kaplani/' + priests[i + 1].id, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(priests[i + 1])})
+      ]);
+    } catch(e) { showToast('Błąd zapisu: ' + e.message, 'error'); }
+    renderList();
+  }
+
+  async function deletePriest(id) {
+    try {
+      await apiFetch('/api/kaplani/' + id, {method:'DELETE'});
+      priests = priests.filter(function (p) { return p.id !== id; });
+      renderList();
+      showToast('Duszpasterz usunięty', 'success');
+    } catch(e) { showToast('Błąd usuwania: ' + e.message, 'error'); }
+  }
+
+  async function addPriest() {
+    const newP = { id: genId(), sort_order: priests.length, role: '', name: '', photo: '', bio: '' };
+    try {
+      await apiFetch('/api/kaplani', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(newP)});
+      priests.push(newP);
+      renderList();
+      const cards = document.querySelectorAll('.priest-card');
+      const last = cards[cards.length - 1];
+      if (last) last.querySelector('.p-role').focus();
+      showToast('✓ Duszpasterz dodany', 'success');
+    } catch(e) { showToast('Błąd dodawania: ' + e.message, 'error'); }
+  }
+
+  document.getElementById('btn-add-priest').addEventListener('click', addPriest);
+
+  function renderRoleOptions() {
+    const roles = new Set(['Proboszcz', 'Wikariusz', 'Diakon', 'Rezydent']);
+    priests.forEach(function (p) { if (p.role && p.role.trim()) roles.add(p.role.trim()); });
+    document.getElementById('role-options').innerHTML = Array.from(roles).sort().map(function (r) {
+      return '<option value="' + esc(r) + '">';
+    }).join('');
+  }
+
+  let toastTimer = null;
+  function showToast(msg, type) {
+    const t = document.getElementById('toast');
+    t.className = 'show ' + (type || 'success');
+    document.getElementById('toast-msg').textContent = msg;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.className = ''; }, 2200);
+  }
+
+  (async function() {
+    try {
+      priests = await apiFetch('/api/kaplani');
+      renderList();
+    } catch(e) { showToast('Błąd ładowania: ' + e.message, 'error'); }
+  })();
+</script>
+</body>
+</html>

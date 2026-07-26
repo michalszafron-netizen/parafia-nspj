@@ -1035,7 +1035,7 @@ app.delete('/api/galerie/:id', function(req, res) {
 });
 
 // Serwuj pliki z katalogu aplikacji
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Multer — zapis do public/img/galerie/{folder}/
 // Pliki dostępne pod URL-em /public/img/galerie/{folder}/nazwa.jpg

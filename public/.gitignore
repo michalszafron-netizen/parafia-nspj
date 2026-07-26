@@ -1,0 +1,6 @@
+serwerinio.txt
+strony/ratunkowyplik/
+node_modules/
+*.db
+.env
+*.log
