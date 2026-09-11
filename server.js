@@ -314,7 +314,7 @@ db.exec(`
 });
 
 function rowToIntencja(row) {
-  return { id: row.id, date: row.date||'', time: row.time||'', type: row.type||'w_int', intention: row.intention||'', oplacona: !!row.oplacona, zamawiajacy: row.zamawiajacy||'', telefon: row.telefon||'', r1_date: row.r1_date||'', r2_date: row.r2_date||'', r1_hour: row.r1_hour!=null?row.r1_hour:8, r2_hour: row.r2_hour!=null?row.r2_hour:8, reminder1_sent: !!row.reminder1_sent, reminder2_sent: !!row.reminder2_sent };
+  return { id: row.id, date: row.date||'', time: row.time||'', type: row.type||'w_int', intention: row.intention||'', oplacona: row.oplacona!=null?Number(row.oplacona):0, zamawiajacy: row.zamawiajacy||'', telefon: row.telefon||'', r1_date: row.r1_date||'', r2_date: row.r2_date||'', r1_hour: row.r1_hour!=null?row.r1_hour:8, r2_hour: row.r2_hour!=null?row.r2_hour:8, reminder1_sent: !!row.reminder1_sent, reminder2_sent: !!row.reminder2_sent };
 }
 
 function calcReminderDate(massDate, days) {
@@ -416,7 +416,7 @@ app.post('/api/intencje', function(req, res) {
   var r1d = b.r1_days ? calcReminderDate(b.date, b.r1_days) : '';
   var r2d = b.r2_days ? calcReminderDate(b.date, b.r2_days) : '';
   db.prepare('INSERT INTO intencje (id,date,time,type,intention,oplacona,zamawiajacy,telefon,r1_date,r2_date) VALUES (?,?,?,?,?,?,?,?,?,?)')
-    .run(id, b.date, b.time||'', b.type||'w_int', b.intention, b.oplacona?1:0, b.zamawiajacy||'', b.telefon||'', r1d, r2d);
+    .run(id, b.date, b.time||'', b.type||'w_int', b.intention, [0,1,2].includes(Number(b.oplacona))?Number(b.oplacona):0, b.zamawiajacy||'', b.telefon||'', r1d, r2d);
   logActivity('create', 'Intencje', 'Dodano intencję na ' + b.date + (b.time?' '+b.time:'') + ': ' + (b.intention||'').slice(0,60));
   res.status(201).json(rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(id)));
 });
@@ -430,7 +430,7 @@ app.put('/api/intencje/:id', function(req, res) {
   var existing = db.prepare('SELECT * FROM intencje WHERE id=?').get(req.params.id);
   if (!existing) return res.status(404).json({ error: 'Nie znaleziono intencji' });
   db.prepare('UPDATE intencje SET date=?,time=?,type=?,intention=?,oplacona=?,zamawiajacy=?,telefon=?,r1_date=?,r2_date=?,r1_hour=?,r2_hour=?,reminder1_sent=?,reminder2_sent=? WHERE id=?')
-    .run(b.date||existing.date, b.time||existing.time||'', b.type||existing.type||'w_int', b.intention!==undefined?b.intention:existing.intention||'', b.oplacona!==undefined?b.oplacona?1:0:existing.oplacona, b.zamawiajacy!==undefined?b.zamawiajacy:existing.zamawiajacy||'', b.telefon!==undefined?b.telefon:existing.telefon||'', r1d!==null?r1d:existing.r1_date||'', r2d!==null?r2d:existing.r2_date||'', r1h!==null?r1h:(existing.r1_hour!=null?existing.r1_hour:8), r2h!==null?r2h:(existing.r2_hour!=null?existing.r2_hour:8), b.reminder1_sent!==undefined?b.reminder1_sent?1:0:existing.reminder1_sent, b.reminder2_sent!==undefined?b.reminder2_sent?1:0:existing.reminder2_sent, req.params.id);
+    .run(b.date||existing.date, b.time||existing.time||'', b.type||existing.type||'w_int', b.intention!==undefined?b.intention:existing.intention||'', b.oplacona!==undefined?([0,1,2].includes(Number(b.oplacona))?Number(b.oplacona):0):existing.oplacona, b.zamawiajacy!==undefined?b.zamawiajacy:existing.zamawiajacy||'', b.telefon!==undefined?b.telefon:existing.telefon||'', r1d!==null?r1d:existing.r1_date||'', r2d!==null?r2d:existing.r2_date||'', r1h!==null?r1h:(existing.r1_hour!=null?existing.r1_hour:8), r2h!==null?r2h:(existing.r2_hour!=null?existing.r2_hour:8), b.reminder1_sent!==undefined?b.reminder1_sent?1:0:existing.reminder1_sent, b.reminder2_sent!==undefined?b.reminder2_sent?1:0:existing.reminder2_sent, req.params.id);
   logActivity('update', 'Intencje', 'Zaktualizowano intencję na ' + (b.date||existing.date) + ': ' + ((b.intention!==undefined?b.intention:existing.intention)||'').slice(0,60));
   res.json(rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(req.params.id)));
 });
