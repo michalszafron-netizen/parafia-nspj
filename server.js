@@ -2,6 +2,7 @@ const express  = require('express');
 const multer   = require('multer');
 const path     = require('path');
 const fs       = require('fs');
+const crypto   = require('crypto');
 const { DatabaseSync: Database } = require('node:sqlite');
 
 const app  = express();
@@ -88,6 +89,173 @@ app.get('/api/stats/visits', function(req, res) {
   var last30 = db.prepare('SELECT COALESCE(SUM(count), 0) as total FROM page_visits WHERE date >= ?').get(d30).total;
   var prev30 = db.prepare('SELECT COALESCE(SUM(count), 0) as total FROM page_visits WHERE date >= ? AND date < ?').get(d60, d30).total;
   res.json({ last30: last30, prev30: prev30 });
+});
+
+// ── Auth: users + sessions ────────────────────────────────────────────────
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id                    TEXT PRIMARY KEY,
+    login                 TEXT UNIQUE NOT NULL,
+    display_name          TEXT NOT NULL,
+    role                  TEXT NOT NULL DEFAULT 'pomocnik',
+    password_hash         TEXT NOT NULL,
+    pomocnik_permissions  TEXT DEFAULT '{}',
+    created_at            TEXT NOT NULL
+  )
+`);
+db.exec(`
+  CREATE TABLE IF NOT EXISTS sessions (
+    token       TEXT PRIMARY KEY,
+    user_id     TEXT NOT NULL,
+    expires_at  TEXT NOT NULL
+  )
+`);
+
+// Hash / verify
+function hashPassword(plain) {
+  var salt = crypto.randomBytes(16).toString('hex');
+  var hash = crypto.pbkdf2Sync(plain, salt, 100000, 64, 'sha256').toString('hex');
+  return salt + ':' + hash;
+}
+function verifyPassword(plain, stored) {
+  var parts = stored.split(':');
+  var computed = crypto.pbkdf2Sync(plain, parts[0], 100000, 64, 'sha256').toString('hex');
+  return computed === parts[1];
+}
+
+// Cookie helpers (bez zewnętrznej paczki)
+function parseCookies(req) {
+  var out = {};
+  (req.headers.cookie || '').split(';').forEach(function(c) {
+    var p = c.trim().split('=');
+    if (p.length >= 2) out[p[0].trim()] = decodeURIComponent(p.slice(1).join('='));
+  });
+  return out;
+}
+function setCookie(res, name, val, maxAge) {
+  res.setHeader('Set-Cookie', name + '=' + encodeURIComponent(val) + '; Path=/; HttpOnly; Max-Age=' + (maxAge||0) + '; SameSite=Strict');
+}
+
+// Auth middleware — requireAuth([roles])
+function requireAuth(roles) {
+  return function(req, res, next) {
+    var token = parseCookies(req)['_psession'];
+    if (!token) return res.status(401).json({ error: 'Brak sesji' });
+    var now = new Date().toISOString();
+    var sess = db.prepare('SELECT * FROM sessions WHERE token=? AND expires_at>?').get(token, now);
+    if (!sess) return res.status(401).json({ error: 'Sesja wygasła' });
+    var user = db.prepare('SELECT * FROM users WHERE id=?').get(sess.user_id);
+    if (!user) return res.status(401).json({ error: 'Nieznany użytkownik' });
+    if (roles && roles.length && !roles.includes(user.role)) return res.status(403).json({ error: 'Brak uprawnień' });
+    req.user = user;
+    next();
+  };
+}
+
+// Seed domyślnych użytkowników (tylko jeśli tabela pusta)
+(function seedUsers() {
+  var cnt = db.prepare('SELECT COUNT(*) as n FROM users').get().n;
+  if (cnt > 0) return;
+  var now = new Date().toISOString();
+  db.prepare('INSERT INTO users (id,login,display_name,role,password_hash,pomocnik_permissions,created_at) VALUES (?,?,?,?,?,?,?)')
+    .run('usr-admin',    'admin',     'Administrator',          'admin',     hashPassword('Parafia@2026'), '{}', now);
+  db.prepare('INSERT INTO users (id,login,display_name,role,password_hash,pomocnik_permissions,created_at) VALUES (?,?,?,?,?,?,?)')
+    .run('usr-proboszcz','proboszcz', 'ks. Tomasz Żołna',      'proboszcz', hashPassword('Czerwionka@26'), '{}', now);
+  console.log('[Auth] Domyślni użytkownicy utworzeni');
+})();
+
+// POST /api/auth/login
+app.post('/api/auth/login', function(req, res) {
+  var login = (req.body.login || '').trim().toLowerCase();
+  var plain = req.body.password || '';
+  if (!login || !plain) return res.status(400).json({ error: 'Podaj login i hasło' });
+  var user = db.prepare('SELECT * FROM users WHERE LOWER(login)=?').get(login);
+  if (!user || !verifyPassword(plain, user.password_hash))
+    return res.status(401).json({ error: 'Nieprawidłowy login lub hasło' });
+  var token = crypto.randomBytes(32).toString('hex');
+  var expires = new Date(Date.now() + 30 * 86400 * 1000).toISOString(); // 30 dni
+  db.prepare('INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,?)').run(token, user.id, expires);
+  setCookie(res, '_psession', token, 30 * 86400);
+  res.json({
+    ok: true,
+    user: { id: user.id, login: user.login, display_name: user.display_name, role: user.role,
+            pomocnik_permissions: JSON.parse(user.pomocnik_permissions || '{}') }
+  });
+});
+
+// POST /api/auth/logout
+app.post('/api/auth/logout', function(req, res) {
+  var token = parseCookies(req)['_psession'];
+  if (token) db.prepare('DELETE FROM sessions WHERE token=?').run(token);
+  setCookie(res, '_psession', '', 0);
+  res.json({ ok: true });
+});
+
+// GET /api/auth/me
+app.get('/api/auth/me', requireAuth(), function(req, res) {
+  var u = req.user;
+  res.json({
+    id: u.id, login: u.login, display_name: u.display_name, role: u.role,
+    pomocnik_permissions: JSON.parse(u.pomocnik_permissions || '{}')
+  });
+});
+
+// GET /api/users (admin + proboszcz)
+app.get('/api/users', requireAuth(['admin','proboszcz']), function(req, res) {
+  var rows = db.prepare('SELECT id,login,display_name,role,pomocnik_permissions,created_at FROM users ORDER BY created_at').all();
+  res.json(rows.map(function(u) {
+    return { id:u.id, login:u.login, display_name:u.display_name, role:u.role,
+             pomocnik_permissions: JSON.parse(u.pomocnik_permissions||'{}'), created_at:u.created_at };
+  }));
+});
+
+// POST /api/users (admin only)
+app.post('/api/users', requireAuth(['admin']), function(req, res) {
+  var b = req.body;
+  if (!b.login || !b.password || !b.display_name) return res.status(400).json({ error: 'Wymagane: login, hasło, imię' });
+  if (!['admin','proboszcz','pomocnik'].includes(b.role)) return res.status(400).json({ error: 'Nieznana rola' });
+  var exists = db.prepare('SELECT id FROM users WHERE LOWER(login)=?').get(b.login.trim().toLowerCase());
+  if (exists) return res.status(409).json({ error: 'Login już zajęty' });
+  var id = 'usr-' + Date.now().toString(36);
+  var now = new Date().toISOString();
+  var perms = b.pomocnik_permissions ? JSON.stringify(b.pomocnik_permissions) : '{}';
+  db.prepare('INSERT INTO users (id,login,display_name,role,password_hash,pomocnik_permissions,created_at) VALUES (?,?,?,?,?,?,?)')
+    .run(id, b.login.trim(), b.display_name.trim(), b.role, hashPassword(b.password), perms, now);
+  res.status(201).json({ ok:true, id:id });
+});
+
+// PUT /api/users/:id (admin = wszystko; proboszcz = tylko zmiana własnego hasła/nazwiska)
+app.put('/api/users/:id', requireAuth(['admin','proboszcz','pomocnik']), function(req, res) {
+  var b = req.body;
+  var uid = req.params.id;
+  var me = req.user;
+  // pomocnik może zmieniać tylko siebie i tylko hasło
+  if (me.role === 'pomocnik' && (uid !== me.id || Object.keys(b).some(function(k){ return k !== 'password'; })))
+    return res.status(403).json({ error: 'Brak uprawnień' });
+  // proboszcz może zmieniać siebie lub pomocników, ale nie admina i nie role
+  if (me.role === 'proboszcz') {
+    var target = db.prepare('SELECT role FROM users WHERE id=?').get(uid);
+    if (!target) return res.status(404).json({ error: 'Nie znaleziono' });
+    if (target.role === 'admin' && uid !== me.id) return res.status(403).json({ error: 'Brak uprawnień' });
+    if (b.role && b.role !== target.role) return res.status(403).json({ error: 'Proboszcz nie może zmieniać ról' });
+  }
+  var existing = db.prepare('SELECT * FROM users WHERE id=?').get(uid);
+  if (!existing) return res.status(404).json({ error: 'Nie znaleziono użytkownika' });
+  var newHash = b.password ? hashPassword(b.password) : existing.password_hash;
+  var newRole = (me.role === 'admin' && b.role) ? b.role : existing.role;
+  var newPerms = (b.pomocnik_permissions !== undefined) ? JSON.stringify(b.pomocnik_permissions) : existing.pomocnik_permissions;
+  db.prepare('UPDATE users SET display_name=?,role=?,password_hash=?,pomocnik_permissions=? WHERE id=?')
+    .run(b.display_name || existing.display_name, newRole, newHash, newPerms, uid);
+  res.json({ ok:true });
+});
+
+// DELETE /api/users/:id (admin only, nie można usunąć siebie)
+app.delete('/api/users/:id', requireAuth(['admin']), function(req, res) {
+  if (req.params.id === req.user.id) return res.status(400).json({ error: 'Nie możesz usunąć własnego konta' });
+  var r = db.prepare('DELETE FROM users WHERE id=?').run(req.params.id);
+  if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono' });
+  db.prepare('DELETE FROM sessions WHERE user_id=?').run(req.params.id);
+  res.json({ ok:true });
 });
 
 // ── Activity log ──────────────────────────────────────────────────────────
