@@ -54,126 +54,129 @@
         </div>
       </div>
 
-      <div class="tabs">
-        <a href="#" class="active">Dane parafii</a>
-        <a href="#">Użytkownicy i role</a>
-        <a href="#">Integracje</a>
-        <a href="#">Powiadomienia</a>
-        <a href="#">Dziennik zdarzeń</a>
+      <div class="tabs" id="main-tabs">
+        <a href="#" class="active" data-tab="dane">Dane parafii</a>
+        <a href="#" data-tab="godziny">Godziny kancelarii</a>
+        <a href="#" data-tab="kafelki">Kafelki strony głównej</a>
+        <a href="#" data-tab="uzytkownicy">Użytkownicy i role</a>
+        <!-- <a href="#">Integracje</a> -->
+        <!-- <a href="#">Powiadomienia</a> -->
+        <!-- <a href="#">Dziennik zdarzeń</a> -->
       </div>
 
-      <div class="card">
-        <div class="card-head"><h3>Podstawowe dane</h3></div>
-        <div class="form-grid">
-          <div class="form-row">
-            <label>Pełna nazwa parafii</label>
-            <input type="text" value="Parafia pw. Najświętszego Serca Pana Jezusa">
-          </div>
-          <div class="form-row">
-            <label>Skrót / nazwa robocza</label>
-            <input type="text" value="NSPJ Czerwionka">
-          </div>
-          <div class="form-row">
-            <label>Ulica i numer</label>
-            <input type="text" value="ul. 3-go Maja 36">
-          </div>
-          <div class="form-row">
-            <label>Kod pocztowy i miejscowość</label>
-            <input type="text" value="44-230 Czerwionka-Leszczyny">
-          </div>
-          <div class="form-row">
-            <label>Telefon</label>
-            <input type="text" value="32 43 12 992">
-          </div>
-          <div class="form-row">
-            <label>E-mail kancelarii</label>
-            <input type="email" value="kancelaria@nspjczerwionka.pl">
-          </div>
-          <div class="form-row">
-            <label>Archidiecezja</label>
-            <input type="text" value="Archidiecezja Katowicka">
-          </div>
-          <div class="form-row">
-            <label>Dekanat</label>
-            <input type="text" value="Dekanat Dębieński">
+      <!-- ═══ TAB: Dane parafii ═══ -->
+      <div id="tab-dane">
+        <div class="card">
+          <div class="card-head"><h3>Podstawowe dane</h3></div>
+          <div class="form-grid">
+            <div class="form-row"><label>Pełna nazwa parafii</label><input id="s-nazwa-pelna" type="text" placeholder="Parafia pw. …"></div>
+            <div class="form-row"><label>Skrót / nazwa robocza</label><input id="s-nazwa-skrot" type="text" placeholder="NSPJ Czerwionka"></div>
+            <div class="form-row"><label>Ulica i numer</label><input id="s-ulica" type="text"></div>
+            <div class="form-row"><label>Kod pocztowy i miejscowość</label><input id="s-kod-miasto" type="text"></div>
+            <div class="form-row"><label>Telefon</label><input id="s-telefon" type="text"></div>
+            <div class="form-row"><label>E-mail kancelarii</label><input id="s-email" type="email"></div>
+            <div class="form-row"><label>Archidiecezja</label><input id="s-archidiecezja" type="text"></div>
+            <div class="form-row"><label>Dekanat</label><input id="s-dekanat" type="text"></div>
           </div>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head"><h3>Identyfikatory i konta</h3></div>
-        <div class="form-grid cols-3">
-          <div class="form-row"><label>NIP</label><input type="text" value="6422589900"></div>
-          <div class="form-row"><label>REGON</label><input type="text" value="040085689"></div>
-          <div class="form-row"><label>Data erygowania</label><input type="date" value="1925-08-01"></div>
+        <div class="card">
+          <div class="card-head"><h3>Identyfikatory i konta</h3></div>
+          <div class="form-grid cols-3">
+            <div class="form-row"><label>NIP</label><input id="s-nip" type="text"></div>
+            <div class="form-row"><label>REGON</label><input id="s-regon" type="text"></div>
+            <div class="form-row"><label>Data erygowania</label><input id="s-data-erygowania" type="date"></div>
+          </div>
+          <div class="form-row">
+            <label>Numer konta - Bank Spółdzielczy <span class="hint">Konto ogólne parafii</span></label>
+            <input id="s-konto-bs" type="text">
+          </div>
+          <div class="form-row">
+            <label>Numer konta - mBank <span class="hint">Konto na ofiary za intencje mszalne</span></label>
+            <input id="s-konto-mbank" type="text">
+          </div>
         </div>
-        <div class="form-row">
-          <label>Numer konta - Bank Spółdzielczy <span class="hint">Konto ogólne parafii</span></label>
-          <input type="text" value="11 8454 1095 2003 0017 7467 0003">
+        <div class="card">
+          <div class="card-head"><h3>Osoba odpowiedzialna za ochronę małoletnich</h3></div>
+          <div class="form-grid">
+            <div class="form-row"><label>Imię i nazwisko</label><input id="s-ochrona-imie" type="text"></div>
+            <div class="form-row"><label>Telefon</label><input id="s-ochrona-telefon" type="text"></div>
+          </div>
         </div>
-        <div class="form-row">
-          <label>Numer konta - mBank <span class="hint">Konto na ofiary za intencje mszalne</span></label>
-          <input type="text" value="18 1140 2004 0000 3902 8332 4667">
+        <div style="display:flex;justify-content:flex-end;margin-top:18px">
+          <button class="btn btn-primary" id="btn-save-dane" onclick="saveDane()">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>
+            Zapisz dane parafii
+          </button>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-head"><h3>Godziny kancelarii</h3></div>
-        <div class="form-grid cols-3">
-          <div class="form-row"><label>Poniedziałek</label><input type="text" value="17:30 - 18:30"></div>
-          <div class="form-row"><label>Wtorek</label><input type="text" value="-" placeholder="zamknięte"></div>
-          <div class="form-row"><label>Środa</label><input type="text" value="17:30 - 18:30"></div>
-          <div class="form-row"><label>Czwartek</label><input type="text" value="7:30 - 8:30 i 17:30 - 18:30"></div>
-          <div class="form-row"><label>Piątek</label><input type="text" value="-"></div>
-          <div class="form-row"><label>Sobota / niedziela</label><input type="text" value="-"></div>
-        </div>
-        <div class="form-row">
-          <label>Godziny w okresie wakacji i ferii zimowych</label>
-          <input type="text" value="Poniedziałek i środa 17:30 - 18:30 · Czwartek 7:30 - 8:30">
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head"><h3>Osoba odpowiedzialna za ochronę małoletnich</h3></div>
-        <div class="form-grid">
-          <div class="form-row"><label>Imię i nazwisko</label><input type="text" value="Anna Marszałek"></div>
-          <div class="form-row"><label>Telefon</label><input type="text" value="605 188 277"></div>
-        </div>
-      </div>
-
-      <div class="card" id="card-hp-settings">
-        <div class="card-head">
-          <h3>Kafelki strony głównej</h3>
-          <small style="color:var(--ink-soft);font-weight:400">Najbliższa msza i ogłoszenia pobierane automatycznie · Tu ustawiasz Kancelarię i Intencję tygodnia</small>
-        </div>
-        <div class="form-grid">
-          <div class="form-row">
-            <label>Kancelaria — wiersz główny <small class="hint">np. Pn, Śr · 17:30-18:30</small></label>
-            <input type="text" id="hp-kancelaria-l1" placeholder="np. Pn, Śr · 17:30-18:30">
+      <!-- ═══ TAB: Godziny kancelarii ═══ -->
+      <div id="tab-godziny" style="display:none">
+        <div class="card">
+          <div class="card-head"><h3>Godziny kancelarii</h3></div>
+          <div class="form-grid cols-3">
+            <div class="form-row"><label>Poniedziałek</label><input id="s-godz-pn" type="text" placeholder="zamknięte"></div>
+            <div class="form-row"><label>Wtorek</label><input id="s-godz-wt" type="text" placeholder="zamknięte"></div>
+            <div class="form-row"><label>Środa</label><input id="s-godz-sr" type="text" placeholder="zamknięte"></div>
+            <div class="form-row"><label>Czwartek</label><input id="s-godz-cz" type="text" placeholder="zamknięte"></div>
+            <div class="form-row"><label>Piątek</label><input id="s-godz-pt" type="text" placeholder="zamknięte"></div>
+            <div class="form-row"><label>Sobota / niedziela</label><input id="s-godz-sob" type="text" placeholder="zamknięte"></div>
           </div>
           <div class="form-row">
-            <label>Kancelaria — wiersz drugi <small class="hint">np. Cz · 7:30-8:30 i 17:30-18:30</small></label>
-            <input type="text" id="hp-kancelaria-l2" placeholder="np. Cz · 7:30-8:30 i 17:30-18:30">
+            <label>Godziny w okresie wakacji i ferii zimowych</label>
+            <input id="s-godz-wakacje" type="text">
           </div>
         </div>
-
-        <div style="margin-top:20px">
-          <label style="font-weight:600;font-size:.88rem;display:block;margin-bottom:8px">
-            Intencja tygodnia
-            <small class="hint" style="font-weight:400">Wybierz intencję która pojawi się na stronie głównej</small>
-          </label>
-          <div id="hp-intencja-list" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:10px">
-            <div style="color:var(--ink-soft);font-size:.85rem">Ładowanie intencji…</div>
-          </div>
-          <button type="button" class="btn btn-ghost" style="margin-top:8px;font-size:.8rem" onclick="clearIntencja()">Wyczyść wybór</button>
+        <div style="display:flex;justify-content:flex-end;margin-top:18px">
+          <button class="btn btn-primary" id="btn-save-godziny" onclick="saveGodziny()">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>
+            Zapisz godziny
+          </button>
         </div>
       </div>
 
-      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">
-        <button class="btn btn-primary" id="btn-save-hp" onclick="saveHpSettings()">
-          <svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>
-          Zapisz kafelki
-        </button>
+      <!-- ═══ TAB: Kafelki strony głównej ═══ -->
+      <div id="tab-kafelki" style="display:none">
+        <div class="card" id="card-hp-settings">
+          <div class="card-head">
+            <h3>Kafelki strony głównej</h3>
+            <small style="color:var(--ink-soft);font-weight:400">Najbliższa msza i ogłoszenia pobierane automatycznie · Tu ustawiasz Kancelarię i Intencję tygodnia</small>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label>Kancelaria — wiersz główny <small class="hint">np. Pn, Śr · 17:30-18:30</small></label>
+              <input type="text" id="hp-kancelaria-l1" placeholder="np. Pn, Śr · 17:30-18:30">
+            </div>
+            <div class="form-row">
+              <label>Kancelaria — wiersz drugi <small class="hint">np. Cz · 7:30-8:30 i 17:30-18:30</small></label>
+              <input type="text" id="hp-kancelaria-l2" placeholder="np. Cz · 7:30-8:30 i 17:30-18:30">
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <label style="font-weight:600;font-size:.88rem;display:block;margin-bottom:8px">
+              Intencja tygodnia
+              <small class="hint" style="font-weight:400">Wybierz intencję która pojawi się na stronie głównej</small>
+            </label>
+            <div id="hp-intencja-list" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;padding:10px">
+              <div style="color:var(--ink-soft);font-size:.85rem">Ładowanie intencji…</div>
+            </div>
+            <button type="button" class="btn btn-ghost" style="margin-top:8px;font-size:.8rem" onclick="clearIntencja()">Wyczyść wybór</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">
+          <button class="btn btn-primary" id="btn-save-hp" onclick="saveHpSettings()">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>
+            Zapisz kafelki
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: Użytkownicy i role ═══ -->
+      <div id="tab-uzytkownicy" style="display:none">
+        <div class="card">
+          <div class="card-head"><h3>Użytkownicy i role</h3></div>
+          <p style="color:var(--ink-soft);font-size:.88rem;margin:0">Zarządzanie kontami użytkowników będzie dostępne w wersji produkcyjnej.</p>
+        </div>
       </div>
 
     </div>
@@ -181,8 +184,84 @@
 </div>
 <script src="assets/admin.js"></script>
 <script>
+// ── Tab switching ──────────────────────────────────────────────
+document.getElementById('main-tabs').addEventListener('click', function(e) {
+  var a = e.target.closest('a[data-tab]');
+  if (!a) return;
+  e.preventDefault();
+  document.querySelectorAll('#main-tabs a').forEach(function(t){ t.classList.remove('active'); });
+  a.classList.add('active');
+  var tab = a.dataset.tab;
+  ['dane','godziny','kafelki','uzytkownicy'].forEach(function(id){
+    document.getElementById('tab-'+id).style.display = (id === tab) ? '' : 'none';
+  });
+});
+
+// ── Helpers ────────────────────────────────────────────────────
+function v(id){ return (document.getElementById(id)||{}).value||''; }
+function sv(id, val){ var el=document.getElementById(id); if(el) el.value=val||''; }
+
+var SAVE_SVG = '<svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>';
+
+function btnSave(btnId, label, data) {
+  var btn = document.getElementById(btnId);
+  btn.disabled = true; btn.textContent = 'Zapisuję…';
+  fetch('/api/settings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) })
+    .then(function(r){ return r.json(); })
+    .then(function() {
+      btn.disabled = false;
+      btn.innerHTML = SAVE_SVG + ' Zapisano!';
+      setTimeout(function(){ btn.innerHTML = SAVE_SVG + ' ' + label; }, 2500);
+    })
+    .catch(function(){ btn.disabled=false; btn.textContent='Błąd — spróbuj ponownie'; });
+}
+
+// ── Save: Dane parafii ─────────────────────────────────────────
+function saveDane() {
+  btnSave('btn-save-dane', 'Zapisz dane parafii', {
+    nazwa_pelna:       v('s-nazwa-pelna'),
+    nazwa_skrot:       v('s-nazwa-skrot'),
+    ulica:             v('s-ulica'),
+    kod_miasto:        v('s-kod-miasto'),
+    telefon:           v('s-telefon'),
+    email:             v('s-email'),
+    archidiecezja:     v('s-archidiecezja'),
+    dekanat:           v('s-dekanat'),
+    nip:               v('s-nip'),
+    regon:             v('s-regon'),
+    data_erygowania:   v('s-data-erygowania'),
+    konto_bs:          v('s-konto-bs'),
+    konto_mbank:       v('s-konto-mbank'),
+    ochrona_imie:      v('s-ochrona-imie'),
+    ochrona_telefon:   v('s-ochrona-telefon')
+  });
+}
+
+// ── Save: Godziny kancelarii ───────────────────────────────────
+function saveGodziny() {
+  btnSave('btn-save-godziny', 'Zapisz godziny', {
+    godz_pn:      v('s-godz-pn'),
+    godz_wt:      v('s-godz-wt'),
+    godz_sr:      v('s-godz-sr'),
+    godz_cz:      v('s-godz-cz'),
+    godz_pt:      v('s-godz-pt'),
+    godz_sob:     v('s-godz-sob'),
+    godz_wakacje: v('s-godz-wakacje')
+  });
+}
+
+// ── Save: Kafelki ──────────────────────────────────────────────
 var selectedIntencjaId = '';
 
+function saveHpSettings() {
+  btnSave('btn-save-hp', 'Zapisz kafelki', {
+    hp_kancelaria_linia1: v('hp-kancelaria-l1'),
+    hp_kancelaria_linia2: v('hp-kancelaria-l2'),
+    hp_intencja_id:       selectedIntencjaId
+  });
+}
+
+// ── Init: wczytaj wszystkie ustawienia ─────────────────────────
 var MONTHS = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
 function fmtDate(d) {
   if (!d) return '';
@@ -192,20 +271,16 @@ function fmtDate(d) {
 
 function renderIntencjeList(intencje, currentId) {
   var list = document.getElementById('hp-intencja-list');
-  // Bieżący + następny tydzień (14 dni)
   var now  = new Date();
   var from = now.toISOString().slice(0,10);
   var to7  = new Date(now); to7.setDate(to7.getDate()+7);
   var to   = to7.toISOString().slice(0,10);
-
   var filtered = intencje.filter(function(i){ return i.date >= from && i.date <= to; });
   filtered.sort(function(a,b){ return (a.date+a.time).localeCompare(b.date+b.time); });
-
   if (!filtered.length) {
     list.innerHTML = '<div style="color:var(--ink-soft);font-size:.85rem">Brak intencji w ciągu najbliższych 7 dni.</div>';
     return;
   }
-
   list.innerHTML = filtered.map(function(i) {
     var checked = (i.id === currentId) ? 'checked' : '';
     var label   = fmtDate(i.date) + (i.time ? ' · ' + i.time : '') + ' — ' + (i.intention || '(brak opisu)');
@@ -214,7 +289,6 @@ function renderIntencjeList(intencje, currentId) {
       + '<input type="radio" name="hp_intencja" value="'+i.id+'" '+checked+' style="margin-top:2px;accent-color:var(--burgundy)" onchange="selectedIntencjaId=this.value;highlightSelected()">'
       + '<span style="font-size:.85rem;line-height:1.4">'+label+'</span></label>';
   }).join('');
-
   if (currentId) selectedIntencjaId = currentId;
 }
 
@@ -224,50 +298,48 @@ function highlightSelected() {
     el.style.background = inp && inp.checked ? 'var(--cream-dark,#f0ece4)' : '';
   });
 }
-
 function clearIntencja() {
   selectedIntencjaId = '';
-  document.querySelectorAll('#hp-intencja-list input[type=radio]').forEach(function(r){ r.checked = false; });
+  document.querySelectorAll('#hp-intencja-list input[type=radio]').forEach(function(r){ r.checked=false; });
   highlightSelected();
 }
 
-// Init — load settings + intencje
 (function() {
   Promise.all([
     fetch('/api/settings').then(function(r){ return r.json(); }),
     fetch('/api/intencje').then(function(r){ return r.json(); })
-  ]).then(function(results) {
-    var s = results[0], intencje = results[1];
-    document.getElementById('hp-kancelaria-l1').value = s.hp_kancelaria_linia1 || '';
-    document.getElementById('hp-kancelaria-l2').value = s.hp_kancelaria_linia2 || '';
+  ]).then(function(res) {
+    var s = res[0], intencje = res[1];
+    // Dane parafii
+    sv('s-nazwa-pelna',     s.nazwa_pelna     || 'Parafia pw. Najświętszego Serca Pana Jezusa');
+    sv('s-nazwa-skrot',     s.nazwa_skrot     || 'NSPJ Czerwionka');
+    sv('s-ulica',           s.ulica           || 'ul. 3-go Maja 36');
+    sv('s-kod-miasto',      s.kod_miasto      || '44-230 Czerwionka-Leszczyny');
+    sv('s-telefon',         s.telefon         || '32 43 12 992');
+    sv('s-email',           s.email           || 'kancelaria@nspjczerwionka.pl');
+    sv('s-archidiecezja',   s.archidiecezja   || 'Archidiecezja Katowicka');
+    sv('s-dekanat',         s.dekanat         || 'Dekanat Dębieński');
+    sv('s-nip',             s.nip             || '6422589900');
+    sv('s-regon',           s.regon           || '040085689');
+    sv('s-data-erygowania', s.data_erygowania || '1925-08-01');
+    sv('s-konto-bs',        s.konto_bs        || '11 8454 1095 2003 0017 7467 0003');
+    sv('s-konto-mbank',     s.konto_mbank     || '18 1140 2004 0000 3902 8332 4667');
+    sv('s-ochrona-imie',    s.ochrona_imie    || 'Anna Marszałek');
+    sv('s-ochrona-telefon', s.ochrona_telefon || '605 188 277');
+    // Godziny
+    sv('s-godz-pn',      s.godz_pn      || '17:30 - 18:30');
+    sv('s-godz-wt',      s.godz_wt      || '-');
+    sv('s-godz-sr',      s.godz_sr      || '17:30 - 18:30');
+    sv('s-godz-cz',      s.godz_cz      || '7:30 - 8:30 i 17:30 - 18:30');
+    sv('s-godz-pt',      s.godz_pt      || '-');
+    sv('s-godz-sob',     s.godz_sob     || '-');
+    sv('s-godz-wakacje', s.godz_wakacje || 'Poniedziałek i środa 17:30 - 18:30 · Czwartek 7:30 - 8:30');
+    // Kafelki
+    sv('hp-kancelaria-l1', s.hp_kancelaria_linia1 || '');
+    sv('hp-kancelaria-l2', s.hp_kancelaria_linia2 || '');
     renderIntencjeList(Array.isArray(intencje) ? intencje : [], s.hp_intencja_id || '');
   }).catch(function(){});
 })();
-
-function saveHpSettings() {
-  var btn = document.getElementById('btn-save-hp');
-  btn.disabled = true;
-  btn.textContent = 'Zapisuję…';
-  fetch('/api/settings', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      hp_kancelaria_linia1: document.getElementById('hp-kancelaria-l1').value.trim(),
-      hp_kancelaria_linia2: document.getElementById('hp-kancelaria-l2').value.trim(),
-      hp_intencja_id:       selectedIntencjaId
-    })
-  })
-  .then(function(r){ return r.json(); })
-  .then(function() {
-    btn.disabled = false;
-    btn.innerHTML = '<svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg> Zapisano!';
-    setTimeout(function(){ btn.innerHTML = '<svg fill="currentColor" viewBox="0 0 16 16"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg> Zapisz kafelki'; }, 2500);
-  })
-  .catch(function() {
-    btn.disabled = false;
-    btn.textContent = 'Błąd — spróbuj ponownie';
-  });
-}
 </script>
 </body>
 </html>

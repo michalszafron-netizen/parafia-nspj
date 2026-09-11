@@ -32,10 +32,10 @@ h3{font-size:1.05rem}
 p{margin:0 0 .8rem}
 
 /* LAYOUT */
-.app{display:flex;min-height:100vh}
+.app{display:flex;min-height:100vh;background:linear-gradient(to right,var(--ink) 248px,var(--bg) 248px)}
 html,body{overflow-x:hidden;max-width:100%}
 .sidebar{
-  width:248px;background:var(--ink);color:#d8cdb6;
+  width:248px;background:transparent;color:#d8cdb6;
   display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto
 }
 /* MAIN */

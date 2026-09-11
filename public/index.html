@@ -966,6 +966,20 @@
   dots.forEach(d=>d.addEventListener('click',()=>go(+d.dataset.i)));
   setInterval(()=>go(cur+1),5500);
 
+  // Settings sync
+  (function(){
+    fetch('/api/settings').then(function(r){ return r.json(); }).then(function(s){
+      var ulica=s.ulica||'ul. 3-go Maja 36',miasto=s.kod_miasto||'44-230 Czerwionka-Leszczyny',tel=s.telefon||'32 43 12 992';
+      var as=document.querySelector('.topbar .left span:first-child');
+      if(as){var n=as.childNodes;for(var i=n.length-1;i>=0;i--){if(n[i].nodeType===3){n[i].textContent=ulica+', '+miasto;break;}}}
+      var tl=document.querySelector('.topbar .left a[href^="tel:"]');
+      if(tl){tl.textContent=tel;tl.href='tel:+48'+tel.replace(/\s/g,'');}
+      var fa=document.querySelector('footer.site p');
+      if(fa){fa.innerHTML=ulica+'<br>'+miasto+'<br>tel. <a href="tel:+48'+tel.replace(/\s/g,'')+'" style="color:var(--copper-light)">'+tel+'</a>';}
+      if(s.konto_bs){var fb=document.querySelector('footer.site .footer-bank code');if(fb)fb.textContent=s.konto_bs;}
+    }).catch(function(){});
+  })();
+
   // Mobile menu
   (function(){
     var nav=document.querySelector('nav.main');

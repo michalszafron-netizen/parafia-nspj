@@ -52,9 +52,73 @@ function rowToParafianin(row) {
     status: row.status || 'aktywny',
     data_dolaczenia: row.data_dolaczenia || '',
     uwagi: row.uwagi || '',
-    zmarly: !!row.zmarly
+    zmarly: !!row.zmarly,
+    created_at: row.created_at || ''
   };
 }
+
+try { db.exec("ALTER TABLE parafianie ADD COLUMN created_at TEXT DEFAULT ''"); } catch(e) {}
+
+// ── Page visits ───────────────────────────────────────────────────────────
+db.exec(`CREATE TABLE IF NOT EXISTS page_visits (
+  date  TEXT PRIMARY KEY,
+  count INTEGER DEFAULT 0
+)`);
+
+app.use(function(req, res, next) {
+  if (req.method === 'GET') {
+    var p = req.path;
+    if (!p.startsWith('/api') && !p.startsWith('/admin')) {
+      var ext = path.extname(p);
+      if (!ext || ext === '.html') {
+        var today = new Date().toISOString().slice(0, 10);
+        try {
+          db.prepare('INSERT INTO page_visits (date, count) VALUES (?, 1) ON CONFLICT(date) DO UPDATE SET count = count + 1').run(today);
+        } catch(e) {}
+      }
+    }
+  }
+  next();
+});
+
+app.get('/api/stats/visits', function(req, res) {
+  var now = new Date();
+  var d30 = new Date(now - 30*86400000).toISOString().slice(0, 10);
+  var d60 = new Date(now - 60*86400000).toISOString().slice(0, 10);
+  var last30 = db.prepare('SELECT COALESCE(SUM(count), 0) as total FROM page_visits WHERE date >= ?').get(d30).total;
+  var prev30 = db.prepare('SELECT COALESCE(SUM(count), 0) as total FROM page_visits WHERE date >= ? AND date < ?').get(d60, d30).total;
+  res.json({ last30: last30, prev30: prev30 });
+});
+
+// ── Activity log ──────────────────────────────────────────────────────────
+db.exec(`
+  CREATE TABLE IF NOT EXISTS activity_log (
+    id          TEXT PRIMARY KEY,
+    type        TEXT NOT NULL,
+    module      TEXT NOT NULL,
+    description TEXT NOT NULL,
+    created_at  TEXT NOT NULL
+  )
+`);
+
+function logActivity(type, module, description) {
+  var id = 'act' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  var now = new Date().toISOString();
+  try {
+    db.prepare('INSERT INTO activity_log (id,type,module,description,created_at) VALUES (?,?,?,?,?)')
+      .run(id, type, module, description, now);
+  } catch(e) {}
+}
+
+app.get('/api/activity-log', function(req, res) {
+  var limit = parseInt(req.query.limit) || 50;
+  var module = req.query.module || '';
+  var rows = module
+    ? db.prepare('SELECT * FROM activity_log WHERE module=? ORDER BY created_at DESC LIMIT ?').all(module, limit)
+    : db.prepare('SELECT * FROM activity_log ORDER BY created_at DESC LIMIT ?').all(limit);
+  res.json(rows);
+});
+// ─────────────────────────────────────────────────────────────────────────
 
 // Parafianie — CRUD
 app.get('/api/parafianie', function(req, res) {
@@ -67,38 +131,44 @@ app.post('/api/parafianie', function(req, res) {
   if (!b.imie || !b.nazwisko) return res.status(400).json({ error: 'Imię i nazwisko są wymagane' });
   var id = 'par' + Date.now().toString(36);
   var sakr = b.sakr || {};
+  var nowIsoP = new Date().toISOString();
   db.prepare(`INSERT INTO parafianie
     (id,imie,nazwisko,data_urodzenia,telefon,adres,email,
      sakr_chrzest,sakr_komunia,sakr_bierzmowanie,sakr_slub,
-     status,data_dolaczenia,uwagi,zmarly)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+     status,data_dolaczenia,uwagi,zmarly,created_at)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
     .run(id, b.imie, b.nazwisko,
       b.data_urodzenia||'', b.telefon||'', b.adres||'', b.email||'',
       sakr.chrzest?1:0, sakr.komunia?1:0, sakr.bierzmowanie?1:0, sakr.slub?1:0,
-      b.status||'aktywny', b.data_dolaczenia||'', b.uwagi||'', b.zmarly?1:0);
+      b.status||'aktywny', b.data_dolaczenia||'', b.uwagi||'', b.zmarly?1:0, nowIsoP);
+  logActivity('create', 'Parafianie', 'Dodano parafianina: ' + b.imie + ' ' + b.nazwisko);
   res.status(201).json(rowToParafianin(db.prepare('SELECT * FROM parafianie WHERE id=?').get(id)));
 });
 
 app.put('/api/parafianie/:id', function(req, res) {
   var b = req.body;
   if (!b.imie || !b.nazwisko) return res.status(400).json({ error: 'Imię i nazwisko są wymagane' });
-  var sakr = b.sakr || {};
   var r = db.prepare(`UPDATE parafianie SET
     imie=?,nazwisko=?,data_urodzenia=?,telefon=?,adres=?,email=?,
-    sakr_chrzest=?,sakr_komunia=?,sakr_bierzmowanie=?,sakr_slub=?,
     status=?,data_dolaczenia=?,uwagi=?,zmarly=? WHERE id=?`)
     .run(b.imie, b.nazwisko,
       b.data_urodzenia||'', b.telefon||'', b.adres||'', b.email||'',
-      sakr.chrzest?1:0, sakr.komunia?1:0, sakr.bierzmowanie?1:0, sakr.slub?1:0,
       b.status||'aktywny', b.data_dolaczenia||'', b.uwagi||'', b.zmarly?1:0,
       req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono parafianina' });
+  // Flagi sakramentów zawsze wynikają z realnych rekordów w tabeli sakramenty
+  ['chrzciny', 'komunia', 'bierzmowanie', 'sluby'].forEach(function(type) {
+    syncSakrParafianin(req.params.id, type);
+  });
+  logActivity('update', 'Parafianie', 'Zaktualizowano dane: ' + b.imie + ' ' + b.nazwisko);
   res.json(rowToParafianin(db.prepare('SELECT * FROM parafianie WHERE id=?').get(req.params.id)));
 });
 
 app.delete('/api/parafianie/:id', function(req, res) {
+  var old = db.prepare('SELECT imie, nazwisko FROM parafianie WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM parafianie WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono parafianina' });
+  if (old) logActivity('delete', 'Parafianie', 'Usunięto parafianina: ' + old.imie + ' ' + old.nazwisko);
   res.json({ ok: true });
 });
 
@@ -172,6 +242,7 @@ app.post('/api/pogrzeby', function(req, res) {
       b.ksiadz||'', b.status||'zgloszony',
       b.cmentarz||'', b.sektor||'', b.rzad||'', b.miejsce_grobu||'',
       b.rok||0, b.parafianin_id||'');
+  logActivity('create', 'Pogrzeby', 'Zarejestrowano pogrzeb: ' + (b.imie||'') + ' ' + (b.nazwisko||''));
   res.status(201).json(rowToPogrzeb(db.prepare('SELECT * FROM pogrzeby WHERE id=?').get(id)));
 });
 
@@ -191,12 +262,15 @@ app.put('/api/pogrzeby/:id', function(req, res) {
       b.rok||0, b.parafianin_id||'',
       req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono pogrzebu' });
+  logActivity('update', 'Pogrzeby', 'Zaktualizowano pogrzeb: ' + (b.imie||'') + ' ' + (b.nazwisko||''));
   res.json(rowToPogrzeb(db.prepare('SELECT * FROM pogrzeby WHERE id=?').get(req.params.id)));
 });
 
 app.delete('/api/pogrzeby/:id', function(req, res) {
+  var old = db.prepare('SELECT imie, nazwisko FROM pogrzeby WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM pogrzeby WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono pogrzebu' });
+  if (old) logActivity('delete', 'Pogrzeby', 'Usunięto pogrzeb: ' + (old.imie||'') + ' ' + (old.nazwisko||''));
   res.json({ ok: true });
 });
 
@@ -343,6 +417,7 @@ app.post('/api/intencje', function(req, res) {
   var r2d = b.r2_days ? calcReminderDate(b.date, b.r2_days) : '';
   db.prepare('INSERT INTO intencje (id,date,time,type,intention,oplacona,zamawiajacy,telefon,r1_date,r2_date) VALUES (?,?,?,?,?,?,?,?,?,?)')
     .run(id, b.date, b.time||'', b.type||'w_int', b.intention, b.oplacona?1:0, b.zamawiajacy||'', b.telefon||'', r1d, r2d);
+  logActivity('create', 'Intencje', 'Dodano intencję na ' + b.date + (b.time?' '+b.time:'') + ': ' + (b.intention||'').slice(0,60));
   res.status(201).json(rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(id)));
 });
 
@@ -356,12 +431,15 @@ app.put('/api/intencje/:id', function(req, res) {
   if (!existing) return res.status(404).json({ error: 'Nie znaleziono intencji' });
   db.prepare('UPDATE intencje SET date=?,time=?,type=?,intention=?,oplacona=?,zamawiajacy=?,telefon=?,r1_date=?,r2_date=?,r1_hour=?,r2_hour=?,reminder1_sent=?,reminder2_sent=? WHERE id=?')
     .run(b.date||existing.date, b.time||existing.time||'', b.type||existing.type||'w_int', b.intention!==undefined?b.intention:existing.intention||'', b.oplacona!==undefined?b.oplacona?1:0:existing.oplacona, b.zamawiajacy!==undefined?b.zamawiajacy:existing.zamawiajacy||'', b.telefon!==undefined?b.telefon:existing.telefon||'', r1d!==null?r1d:existing.r1_date||'', r2d!==null?r2d:existing.r2_date||'', r1h!==null?r1h:(existing.r1_hour!=null?existing.r1_hour:8), r2h!==null?r2h:(existing.r2_hour!=null?existing.r2_hour:8), b.reminder1_sent!==undefined?b.reminder1_sent?1:0:existing.reminder1_sent, b.reminder2_sent!==undefined?b.reminder2_sent?1:0:existing.reminder2_sent, req.params.id);
+  logActivity('update', 'Intencje', 'Zaktualizowano intencję na ' + (b.date||existing.date) + ': ' + ((b.intention!==undefined?b.intention:existing.intention)||'').slice(0,60));
   res.json(rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(req.params.id)));
 });
 
 app.delete('/api/intencje/:id', function(req, res) {
+  var old = db.prepare('SELECT date, time, intention FROM intencje WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM intencje WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono intencji' });
+  if (old) logActivity('delete', 'Intencje', 'Usunięto intencję na ' + old.date + (old.time?' '+old.time:'') + ': ' + (old.intention||'').slice(0,60));
   res.json({ ok: true });
 });
 
@@ -386,6 +464,7 @@ app.post('/api/intencje/pending/:id/accept', function(req, res) {
   db.prepare('INSERT INTO intencje (id,date,time,type,intention,oplacona,zamawiajacy,telefon) VALUES (?,?,?,?,?,0,?,?)')
     .run(newId, item.date, item.time||'', item.type||'w_int', item.intention||'', item.imie||'', item.telefon||'');
   db.prepare('DELETE FROM intencje_pending WHERE id=?').run(req.params.id);
+  logActivity('create', 'Intencje', 'Zaakceptowano zgłoszenie intencji na ' + item.date + ': ' + (item.intention||'').slice(0,60));
   res.json({ intencja: rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(newId)), pending: rowToPending(item) });
 });
 
@@ -543,6 +622,23 @@ function rowToSakrament(row) {
 }
 
 // Sakramenty — CRUD
+
+var TYPE_TO_SAKR_COL = {
+  chrzest: 'sakr_chrzest',
+  chrzciny: 'sakr_chrzest',
+  komunia: 'sakr_komunia',
+  bierzmowanie: 'sakr_bierzmowanie',
+  slub: 'sakr_slub',
+  sluby: 'sakr_slub'
+};
+
+function syncSakrParafianin(parafianinId, type) {
+  if (!parafianinId || !TYPE_TO_SAKR_COL[type]) return;
+  var col = TYPE_TO_SAKR_COL[type];
+  var exists = db.prepare('SELECT 1 FROM sakramenty WHERE parafianin_id=? AND type=? LIMIT 1').get(parafianinId, type);
+  db.prepare('UPDATE parafianie SET ' + col + '=? WHERE id=?').run(exists ? 1 : 0, parafianinId);
+}
+
 app.get('/api/sakramenty', function(req, res) {
   res.json(db.prepare('SELECT * FROM sakramenty ORDER BY rok DESC, type, nazwisko, imie').all().map(rowToSakrament));
 });
@@ -566,11 +662,17 @@ app.post('/api/sakramenty', function(req, res) {
       b.oblubieniec||'', b.oblubienica||'', b.datasl||'', b.typ_slubu||'',
       b.zapowiedzi||0, b.szkola||'', b.datakom||'', b.status||'',
       b.parafianin_id||'', b.malzonek1_id||'', b.malzonek2_id||'', nowIso);
+  syncSakrParafianin(b.parafianin_id, b.type);
+  if (b.malzonek1_id) syncSakrParafianin(b.malzonek1_id, b.type);
+  if (b.malzonek2_id) syncSakrParafianin(b.malzonek2_id, b.type);
+  var sakrName = {chrzciny:'Chrzest',komunia:'Komunia',bierzmowanie:'Bierzmowanie',sluby:'Ślub'}[b.type]||b.type;
+  logActivity('create', 'Sakramenty', 'Zarejestrowano ' + sakrName + ': ' + (b.imie||'') + ' ' + (b.nazwisko||b.oblubieniec||''));
   res.status(201).json(rowToSakrament(db.prepare('SELECT * FROM sakramenty WHERE id=?').get(id)));
 });
 
 app.put('/api/sakramenty/:id', function(req, res) {
   var b = req.body;
+  var old = db.prepare('SELECT parafianin_id, malzonek1_id, malzonek2_id, type FROM sakramenty WHERE id=?').get(req.params.id);
   var r = db.prepare(`UPDATE sakramenty SET
     type=?,rok=?,imie=?,nazwisko=?,dataurodzenia=?,rodzic=?,katecheta=?,imie_bierzmowania=?,miejsce=?,
     imie_ojca=?,nazwisko_ojca=?,imie_matki=?,nazwisko_matki=?,datachrztu=?,ksiega_rok=?,ksiega_str=?,ksiega_nr=?,uwagi=?,
@@ -586,12 +688,27 @@ app.put('/api/sakramenty/:id', function(req, res) {
       b.parafianin_id||'', b.malzonek1_id||'', b.malzonek2_id||'',
       req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono rekordu' });
+  // sync stary i nowy parafianin_id (jeśli się zmienił)
+  var newType = b.type || (old && old.type) || '';
+  var ids = new Set([b.parafianin_id, b.malzonek1_id, b.malzonek2_id,
+                     old && old.parafianin_id, old && old.malzonek1_id, old && old.malzonek2_id].filter(Boolean));
+  ids.forEach(function(pid) { syncSakrParafianin(pid, newType); });
+  var sakrNameU = {chrzciny:'Chrzest',komunia:'Komunia',bierzmowanie:'Bierzmowanie',sluby:'Ślub'}[newType]||newType;
+  logActivity('update', 'Sakramenty', 'Zaktualizowano ' + sakrNameU + ': ' + (b.imie||'') + ' ' + (b.nazwisko||b.oblubieniec||''));
   res.json(rowToSakrament(db.prepare('SELECT * FROM sakramenty WHERE id=?').get(req.params.id)));
 });
 
 app.delete('/api/sakramenty/:id', function(req, res) {
+  var old = db.prepare('SELECT parafianin_id, malzonek1_id, malzonek2_id, type, imie, nazwisko, oblubieniec FROM sakramenty WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM sakramenty WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono rekordu' });
+  if (old) {
+    [old.parafianin_id, old.malzonek1_id, old.malzonek2_id].filter(Boolean).forEach(function(pid) {
+      syncSakrParafianin(pid, old.type);
+    });
+    var sakrNameD = {chrzciny:'Chrzest',komunia:'Komunia',bierzmowanie:'Bierzmowanie',sluby:'Ślub'}[old.type]||old.type;
+    logActivity('delete', 'Sakramenty', 'Usunięto ' + sakrNameD + ': ' + (old.imie||'') + ' ' + (old.nazwisko||old.oblubieniec||''));
+  }
   res.json({ ok: true });
 });
 
@@ -665,6 +782,7 @@ app.post('/api/aktualnosci', function(req,res) {
   var id=b.id||('news-'+Date.now().toString(36));
   db.prepare('INSERT INTO aktualnosci (id,title,date,category,status,author,excerpt,content,image,tags,featured,views,slug) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
     .run(id,b.title,b.date||'',b.category||'',b.status||'draft',b.author||'',b.excerpt||'',b.content||'',b.image||'',b.tags||'',b.featured?1:0,b.views||0,b.slug||'');
+  logActivity('create', 'Aktualności', (b.status==='published'?'Opublikowano':'Zapisano szkic') + ': ' + b.title);
   res.status(201).json(rowToAktualnosc(db.prepare('SELECT * FROM aktualnosci WHERE id=?').get(id)));
 });
 app.put('/api/aktualnosci/:id', function(req,res) {
@@ -672,11 +790,14 @@ app.put('/api/aktualnosci/:id', function(req,res) {
   var r=db.prepare('UPDATE aktualnosci SET title=?,date=?,category=?,status=?,author=?,excerpt=?,content=?,image=?,tags=?,featured=?,views=?,slug=? WHERE id=?')
     .run(b.title||'',b.date||'',b.category||'',b.status||'draft',b.author||'',b.excerpt||'',b.content||'',b.image||'',b.tags||'',b.featured?1:0,b.views||0,b.slug||'',req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
+  logActivity('update', 'Aktualności', 'Zaktualizowano: ' + (b.title||''));
   res.json(rowToAktualnosc(db.prepare('SELECT * FROM aktualnosci WHERE id=?').get(req.params.id)));
 });
 app.delete('/api/aktualnosci/:id', function(req,res) {
+  var old=db.prepare('SELECT title FROM aktualnosci WHERE id=?').get(req.params.id);
   var r=db.prepare('DELETE FROM aktualnosci WHERE id=?').run(req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
+  if(old) logActivity('delete', 'Aktualności', 'Usunięto: ' + old.title);
   res.json({ok:true});
 });
 
@@ -724,6 +845,7 @@ app.post('/api/ogloszenia', function(req,res) {
   var id=b.id||('ogl-'+Date.now().toString(36));
   db.prepare('INSERT INTO ogloszenia (id,title,date,status,featured,views,content) VALUES (?,?,?,?,?,?,?)')
     .run(id,b.title,b.date||'',b.status||'published',b.featured?1:0,b.views||0,b.content||'');
+  logActivity('create', 'Ogłoszenia', 'Dodano ogłoszenia: ' + b.title);
   res.status(201).json(rowToOgloszenie(db.prepare('SELECT * FROM ogloszenia WHERE id=?').get(id)));
 });
 app.put('/api/ogloszenia/:id', function(req,res) {
@@ -731,11 +853,14 @@ app.put('/api/ogloszenia/:id', function(req,res) {
   var r=db.prepare('UPDATE ogloszenia SET title=?,date=?,status=?,featured=?,views=?,content=? WHERE id=?')
     .run(b.title||'',b.date||'',b.status||'published',b.featured?1:0,b.views||0,b.content||'',req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
+  logActivity('update', 'Ogłoszenia', 'Zaktualizowano ogłoszenia: ' + (b.title||''));
   res.json(rowToOgloszenie(db.prepare('SELECT * FROM ogloszenia WHERE id=?').get(req.params.id)));
 });
 app.delete('/api/ogloszenia/:id', function(req,res) {
+  var old=db.prepare('SELECT title FROM ogloszenia WHERE id=?').get(req.params.id);
   var r=db.prepare('DELETE FROM ogloszenia WHERE id=?').run(req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
+  if(old) logActivity('delete', 'Ogłoszenia', 'Usunięto ogłoszenia: ' + old.title);
   res.json({ok:true});
 });
 
@@ -814,6 +939,26 @@ app.put('/api/wspolnoty/:slug', function(req,res) {
   res.json({ok:true});
 });
 
+// SMS — logowanie wysyłek
+db.exec(`CREATE TABLE IF NOT EXISTS sms_log (
+  id       INTEGER PRIMARY KEY AUTOINCREMENT,
+  sent_at  TEXT NOT NULL,
+  telefon  TEXT DEFAULT '',
+  type     TEXT DEFAULT 'reminder'
+)`);
+
+app.get('/api/sms/stats', function(req, res) {
+  var ym = new Date().toISOString().slice(0,7);
+  var r = db.prepare("SELECT COUNT(*) as cnt FROM sms_log WHERE sent_at LIKE ?").get(ym + '%');
+  res.json({ thisMonth: r ? r.cnt : 0, limit: 300 });
+});
+
+function getSmsMonthCount() {
+  var ym = new Date().toISOString().slice(0,7);
+  var r = db.prepare("SELECT COUNT(*) as cnt FROM sms_log WHERE sent_at LIKE ?").get(ym + '%');
+  return r ? r.cnt : 0;
+}
+
 // SMS — przypomnienia automatyczne
 function getSetting(key, def) {
   try {
@@ -831,6 +976,10 @@ function isoToday(offsetDays) {
 async function sendReminderSms(telefon, intention, date, time) {
   var token = process.env.SMSPLANET_TOKEN;
   if (!token) return;
+  if (getSmsMonthCount() >= 300) {
+    console.log('SMS limit miesięczny wyczerpany — pominięto przypomnienie do', telefon);
+    return;
+  }
   var d = new Date(date + 'T12:00:00');
   var ds = d.getDate() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + d.getFullYear();
   var intTxt = intention ? ' (' + intention.substring(0,60) + (intention.length>60?'...':'')+')' : '';
@@ -846,6 +995,7 @@ async function sendReminderSms(telefon, intention, date, time) {
       headers:{'Authorization':'Bearer '+token,'Content-Type':'application/x-www-form-urlencoded'},
       body: params.toString()
     });
+    db.prepare('INSERT INTO sms_log (sent_at, telefon, type) VALUES (?,?,?)').run(new Date().toISOString(), telefon, 'reminder');
   } catch(e) { console.error('SMS reminder error:', e.message); }
 }
 
@@ -880,6 +1030,9 @@ scheduleReminders();
 app.post('/api/sms/wyslij', async function (req, res) {
   const token = process.env.SMSPLANET_TOKEN;
   if (!token) return res.status(500).json({ error: 'Brak konfiguracji SMS (SMSPLANET_TOKEN)' });
+  if (getSmsMonthCount() >= 300) {
+    return res.status(429).json({ error: 'Miesięczny limit 300 SMS wyczerpany. Skontaktuj się z administratorem.' });
+  }
 
   const { to, msg, from } = req.body;
   if (!to || !msg) return res.status(400).json({ error: 'Brak numeru lub tresci' });
@@ -902,6 +1055,7 @@ app.post('/api/sms/wyslij', async function (req, res) {
     });
     const data = await r.json();
     if (data.messageId || data.messageCount) {
+      db.prepare('INSERT INTO sms_log (sent_at, telefon, type) VALUES (?,?,?)').run(new Date().toISOString(), to, 'manual');
       res.json({ ok: true, messageId: data.messageId });
     } else {
       res.status(400).json({ error: data.errorMsg || 'Blad SMSPlanet', details: data });
@@ -1036,6 +1190,7 @@ app.delete('/api/galerie/:id', function(req, res) {
 
 // Serwuj pliki z katalogu aplikacji
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '.')));
 
 // Multer — zapis do public/img/galerie/{folder}/
 // Pliki dostępne pod URL-em /public/img/galerie/{folder}/nazwa.jpg

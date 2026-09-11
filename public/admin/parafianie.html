@@ -23,6 +23,8 @@
   .sakr-icons{display:flex;gap:4px}
   .sakr-icon{width:22px;height:22px;border-radius:4px;background:var(--beige-deep);display:grid;place-items:center;font-size:.6rem;font-weight:700;color:var(--ink-soft);cursor:default}
   .sakr-icon.yes{background:#e2f0e6;color:#2e7a3a}
+  .sakr-th-info{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--ink-soft);color:#fff;font-size:.58rem;font-weight:700;line-height:13px;text-align:center;cursor:help;margin-left:2px;vertical-align:middle;opacity:.55}
+  .sakr-th-info:hover{opacity:1}
 
   .pager{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:.85rem;color:var(--ink-soft);flex-wrap:wrap;gap:8px}
   .pager-btns{display:flex;gap:4px;flex-wrap:wrap}
@@ -128,11 +130,21 @@
       <div class="filter-bar">
         <input type="text" id="search-input" placeholder="Szukaj po nazwisku, imieniu, adresie…" oninput="goPage(1)">
         <select id="filter-sakr" onchange="goPage(1)">
-          <option value="">Wszystkie</option>
+          <option value="">Wszystkie sakramenty</option>
           <option value="chrzest">Chrzest</option>
           <option value="komunia">Komunia</option>
           <option value="bierzmowanie">Bierzmowanie</option>
           <option value="slub">Ślub kościelny</option>
+        </select>
+        <select id="filter-rok-dolaczenia" onchange="goPage(1)">
+          <option value="">Rok dołączenia</option>
+        </select>
+        <select id="filter-rok-urodzenia" onchange="goPage(1)">
+          <option value="">Rok urodzenia</option>
+        </select>
+        <select id="filter-sort" onchange="goPage(1)">
+          <option value="newest">Ostatnio dołączyli</option>
+          <option value="alfa">Alfabetycznie</option>
         </select>
         <select id="filter-status" onchange="goPage(1)" style="display:none">
           <option value="">Każdy status</option>
@@ -161,10 +173,10 @@
               <th style="min-width:210px">Adres</th>
               <th style="min-width:120px">Telefon</th>
               <th style="min-width:170px">E-mail</th>
-              <th style="min-width:50px;text-align:center" title="Chrzest">Ch</th>
-              <th style="min-width:50px;text-align:center" title="Komunia">K</th>
-              <th style="min-width:50px;text-align:center" title="Bierzmowanie">B</th>
-              <th style="min-width:50px;text-align:center" title="Ślub">Ś</th>
+              <th style="min-width:50px;text-align:center">Ch <span class="sakr-th-info" title="Chrzest — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze chrztów">i</span></th>
+              <th style="min-width:50px;text-align:center">K <span class="sakr-th-info" title="Komunia — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze I Komunii">i</span></th>
+              <th style="min-width:50px;text-align:center">B <span class="sakr-th-info" title="Bierzmowanie — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze bierzmowań">i</span></th>
+              <th style="min-width:50px;text-align:center">Ś <span class="sakr-th-info" title="Ślub — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze ślubów">i</span></th>
               <th style="min-width:105px">Dołączył/a</th>
               <th style="min-width:200px">Uwagi</th>
             </tr>
@@ -201,11 +213,17 @@
       </div>
       <div><label>Adres zamieszkania</label><input id="f-adres" type="text" placeholder="ul. Przykładowa 1, Czerwionka-Leszczyny"></div>
       <div><label>E-mail</label><input id="f-email" type="email" placeholder="opcjonalnie"></div>
-      <div class="section-divider">Sakramenty przyjęte</div>
+      <div class="section-divider">Sakramenty</div>
       <div class="sakr-items">
         <div class="sakr-item" id="item-chrzest">
           <label class="sakr-check-lbl"><input type="checkbox" id="s-chrzest" onchange="toggleSakrPanel('chrzest')"> Chrzest (Ch)</label>
           <div class="sakr-panel" id="panel-chrzest" style="display:none">
+            <div><label>Status</label>
+              <select id="sc-chrzest-status">
+                <option value="zaplanowany">Zaplanowany</option>
+                <option value="odbyl">Odbył się</option>
+              </select>
+            </div>
             <div class="row2">
               <div><label>Imię ojca</label><input type="text" id="sc-imie_ojca" placeholder="np. Piotr"></div>
               <div><label>Nazwisko ojca</label><input type="text" id="sc-nazwisko_ojca" placeholder="np. Kowalski"></div>
@@ -220,6 +238,12 @@
         <div class="sakr-item" id="item-komunia">
           <label class="sakr-check-lbl"><input type="checkbox" id="s-komunia" onchange="toggleSakrPanel('komunia')"> I Komunia Święta (K)</label>
           <div class="sakr-panel" id="panel-komunia" style="display:none">
+            <div><label>Status</label>
+              <select id="sc-komunia-status">
+                <option value="kandydat">Kandydat</option>
+                <option value="odbyl">Odbył się</option>
+              </select>
+            </div>
             <div><label>Data Komunii</label><input type="date" id="sc-datakom"></div>
             <div><label>Szkoła i klasa</label><input type="text" id="sc-szkola" placeholder="np. SP nr 3, kl. 3a"></div>
             <div><label>Rodzic / Opiekun</label><input type="text" id="sc-kom-rodzic" placeholder="np. Jan Kowalski"></div>
@@ -328,6 +352,7 @@
       showToast('Błąd wczytywania: ' + e.message);
       allData = [];
     }
+    buildFilterOptions();
     renderStats();
     renderTable();
   }
@@ -351,13 +376,33 @@
     var q = document.getElementById('search-input').value.trim().toLowerCase();
     var sakr = document.getElementById('filter-sakr').value;
     var st = document.getElementById('filter-status').value;
+    var rokDol = document.getElementById('filter-rok-dolaczenia').value;
+    var rokUr = document.getElementById('filter-rok-urodzenia').value;
     return allData.filter(function(d){
       var name = (d.imie+' '+d.nazwisko+' '+d.adres).toLowerCase();
       if(q && name.indexOf(q)===-1) return false;
       if(sakr && !(d.sakr && d.sakr[sakr])) return false;
       if(st && d.status !== st) return false;
+      if(rokDol && (d.data_dolaczenia||'').substring(0,4) !== rokDol) return false;
+      if(rokUr && (d.data_urodzenia||'').substring(0,4) !== rokUr) return false;
       return true;
     });
+  }
+
+  function buildFilterOptions(){
+    var roksDol={}, roksUr={};
+    allData.forEach(function(d){
+      var yd=(d.data_dolaczenia||'').substring(0,4); if(yd&&yd.length===4) roksDol[yd]=true;
+      var yu=(d.data_urodzenia||'').substring(0,4); if(yu&&yu.length===4) roksUr[yu]=true;
+    });
+    var sel=document.getElementById('filter-rok-dolaczenia');
+    var cur=sel.value;
+    sel.innerHTML='<option value="">Rok dołączenia</option>'+Object.keys(roksDol).sort(function(a,b){return b-a;}).map(function(y){return '<option value="'+y+'">'+y+'</option>';}).join('');
+    if(cur)sel.value=cur;
+    var sel2=document.getElementById('filter-rok-urodzenia');
+    var cur2=sel2.value;
+    sel2.innerHTML='<option value="">Rok urodzenia</option>'+Object.keys(roksUr).sort(function(a,b){return b-a;}).map(function(y){return '<option value="'+y+'">'+y+'</option>';}).join('');
+    if(cur2)sel2.value=cur2;
   }
 
   // ---- table + pagination ----
@@ -365,8 +410,17 @@
 
   function renderTable(){
     var rows = filtered();
-    // sort alphabetically by surname
-    rows.sort(function(a,b){ return (a.nazwisko+a.imie).localeCompare(b.nazwisko+b.imie,'pl'); });
+    var sortMode = (document.getElementById('filter-sort')||{}).value||'alfa';
+    if(sortMode==='newest'){
+      rows.sort(function(a,b){
+        var ac=a.created_at||'', bc=b.created_at||'';
+        if(ac&&bc) return bc.localeCompare(ac);
+        if(ac) return -1; if(bc) return 1;
+        return (a.nazwisko+a.imie).localeCompare(b.nazwisko+b.imie,'pl');
+      });
+    } else {
+      rows.sort(function(a,b){ return (a.nazwisko+a.imie).localeCompare(b.nazwisko+b.imie,'pl'); });
+    }
 
     var total = rows.length;
     var totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -478,12 +532,26 @@
   function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
   // ---- sakrament panels ----
-  function toggleSakrPanel(type){
+  var SAKR_NAMES={chrzest:'chrztów',komunia:'I Komunii Świętej',bierzmowanie:'bierzmowań',slub:'ślubów'};
+  async function toggleSakrPanel(type){
     var cb=document.getElementById('s-'+type);
     var panel=document.getElementById('panel-'+type);
     var item=document.getElementById('item-'+type);
     if(!panel) return;
     var open=cb&&cb.checked;
+    // Odznaczanie w trybie edycji — istniejący rekord
+    if(!open && editingId && editingSakrRecords && editingSakrRecords[type]){
+      var ok=confirm('Usunąć wpis z rejestru '+SAKR_NAMES[type]+'?\n\nTej operacji nie można cofnąć.');
+      if(!ok){ cb.checked=true; return; }
+      try{
+        await apiFetch('/api/sakramenty/'+editingSakrRecords[type].id,{method:'DELETE'});
+        delete editingSakrRecords[type];
+      }catch(e){
+        alert('Błąd usuwania wpisu: '+e.message);
+        cb.checked=true;
+        return;
+      }
+    }
     panel.style.display=open?'':'none';
     if(item) item.classList.toggle('open',open);
     if(open){
@@ -533,6 +601,8 @@
      'sc-oblubieniec','sc-oblubienica','sc-datasl','sc-miejsce_slubu'].forEach(function(id){
       var el=document.getElementById(id); if(el)el.value='';
     });
+    var csEl=document.getElementById('sc-chrzest-status');if(csEl)csEl.value='zaplanowany';
+    var ksEl=document.getElementById('sc-komunia-status');if(ksEl)ksEl.value='kandydat';
     var bsEl=document.getElementById('sc-bierzmowanie-status');if(bsEl)bsEl.value='kandydat';
     var tsEl=document.getElementById('sc-typ_slubu');if(tsEl)tsEl.value='konkordatowy';
     var ssEl=document.getElementById('sc-status_slubu');if(ssEl)ssEl.value='kandydat';
@@ -571,6 +641,8 @@
      'sc-oblubieniec','sc-oblubienica','sc-datasl','sc-miejsce_slubu'].forEach(function(fid){
       var el=document.getElementById(fid);if(el)el.value='';
     });
+    var csEl=document.getElementById('sc-chrzest-status');if(csEl)csEl.value='zaplanowany';
+    var ksEl=document.getElementById('sc-komunia-status');if(ksEl)ksEl.value='kandydat';
     var bsEl=document.getElementById('sc-bierzmowanie-status');if(bsEl)bsEl.value='kandydat';
     var tsEl=document.getElementById('sc-typ_slubu');if(tsEl)tsEl.value='konkordatowy';
     var ssEl=document.getElementById('sc-status_slubu');if(ssEl)ssEl.value='kandydat';
@@ -591,6 +663,7 @@
         sv('sc-imie_ojca',sc.imie_ojca);sv('sc-nazwisko_ojca',sc.nazwisko_ojca);
         sv('sc-imie_matki',sc.imie_matki);sv('sc-nazwisko_matki',sc.nazwisko_matki);
         sv('sc-datachrztu',sc.datachrztu);
+        if(sc.status){var csEl2=document.getElementById('sc-chrzest-status');if(csEl2)csEl2.value=sc.status;}
         document.getElementById('s-chrzest').checked=true;toggleSakrPanel('chrzest');
       }
       var sb=editingSakrRecords.bierzmowanie;
@@ -603,6 +676,7 @@
       var sk=editingSakrRecords.komunia;
       if(sk){
         sv('sc-datakom',sk.datakom);sv('sc-szkola',sk.szkola);sv('sc-kom-rodzic',sk.rodzic);
+        if(sk.status){var ksEl2=document.getElementById('sc-komunia-status');if(ksEl2)ksEl2.value=sk.status;}
         document.getElementById('s-komunia').checked=true;toggleSakrPanel('komunia');
       }
       var ss=editingSakrRecords.slub;
@@ -659,6 +733,7 @@
           {key:'chrzest', checked:rec.sakr.chrzest, build:function(){
             var o={type:'chrzciny',imie:imie,nazwisko:nazwisko,parafianin_id:editingId};
             if(dataUr2)o.dataurodzenia=dataUr2;
+            var csEl4=document.getElementById('sc-chrzest-status');if(csEl4)o.status=csEl4.value;
             if(getVal2('sc-imie_ojca'))     o.imie_ojca=getVal2('sc-imie_ojca');
             if(getVal2('sc-nazwisko_ojca')) o.nazwisko_ojca=getVal2('sc-nazwisko_ojca');
             if(getVal2('sc-imie_matki'))    o.imie_matki=getVal2('sc-imie_matki');
@@ -682,6 +757,7 @@
           {key:'komunia', checked:rec.sakr.komunia, build:function(){
             var o={type:'komunia',imie:imie,nazwisko:nazwisko,parafianin_id:editingId};
             if(dataUr2)o.dataurodzenia=dataUr2;
+            var ksEl4=document.getElementById('sc-komunia-status');if(ksEl4)o.status=ksEl4.value;
             if(getVal2('sc-datakom'))   o.datakom=getVal2('sc-datakom');
             if(getVal2('sc-szkola'))    o.szkola=getVal2('sc-szkola');
             if(getVal2('sc-kom-rodzic'))o.rodzic=getVal2('sc-kom-rodzic');
@@ -727,6 +803,7 @@
         if(rec.sakr.chrzest){
           var dc={type:'chrzciny',imie:imie,nazwisko:nazwisko,parafianin_id:created.id};
           if(dataUr) dc.dataurodzenia=dataUr;
+          dc.status=(document.getElementById('sc-chrzest-status')||{}).value||'zaplanowany';
           if(getVal('sc-imie_ojca'))      dc.imie_ojca=getVal('sc-imie_ojca');
           if(getVal('sc-nazwisko_ojca'))  dc.nazwisko_ojca=getVal('sc-nazwisko_ojca');
           if(getVal('sc-imie_matki'))     dc.imie_matki=getVal('sc-imie_matki');
@@ -740,6 +817,7 @@
         if(rec.sakr.komunia){
           var dkom={type:'komunia',imie:imie,nazwisko:nazwisko,parafianin_id:created.id};
           if(dataUr) dkom.dataurodzenia=dataUr;
+          dkom.status=(document.getElementById('sc-komunia-status')||{}).value||'kandydat';
           if(getVal('sc-datakom'))     dkom.datakom=getVal('sc-datakom');
           if(getVal('sc-komunia-rok')) dkom.rok=parseInt(getVal('sc-komunia-rok'));
           if(getVal('sc-szkola'))      dkom.szkola=getVal('sc-szkola');
@@ -777,6 +855,7 @@
         }
       }
       closeModal();
+      buildFilterOptions();
       renderStats();
       renderTable();
       showToast(editingId?'Zaktualizowano dane.':'Dodano parafianina.');

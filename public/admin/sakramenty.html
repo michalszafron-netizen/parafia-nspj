@@ -148,11 +148,11 @@
 
       <div class="filter-bar" id="sak-filters">
         <input type="text" id="sak-search" placeholder="Szukaj po nazwisku…" oninput="onFilterChange()">
-        <select id="sak-year" onchange="onFilterChange()"></select>
+        <select id="sak-year" onchange="onYearChange()"></select>
         <select id="sak-status" onchange="onFilterChange()"></select>
         <select id="sak-sort" onchange="onFilterChange()" title="Kolejność">
+          <option value="created_at">Ostatnio dodane</option>
           <option value="rok">Sortuj wg roku sakramentu</option>
-          <option value="created_at">Sortuj wg daty dodania do bazy</option>
         </select>
         <span class="results" id="sak-results" style="margin-left:auto;font-size:.85rem;color:var(--ink-soft)"></span>
       </div>
@@ -245,9 +245,12 @@ var STATUS_LABELS={
   gotowy:{l:'Gotowy',c:'gotowy'},
   przyjal:{l:'Przyjął',c:'przyjal'},
   zaplanowany:{l:'Zaplanowany',c:'gotowy'},
-  odbyl_sie:{l:'Odbył się',c:'przyjal'}
+  odbyl_sie:{l:'Odbył się',c:'przyjal'},
+  odbyl:{l:'Odbył się',c:'przyjal'},
+  tak:{l:'Odbył się',c:'przyjal'},
+  '':{l:'Brak statusu',c:'kandydat'}
 };
-function badge(s){var x=STATUS_LABELS[s]||{l:s,c:'kandydat'};return '<span class="status-badge '+x.c+'">● '+esc(x.l)+'</span>';}
+function badge(s){var x=(s in STATUS_LABELS)?STATUS_LABELS[s]:{l:s||'Brak statusu',c:'kandydat'};return '<span class="status-badge '+x.c+'">● '+esc(x.l)+'</span>';}
 
 var ACT_BTNS='<div class="row-actions"><button class="btn-edit" title="Edytuj"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10z"/></svg></button><button class="btn-del" title="Usuń"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1z"/></svg></button></div>';
 
@@ -286,14 +289,27 @@ function getFilteredRows(){
 
 function onFilterChange(){ renderTable(); }
 
+function onYearChange(){
+  var year=document.getElementById('sak-year').value;
+  var currentYear=new Date().getFullYear().toString();
+  var sortEl=document.getElementById('sak-sort');
+  if(year===currentYear||year===''){
+    sortEl.value='created_at';
+  } else {
+    sortEl.value='rok';
+  }
+  renderTable();
+}
+
 // Buduje opcje filtrów (lata z danych + statusy). Domyślnie bieżący rok, jeśli jest w danych.
 function buildFilterOptions(){
+  var currentYear=new Date().getFullYear().toString();
   var years={};
   allData.forEach(function(d){ if(d.rok) years[d.rok]=true; });
   var yearList=Object.keys(years).sort(function(a,b){return b-a;});
   var ysel=document.getElementById('sak-year');
   ysel.innerHTML='<option value="">Wszystkie lata</option>'+yearList.map(function(y){return '<option value="'+y+'">'+y+'</option>';}).join('');
-  ysel.value = '';
+  ysel.value=yearList.includes(currentYear)?currentYear:'';
 
   var ssel=document.getElementById('sak-status');
   ssel.innerHTML='<option value="">Każdy status</option>'+Object.keys(STATUS_LABELS).map(function(k){return '<option value="'+k+'">'+STATUS_LABELS[k].l+'</option>';}).join('');

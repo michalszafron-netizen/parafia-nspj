@@ -66,9 +66,21 @@
 
   .quick-add{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:18px;margin-top:18px}
   .quick-add h3{margin:0 0 14px}
-  .qa-grid{display:grid;grid-template-columns:1fr 1fr 1fr 2fr 1fr;gap:10px;align-items:end}
+  .qa-grid{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+  .qa-grid>div{flex-shrink:0}
+  .qa-grid>div:nth-child(1){flex:0 0 148px}
+  .qa-grid>div:nth-child(2){flex:0 0 175px}
+  .qa-grid>div:nth-child(3){flex:0 0 158px}
+  .qa-grid>div:nth-child(4){flex:1 1 180px}
+  .qa-grid>div:nth-child(5){flex:0 0 148px}
+  .qa-grid>div:nth-child(6){flex:0 0 168px}
+  .qa-grid>div:nth-child(7){flex:0 0 150px}
   .qa-grid input,.qa-grid select{padding:8px 10px;border:1px solid var(--line);border-radius:5px;font-size:.88rem;width:100%;background:var(--white)}
   .qa-grid label{font-size:.78rem;color:var(--ink-soft);font-weight:600;display:block;margin-bottom:4px}
+  .qa-sms-days-wrap{display:flex;align-items:center;gap:5px;padding:8px 10px;border:1px solid var(--line);border-radius:5px;background:var(--white);height:36px;box-sizing:border-box}
+  .qa-sms-days-wrap input[type=number]{border:none;background:transparent;width:34px;font-size:.85rem;padding:0;text-align:center}
+  .qa-sms-days-wrap input[type=checkbox]{width:14px;height:14px;cursor:pointer;flex-shrink:0}
+  .qa-sms-days-wrap span{font-size:.80rem;color:var(--ink-soft);white-space:nowrap}
 
   /* Modal */
   .int-modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
@@ -85,7 +97,7 @@
   .toast.show{opacity:1;transform:translateY(0)}
 
   @media(max-width:1280px){.calendar{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:900px){.qa-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:860px){.qa-grid{grid-template-columns:1fr 1fr 1fr;gap:8px}}
 
   /* Zgłoszenia parafian */
   .pending-panel{background:var(--white);border:1px solid var(--copper);border-radius:8px;margin-bottom:18px;overflow:hidden}
@@ -195,12 +207,12 @@
 
       <!-- Panel przypomnień SMS -->
       <div class="sms-reminder-panel">
-        <h4>Przypomnienia SMS o intencjach</h4>
+        <h4>Przypomnienia SMS o intencjach <span id="sms-counter" style="font-weight:400;font-size:.78rem;color:var(--ink-soft);margin-left:10px;text-transform:none;letter-spacing:0">ładowanie…</span></h4>
         <div class="sms-rem-row">
-          <label>
-            <input type="checkbox" id="sms-rem-enabled" onchange="toggleReminderPanel()">
-            Włącz automatyczne przypomnienia SMS — ustawienie per-intencja (kliknij 🔔 przy każdej mszy)
-          </label>
+          <span style="font-size:.85rem;color:var(--ink-soft)">Ustawienie per-intencja — kliknij 🔔 przy każdej mszy</span>
+        </div>
+        <div id="sms-limit-banner" style="display:none;margin-top:8px;padding:8px 14px;background:#fdecea;border:1px solid #e74c3c;border-radius:6px;color:#c0392b;font-size:.85rem;font-weight:600">
+          ⛔ Miesięczny limit 300 SMS został wyczerpany. Kolejne SMS-y będą dostępne od 1. dnia następnego miesiąca. Aby zwiększyć limit — skontaktuj się z administratorem.
         </div>
       </div>
 
@@ -263,7 +275,24 @@
             <label>Treść intencji</label>
             <input type="text" id="qa-intention" placeholder="np. Maria Kowalska - w 1. rocznicę śmierci, prosi rodzina">
           </div>
-          <button class="btn btn-primary" id="qa-btn">
+          <div>
+            <label>Nr tel. <span style="font-weight:400;font-size:.8rem;color:var(--ink-soft)">(SMS)</span></label>
+            <input type="tel" id="qa-phone" placeholder="np. 600 123 456">
+          </div>
+          <div>
+            <label>SMS dni przed</label>
+            <div class="qa-sms-days-wrap">
+              <input type="checkbox" id="qa-sms-enabled" title="Wyślij SMS przypomnienie">
+              <span>wyślij</span>
+              <input type="number" id="qa-days-before" min="1" max="30" value="1">
+              <span>dni wcz.</span>
+            </div>
+          </div>
+          <div>
+            <label>Zamawiający</label>
+            <input type="text" id="qa-zamawiajacy" placeholder="np. Jan Kowalski">
+          </div>
+          <button class="btn btn-primary" id="qa-btn" style="white-space:nowrap;align-self:flex-end">
             <svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
             Dodaj
           </button>
@@ -299,6 +328,8 @@
       </select>
       <label>Treść intencji</label>
       <input type="text" id="m-intention" placeholder="np. Za śp. Marię Nowak - prosi rodzina">
+      <label>Zamawiający (imię i nazwisko)</label>
+      <input type="text" id="m-zamawiajacy" placeholder="np. Jan Kowalski">
       <label id="m-phone-label" style="display:none">Nr telefonu</label>
       <input type="tel" id="m-phone" placeholder="np. 600 123 456" style="display:none">
     </div>
@@ -449,7 +480,7 @@ function renderGroupedList(list, emptyMsg){
     var items = arr.map(function(m){
       return '<div class="li-row">' + massCheck(m)
         + '<span class="li-time">' + esc(m.time) + '</span>'
-        + '<span class="li-int">' + esc(m.intention) + '</span>'
+        + '<span class="li-int">' + esc(m.intention) + (m.zamawiajacy ? ' <span style="font-size:.78rem;color:var(--ink-soft)">(zam. ' + esc(m.zamawiajacy) + ')</span>' : '') + '</span>'
         + payBadge(m)
         + bellHtmlI(m)
         + '<button class="edit-int-btn2" data-id="' + esc(m.id) + '" title="Edytuj">✏</button>'
@@ -505,7 +536,7 @@ function renderCalendar() {
     var massHtml = dayInts.map(function(m){
       return '<div class="mass">' + massCheck(m)
         + '<div class="mass-time">' + esc(m.time) + '</div>'
-        + '<div class="mass-int">' + esc(m.intention) + '</div>'
+        + '<div class="mass-int">' + esc(m.intention) + (m.zamawiajacy ? '<div style="font-size:.75rem;color:var(--ink-soft);margin-top:2px">zam. ' + esc(m.zamawiajacy) + '</div>' : '') + '</div>'
         + payBadge(m)
         + bellHtml(m)
         + '<button class="edit-int-btn" data-id="' + esc(m.id) + '" title="Edytuj">✏</button>'
@@ -632,7 +663,7 @@ function openRemModal(id) {
   var item = allIntencje.find(function(i){ return String(i.id) === String(id); });
   if (!item) return;
   currentRemId = id;
-  document.getElementById('rem-mass-info').textContent = 'Intencja: ' + item.intention + ' · ' + formatDatePl(item.date) + ' godz. ' + item.time;
+  document.getElementById('rem-mass-info').textContent = 'Intencja: ' + item.intention + (item.zamawiajacy ? ' · zam. ' + item.zamawiajacy : '') + ' · ' + formatDatePl(item.date) + ' godz. ' + item.time;
   document.getElementById('rem-phone').value = item.telefon || '';
   var hasR1 = !!item.r1_date;
   var showR1 = hasR1 || !item.r1_date;
@@ -647,8 +678,7 @@ function openRemModal(id) {
   document.getElementById('rem-r1-row').style.display = '';
   document.getElementById('rem-r1-send').textContent = hasR1 ? formatDatePl(item.r1_date) + ' ' + String(item.r1_hour!=null?item.r1_hour:14).padStart(2,'0') + ':00' : '';
   var hasR2 = !!item.r2_date;
-  var showR2 = hasR2 || !item.r2_date;
-  document.getElementById('rem-r2-en').checked = showR2;
+  document.getElementById('rem-r2-en').checked = hasR2;
   var r2dv = 3;
   if (hasR2 && item.date) {
     var diff2 = Math.round((new Date(item.date+'T12:00:00') - new Date(item.r2_date+'T12:00:00')) / 86400000);
@@ -656,7 +686,7 @@ function openRemModal(id) {
   }
   document.getElementById('rem-r2-days').value = r2dv;
   buildHourOptions('rem-r2-hour', hasR2 && item.r2_hour != null ? item.r2_hour : 14);
-  document.getElementById('rem-r2-row').style.display = '';
+  document.getElementById('rem-r2-row').style.display = hasR2 ? '' : 'none';
   document.getElementById('rem-r2-send').textContent = hasR2 ? formatDatePl(item.r2_date) + ' ' + String(item.r2_hour!=null?item.r2_hour:14).padStart(2,'0') + ':00' : '';
   document.getElementById('rem-massdate').value = item.date;
   document.getElementById('rem-modal').style.display = 'flex';
@@ -782,7 +812,13 @@ async function acceptPending(id) {
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({to: item.telefon, msg: msg})
       }).then(function(r){ return r.json(); }).then(function(data){
-        showToast(data.ok ? 'Intencja zaakceptowana ✓ · SMS wyslany' : 'Intencja zaakceptowana ✓ · SMS: ' + (data.error || 'blad'));
+        if (data.error && data.error.indexOf('limit') !== -1) {
+          showToast('Intencja zaakceptowana ✓ · ⛔ Limit SMS wyczerpany');
+          var banner = document.getElementById('sms-limit-banner');
+          if (banner) banner.style.display = 'block';
+        } else {
+          showToast(data.ok ? 'Intencja zaakceptowana ✓ · SMS wyslany' : 'Intencja zaakceptowana ✓ · SMS: ' + (data.error || 'blad'));
+        }
       }).catch(function(){ showToast('Intencja zaakceptowana ✓ · SMS: blad polaczenia'); });
     } else {
       showToast('Intencja zaakceptowana ✓');
@@ -811,6 +847,7 @@ function openModal(date) {
   document.getElementById('m-time').value = '17:00';
   document.getElementById('m-type').value = 'za_zm_p';
   document.getElementById('m-intention').value = '';
+  document.getElementById('m-zamawiajacy').value = '';
   document.getElementById('m-phone-label').style.display = 'none';
   document.getElementById('m-phone').style.display = 'none';
   if(window.fpSync)window.fpSync();
@@ -829,6 +866,7 @@ function editPending(id) {
   document.getElementById('m-time').value = item.time;
   document.getElementById('m-type').value = item.type;
   document.getElementById('m-intention').value = item.intention;
+  document.getElementById('m-zamawiajacy').value = item.imie || '';
   document.getElementById('m-phone').value = item.telefon || '';
   document.getElementById('m-phone-label').style.display = '';
   document.getElementById('m-phone').style.display = '';
@@ -846,6 +884,7 @@ function openEditModal(item) {
   document.getElementById('m-time').value = item.time;
   document.getElementById('m-type').value = item.type;
   document.getElementById('m-intention').value = item.intention;
+  document.getElementById('m-zamawiajacy').value = item.zamawiajacy || '';
   document.getElementById('m-phone-label').style.display = 'none';
   document.getElementById('m-phone').style.display = 'none';
   if(window.fpSync)window.fpSync();
@@ -860,6 +899,7 @@ async function saveFromModal() {
   var time = document.getElementById('m-time').value;
   var type = document.getElementById('m-type').value;
   var intention = document.getElementById('m-intention').value.trim();
+  var zamawiajacy = document.getElementById('m-zamawiajacy').value.trim();
   if (!date || !time || !intention) { showToast('Wypełnij wszystkie pola'); return; }
   try {
     if (currentEditId && isPendingEdit) {
@@ -877,7 +917,7 @@ async function saveFromModal() {
       var updated = await apiFetch('/api/intencje/' + currentEditId, {
         method: 'PUT',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(Object.assign({}, item, {date: date, time: time, type: type, intention: intention}))
+        body: JSON.stringify(Object.assign({}, item, {date: date, time: time, type: type, intention: intention, zamawiajacy: zamawiajacy}))
       });
       var idx = allIntencje.findIndex(function(i){ return i.id === currentEditId; });
       if (idx !== -1) allIntencje[idx] = updated;
@@ -888,7 +928,7 @@ async function saveFromModal() {
       var newInt = await apiFetch('/api/intencje', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({date: date, time: time, type: type, intention: intention})
+        body: JSON.stringify({date: date, time: time, type: type, intention: intention, zamawiajacy: zamawiajacy})
       });
       allIntencje.push(newInt);
       closeModal();
@@ -904,17 +944,36 @@ async function saveFromQuickAdd() {
   var time = document.getElementById('qa-time').value;
   var type = document.getElementById('qa-type').value;
   var intention = document.getElementById('qa-intention').value.trim();
+  var phone = (document.getElementById('qa-phone').value || '').trim();
+  var smsEnabled = document.getElementById('qa-sms-enabled').checked;
+  var zamawiajacy = (document.getElementById('qa-zamawiajacy').value || '').trim();
   if (!date || !time || !intention) { showToast('Wypełnij wszystkie pola'); return; }
+  var days = parseInt(document.getElementById('qa-days-before').value) || 1;
+  if (phone && smsEnabled) {
+    var remDate = new Date(date + 'T00:00:00');
+    remDate.setDate(remDate.getDate() - days);
+    var today = new Date(); today.setHours(0,0,0,0);
+    if (remDate < today) {
+      var remStr = remDate.getDate() + '.' + String(remDate.getMonth()+1).padStart(2,'0') + '.' + remDate.getFullYear();
+      showToast('SMS niemożliwy — data przypomnienia (' + remStr + ') już minęła. Zmniejsz liczbę dni.');
+      return;
+    }
+  }
+  var payload = {date: date, time: time, type: type, intention: intention};
+  if (zamawiajacy) payload.zamawiajacy = zamawiajacy;
+  if (phone) payload.telefon = phone;
+  if (phone && smsEnabled) payload.r1_days = days;
   try {
     var newInt = await apiFetch('/api/intencje', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({date: date, time: time, type: type, intention: intention})
+      body: JSON.stringify(payload)
     });
     allIntencje.push(newInt);
     document.getElementById('qa-intention').value = '';
+    document.getElementById('qa-phone').value = '';
     renderCalendar();
-    showToast('Intencja dodana ✓');
+    showToast('Intencja dodana ✓' + (phone && smsEnabled ? ' · SMS zaplanowany' : ''));
   } catch(e) { alert('Błąd: ' + e.message); }
 }
 
@@ -1029,9 +1088,35 @@ renderCalendar();
     if (tog) tog.checked = !!s.publicIntForm;
     var remEn = document.getElementById('sms-rem-enabled');
     if (remEn) remEn.checked = !!s.smsRemindersEnabled;
+    var dbEl = document.getElementById('sms-days-before');
+    if (dbEl && s.smsAutoRemindDays) dbEl.value = s.smsAutoRemindDays;
+  } catch(e) {}
+  try {
+    var stats = await apiFetch('/api/sms/stats');
+    var el = document.getElementById('sms-counter');
+    if (el) {
+      var pct = Math.round((stats.thisMonth / stats.limit) * 100);
+      var color = pct >= 100 ? '#c0392b' : pct >= 90 ? '#c0392b' : pct >= 70 ? '#e67e22' : 'var(--ink-soft)';
+      el.textContent = '[' + stats.thisMonth + '/' + stats.limit + ' SMS w tym miesiącu]';
+      el.style.color = color;
+      var banner = document.getElementById('sms-limit-banner');
+      if (banner) banner.style.display = stats.thisMonth >= stats.limit ? 'block' : 'none';
+    }
   } catch(e) {}
   renderPendingPanel();
 })();
+
+async function saveSmsSettings() {
+  var days = parseInt(document.getElementById('sms-days-before').value) || 1;
+  try {
+    await apiFetch('/api/settings', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({smsAutoRemindDays: days})
+    });
+    showToast('Ustawienia SMS zapisane ✓');
+  } catch(e) { showToast('Błąd zapisu ustawień'); }
+}
 
 // Nawigacja tygodniami
 document.getElementById('btn-prev').addEventListener('click', function() {
