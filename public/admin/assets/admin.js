@@ -122,17 +122,17 @@ window.printZgloszeniePogrzebuDoc = function (d) {
     '.doc-title{text-align:center;font-size:15pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;margin:6mm 0 8mm;border-bottom:1pt solid #aaa;padding-bottom:4mm}'+
     '.field{display:flex;align-items:flex-end;margin-bottom:6mm}'+
     '.fl{font-size:10pt;min-width:60mm;flex-shrink:0;padding-right:3mm;line-height:1.3}'+
-    '.fv{flex:1;border-bottom:1pt solid #555;padding:0 3mm 1.5mm;font-size:11pt;min-height:6.5mm;line-height:1.4}'+
+    '.fv{flex:1;border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
     '.field-pogrzeb{display:flex;align-items:flex-end;margin-bottom:6mm}'+
     '.field-pogrzeb .fl{min-width:60mm}'+
-    '.field-pogrzeb .fv-date{border-bottom:1pt solid #555;padding:0 3mm 1.5mm;font-size:11pt;min-height:6.5mm;width:50mm;flex-shrink:0}'+
+    '.field-pogrzeb .fv-date{border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;width:50mm;flex-shrink:0;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
     '.field-pogrzeb .sep{padding:0 4mm 1.5mm;font-size:10pt;flex-shrink:0}'+
-    '.field-pogrzeb .fv-godz{border-bottom:1pt solid #555;padding:0 3mm 1.5mm;font-size:11pt;min-height:6.5mm;width:22mm;flex-shrink:0}'+
+    '.field-pogrzeb .fv-godz{border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;width:22mm;flex-shrink:0;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
     '.cmt-head{display:flex;align-items:flex-end;margin-bottom:3mm}'+
     '.cmt-grid{display:flex;gap:6mm;margin-bottom:6mm}'+
     '.ci{flex:1}'+
     '.ci .cl{font-size:8.5pt;margin-bottom:1.5mm;color:#333}'+
-    '.ci .cv{border-bottom:1pt solid #555;padding:0 3mm 1.5mm;font-size:11pt;min-height:6.5mm}'+
+    '.ci .cv{border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box;width:100%}'+
     '.sig{display:flex;justify-content:space-between;align-items:flex-end;margin-top:15mm}'+
     '.sig-note{font-size:8.5pt;color:#666}'+
     '.sig-r{text-align:center}'+
@@ -158,31 +158,30 @@ window.printZgloszeniePogrzebuDoc = function (d) {
       '<div class="hdr-spacer"></div>'+
     '</div>'+
     '<div class="doc-title">Zgłoszenie Pogrzebu</div>'+
-    '<div class="field"><div class="fl">Nazwisko i Imię</div><div class="fv">'+v(imieNazwisko)+'</div></div>'+
-    '<div class="field"><div class="fl">Data Zgonu</div><div class="fv">'+v(fmtDate(d.data_zgonu))+'</div></div>'+
+    '<div class="field"><div class="fl">Nazwisko i Imię</div><input type="text" class="fv" value="'+v(imieNazwisko)+'"></div>'+
+    '<div class="field"><div class="fl">Data Zgonu</div><input type="text" class="fv" value="'+v(fmtDate(d.data_zgonu))+'"></div>'+
     '<div class="field-pogrzeb">'+
       '<div class="fl">Data Pogrzebu</div>'+
-      '<div class="fv-date">'+v(fmtDate(d.data_pogrzebu))+'</div>'+
+      '<input type="text" class="fv-date" value="'+v(fmtDate(d.data_pogrzebu))+'">'+
       '<div class="sep">godz.</div>'+
-      '<div class="fv-godz">'+v(d.godz_pogrzebu)+'</div>'+
+      '<input type="text" class="fv-godz" value="'+v(d.godz_pogrzebu)+'">'+
     '</div>'+
-    '<div class="field"><div class="fl">Miejsce Ceremonii</div><div class="fv">'+v(d.miejsce_ceremonii)+'</div></div>'+
-    '<div class="field"><div class="fl">Miejsce zamieszkania</div><div class="fv">'+v(d.miejsce_zam)+'</div></div>'+
-    '<div class="field"><div class="fl">Data i miejsce urodzenia</div><div class="fv">'+v(dataMiejsce)+'</div></div>'+
-    '<div class="field"><div class="fl">Rodzice zmarłego/ej</div><div class="fv">'+v(d.rodzice)+'</div></div>'+
-    '<div class="cmt-head"><div class="fl">Cmentarz</div><div class="fv" style="flex:1">'+v(d.cmentarz)+'</div></div>'+
+    '<div class="field"><div class="fl">Miejsce Ceremonii</div><input type="text" class="fv" value="'+v(d.miejsce_ceremonii)+'"></div>'+
+    '<div class="field"><div class="fl">Miejsce zamieszkania</div><input type="text" class="fv" value="'+v(d.miejsce_zam)+'"></div>'+
+    '<div class="field"><div class="fl">Data i miejsce urodzenia</div><input type="text" class="fv" value="'+v(dataMiejsce)+'"></div>'+
+    '<div class="field"><div class="fl">Rodzice zmarłego/ej</div><input type="text" class="fv" value="'+v(d.rodzice)+'"></div>'+
+    '<div class="cmt-head"><div class="fl">Cmentarz</div><input type="text" class="fv" style="flex:1" value="'+v(d.cmentarz)+'"></div>'+
     '<div class="cmt-grid">'+
-      '<div class="ci"><div class="cl">Sektor</div><div class="cv">'+v(d.sektor)+'</div></div>'+
-      '<div class="ci"><div class="cl">Rząd</div><div class="cv">'+v(d.rzad)+'</div></div>'+
-      '<div class="ci"><div class="cl">Miejsce grobu</div><div class="cv">'+v(d.miejsce_grobu)+'</div></div>'+
+      '<div class="ci"><div class="cl">Sektor</div><input type="text" class="cv" value="'+v(d.sektor)+'"></div>'+
+      '<div class="ci"><div class="cl">Rząd</div><input type="text" class="cv" value="'+v(d.rzad)+'"></div>'+
+      '<div class="ci"><div class="cl">Miejsce grobu</div><input type="text" class="cv" value="'+v(d.miejsce_grobu)+'"></div>'+
     '</div>'+
-    '<div class="field"><div class="fl">Kto odprawił</div><div class="fv">'+v(d.ksiadz)+'</div></div>'+
+    '<div class="field"><div class="fl">Kto odprawił</div><input type="text" class="fv" value="'+v(d.ksiadz)+'"></div>'+
     '<div class="sig">'+
       '<div class="sig-note">Wygenerowano: '+todayStr+'</div>'+
       '<div class="sig-r"><div class="sl"></div><div class="slb">Proboszcz</div></div>'+
     '</div>'+
     '</div>'+
-    '<scr'+'ipt>window.onload=function(){window.print();window.addEventListener("afterprint",function(){window.close();});};</scr'+'ipt>'+
     '</body></html>';
 
   var w = window.open('','_blank','width=820,height=900,scrollbars=yes');
@@ -200,9 +199,7 @@ window.printSwiadectwoChrztuDoc = function (d) {
   function fmtD(str){if(!str)return'';var p=str.split('-');if(p.length!==3)return str;return p[2]+'.'+p[1]+'.'+p[0];}
   function v(s){return esc(s||'');}
   function dotLine(val,width){
-    return val
-      ? '<span style="border-bottom:1.2pt dotted #555;display:inline-block;min-width:'+width+';padding:0 2mm 1mm;font-size:11pt">'+esc(val)+'</span>'
-      : '<span style="border-bottom:1.2pt dotted #555;display:inline-block;min-width:'+width+';padding:0 2mm 1mm">&nbsp;</span>';
+    return '<input type="text" style="border-bottom:1.2pt dotted #555;border-top:none;border-left:none;border-right:none;display:inline-block;min-width:'+width+';padding:0 2mm 1mm;font-size:11pt;background:transparent;font-family:\'Times New Roman\',Times,serif;color:#000;outline:none;box-sizing:border-box" value="'+esc(val)+'">';
   }
 
   var ksiegaRef='';
@@ -359,7 +356,6 @@ window.printSwiadectwoChrztuDoc = function (d) {
       '</div>'+
     '</div>'+
     '</div></div>'+
-    '<scr'+'ipt>window.onload=function(){window.print();window.addEventListener("afterprint",function(){window.close();});};</scr'+'ipt>'+
     '</body></html>';
 
   var w=window.open('','_blank','width=1000,height=750,scrollbars=yes');

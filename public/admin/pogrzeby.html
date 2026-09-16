@@ -60,6 +60,64 @@
   .linked-badge{display:block;font-size:.78rem;color:#2e7a3a;background:rgba(46,122,58,.1);padding:5px 10px;border-radius:6px;margin-top:6px}
   .deceased-mark{color:var(--burgundy);margin-right:4px;cursor:help}
 
+  /* Zakładki */
+  .tabs-nav{display:flex;gap:0;border-bottom:2px solid var(--line);margin-bottom:24px}
+  .tab-btn{padding:10px 22px;font-size:.88rem;font-weight:600;color:var(--ink-soft);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;transition:all .15s}
+  .tab-btn.active{color:var(--burgundy);border-bottom-color:var(--burgundy)}
+  .tab-btn:hover:not(.active){color:var(--ink)}
+  .tab-pane{display:none}
+  .tab-pane.active{display:block}
+
+  /* Kartoteka grobów */
+  .groby-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:22px}
+  .grob-stat{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start}
+  .grob-stat .n{font-family:'Playfair Display',serif;font-size:1.9rem;line-height:1;color:var(--ink);font-weight:600}
+  .grob-stat .l{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:6px}
+  .groby-filter{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+  .groby-filter input{padding:9px 14px;border:1px solid var(--line);border-radius:7px;font-size:.88rem;background:var(--white);color:var(--ink);width:300px}
+  .groby-filter input:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.15)}
+  .sektor-pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  .sektor-pill{padding:5px 11px;border:1px solid var(--line);border-radius:18px;background:var(--white);color:var(--ink);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
+  .sektor-pill:hover{border-color:var(--burgundy);color:var(--burgundy)}
+  .sektor-pill.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .groby-tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:4px}
+  .groby-tbl{width:100%;border-collapse:collapse}
+  .groby-tbl th{background:var(--bg);font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:11px 16px;text-align:left;border-bottom:2px solid var(--line);white-space:nowrap}
+  .groby-tbl td{padding:12px 16px;border-bottom:1px solid var(--line);font-size:.88rem;vertical-align:middle}
+  .groby-tbl tbody tr:last-child td{border-bottom:none}
+  .groby-tbl tbody tr:hover td{background:rgba(122,31,43,.025);cursor:pointer}
+  .groby-tbl .loc-main{font-weight:700;font-size:.93rem;color:var(--ink);white-space:nowrap}
+  .groby-tbl .loc-arch{font-size:.73rem;color:var(--ink-soft);margin-top:2px;white-space:nowrap}
+  .groby-tbl .osoby-cell{max-width:480px}
+  .groby-tbl .osoba-row{font-size:.87rem;color:var(--ink);line-height:1.4}
+  .groby-tbl .osoba-daty{font-size:.76rem;color:var(--ink-soft);margin-left:4px}
+  #tab-kartoteka{padding-top:4px}
+  .badge-live{display:inline-block;background:#e8f0f8;color:#3a6ea8;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+  .badge-upl{display:inline-block;background:#fef3cd;color:#856404;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:10px}
+  .badge-ok{display:inline-block;background:#e2f0e6;color:#2e7a3a;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:10px}
+  .groby-pag{display:flex;gap:5px;justify-content:center;margin-top:20px;flex-wrap:wrap;align-items:center}
+  .groby-pag button{padding:6px 13px;border:1px solid var(--line);border-radius:7px;background:var(--white);cursor:pointer;font-size:.84rem;transition:all .15s}
+  .groby-pag button:hover:not(:disabled){border-color:var(--burgundy);color:var(--burgundy)}
+  .groby-pag button.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .groby-pag button:disabled{opacity:.35;cursor:default}
+
+  /* Modal kartoteki */
+  .gm-overlay{position:fixed;inset:0;z-index:1099;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center}
+  .gm-overlay.open{display:flex}
+  .gm-box{background:var(--white);border-radius:12px;padding:26px;width:600px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  .gm-box h3{margin:0 0 16px;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--ink)}
+  .gm-section{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:4px 0 2px;border-bottom:1px solid var(--line);margin:10px 0 8px}
+  .gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .gm-grid.g3{grid-template-columns:1fr 1fr 1fr}
+  .gm-field label{font-size:.74rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:2px}
+  .gm-field span{font-size:.88rem;color:var(--ink)}
+  .gm-field input{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-size:.86rem;width:100%;box-sizing:border-box;background:var(--white)}
+  .gm-field input:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .p-card{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 12px;margin-bottom:6px}
+  .p-name{font-weight:700;font-size:.93rem;font-family:'Playfair Display',serif}
+  .p-dates{font-size:.78rem;color:var(--ink-soft);margin-top:2px}
+  .gm-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+
   /* Scrollable table - sticky first column */
   .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px}
   .tbl-wrap .tbl{border:none;border-radius:0}
@@ -71,27 +129,8 @@
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar">
-    <div class="brand"><img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0"><div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div></div>
-    <nav>
-      <a href="index.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>Pulpit</a>
-      <div class="nav-section">Strona WWW</div>
-      <a href="aktualnosci.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>Aktualności</a>
-      <a href="ogloszenia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>Ogłoszenia parafialne</a>
-      <a href="galeria.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Galeria</a>
-      <a href="strony-statyczne.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 0 0-1H5a.5.5 0 0 0-.5.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/></svg>Strony statyczne</a>
-      <div class="nav-section">Wspólnota</div>
-      <a href="intencje.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>Intencje mszalne</a>
-      <a href="sakramenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>Sakramenty</a>
-      <a href="pogrzeby.html" class="active"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
-      <a href="parafianie.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>Parafianie</a>
-      <a href="dokumenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
-      <div class="nav-section">System</div>
-      <a href="#"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>Raporty</a>
-      <a href="ustawienia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>Ustawienia parafii</a>
-    </nav>
-    <div class="user" id="sidebar-user"></div>
-  </aside>
+  <aside class="sidebar" data-active="pogrzeby"></aside>
+  <script src="assets/sidebar.js"></script>
 
   <div class="main">
     <div class="topbar">
@@ -116,9 +155,18 @@
       <div class="page-head">
         <div>
           <h1>Pogrzeby</h1>
-          <div class="lead">Rejestr liturgii pogrzebowych parafii NSPJ</div>
+          <div class="lead">Rejestr liturgii pogrzebowych i kartoteka cmentarza parafii NSPJ</div>
         </div>
       </div>
+
+      <!-- Zakładki -->
+      <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('rejestr',this)">Rejestr pogrzebów</button>
+        <button class="tab-btn" onclick="switchTab('kartoteka',this)">Kartoteka grobów</button>
+      </div>
+
+      <!-- TAB 1: Rejestr pogrzebów -->
+      <div class="tab-pane active" id="tab-rejestr">
 
       <div class="stats" id="stats-bar">
         <!-- rendered by JS -->
@@ -141,6 +189,11 @@
         <select id="filter-ksiadz" onchange="renderTable()"><option value="">Każdy kapłan</option></select>
         <input type="date" id="filter-od" onchange="renderTable()" title="Data pogrzebu od" style="width:auto">
         <input type="date" id="filter-do" onchange="renderTable()" title="Data pogrzebu do" style="width:auto">
+        <select id="filter-oplata" onchange="renderTable()" title="Filtr opłaty grobu">
+          <option value="">Wszystkie opłaty</option>
+          <option value="nieoplacone">Nieopłacone / wygasłe</option>
+          <option value="oplacone">Opłacone (z datą)</option>
+        </select>
         <span class="results" id="results-info" style="margin-left:auto;font-size:.85rem;color:var(--ink-soft)"></span>
       </div>
 
@@ -171,6 +224,7 @@
               <th style="min-width:55px">Sektor</th>
               <th style="min-width:55px">Rząd</th>
               <th style="min-width:75px">M. grobu</th>
+              <th style="min-width:110px">Opłacono do</th>
               <th style="min-width:160px">Kapłan</th>
               <th style="min-width:110px">Status</th>
             </tr>
@@ -184,6 +238,58 @@
         <svg fill="currentColor" viewBox="0 0 16 16" style="width:40px;height:40px;margin-bottom:12px;opacity:.3"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
         <div>Brak wpisów spełniających kryteria</div>
       </div>
+
+      </div><!-- /#tab-rejestr -->
+
+      <!-- TAB 2: Kartoteka grobów -->
+      <div class="tab-pane" id="tab-kartoteka">
+
+        <div class="groby-stats">
+          <div class="grob-stat"><div class="info"><div class="l">Groby</div><div class="n" id="gs-groby">—</div></div></div>
+          <div class="grob-stat"><div class="info"><div class="l">Pochowani</div><div class="n" id="gs-osoby">—</div></div></div>
+          <div class="grob-stat"><div class="info"><div class="l">Sektory</div><div class="n" id="gs-sektory">—</div></div></div>
+          <div class="grob-stat"><div class="info"><div class="l">Upłynął termin</div><div class="n" id="gs-uplynal">—</div></div></div>
+          <div class="grob-stat"><div class="info"><div class="l">Z CRM (nowe)</div><div class="n" id="gs-crm">—</div></div></div>
+        </div>
+
+        <div class="groby-filter" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <input type="search" id="g-search" placeholder="Szukaj po nazwisku lub lokalizacji…" oninput="gApplyFilters()" style="flex:1;min-width:220px">
+          <div class="sektor-pills" id="g-sektory" style="flex:1"></div>
+          <button class="btn btn-secondary" onclick="exportKartotekaPdf()" style="white-space:nowrap;flex-shrink:0">
+            <svg fill="currentColor" viewBox="0 0 16 16" style="width:14px;height:14px;margin-right:5px;vertical-align:-2px"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/><path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.712 5.712 0 0 1-.911-.95 11.651 11.651 0 0 0-1.997.406 11.307 11.307 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.793.793 0 0 1-.58.029z"/></svg>Eksport PDF
+          </button>
+        </div>
+
+        <div class="groby-tbl-wrap">
+          <table class="groby-tbl">
+            <thead><tr>
+              <th style="min-width:130px">Lokalizacja</th>
+              <th style="min-width:200px">Imię i nazwisko</th>
+              <th style="min-width:105px">Data ur.</th>
+              <th style="min-width:105px">Data zm.</th>
+              <th style="min-width:110px">Opłacony do</th>
+              <th style="min-width:90px">Status</th>
+            </tr></thead>
+            <tbody id="g-tbody"></tbody>
+          </table>
+        </div>
+        <div style="text-align:center;padding:40px;color:var(--ink-soft);display:none" id="g-empty">Nie znaleziono grobów.</div>
+        <div class="groby-pag" id="g-pag"></div>
+
+      </div><!-- /#tab-kartoteka -->
+
+  </div><!-- /.content -->
+  </div><!-- /.main -->
+</div><!-- /.app -->
+
+<!-- Modal kartoteki -->
+<div class="gm-overlay" id="gm-overlay" onclick="if(event.target===this)gmClose()">
+  <div class="gm-box">
+    <h3 id="gm-title">Grób</h3>
+    <div id="gm-content"></div>
+    <div class="gm-btns">
+      <a id="gm-public-link" href="#" target="_blank" class="btn btn-secondary" style="text-decoration:none">⊞ Podgląd publiczny</a>
+      <button class="btn btn-secondary" onclick="gmClose()">Zamknij</button>
     </div>
   </div>
 </div>
@@ -276,6 +382,8 @@
     var ks = document.getElementById('filter-ksiadz').value;
     var od = document.getElementById('filter-od').value;
     var doo = document.getElementById('filter-do').value;
+    var oplata = document.getElementById('filter-oplata').value;
+    var today = new Date().toISOString().slice(0,10);
     return allData.filter(function(d){
       var name = (d.imie+' '+d.nazwisko).toLowerCase();
       if(q && name.indexOf(q)===-1) return false;
@@ -285,6 +393,10 @@
       // zakres po dacie pogrzebu (ISO YYYY-MM-DD porównuje się leksykalnie)
       if(od && (!d.data_pogrzebu || d.data_pogrzebu < od)) return false;
       if(doo && (!d.data_pogrzebu || d.data_pogrzebu > doo)) return false;
+      // filtr opłaty grobu
+      if(oplata === 'nieoplacone' && d.oplacony_do && d.oplacony_do >= today) return false;
+      if(oplata === 'nieoplacone' && !d.sektor) return false; // tylko groby z lokalizacją
+      if(oplata === 'oplacone' && (!d.oplacony_do || d.oplacony_do < today)) return false;
       return true;
     });
   }
@@ -360,6 +472,15 @@
         '<td style="font-size:.84rem;text-align:center">'+escHtml(d.sektor||'-')+'</td>'+
         '<td style="font-size:.84rem;text-align:center">'+escHtml(d.rzad||'-')+'</td>'+
         '<td style="font-size:.84rem;text-align:center">'+escHtml(d.miejsce_grobu||'-')+'</td>'+
+        (function(){
+          var opl=d.oplacony_do;
+          if(!opl)return '<td style="font-size:.84rem;white-space:nowrap;color:var(--ink-soft)">—</td>';
+          var today=new Date().toISOString().slice(0,10);
+          var parts=opl.split('-');var label=parts[2]+'.'+parts[1]+'.'+parts[0];
+          var color=opl>=today?'#2e7a3a':'#b91c1c';
+          var bg=opl>=today?'#e8f5ea':'#fde8e8';
+          return '<td style="font-size:.84rem;white-space:nowrap"><span style="background:'+bg+';color:'+color+';padding:2px 7px;border-radius:5px;font-weight:600">'+label+'</span></td>';
+        })()+
         '<td style="font-size:.82rem">'+escHtml(d.ksiadz||'-')+'</td>'+
         '<td><span class="status-badge '+badgeClass+'">'+STATUS_LABELS[d.status]+'</span></td>'+
       '</tr>';
@@ -475,12 +596,17 @@
       '</select></div>'+
     '</div>'+
     '<div class="section-divider">Miejsce pochówku</div>'+
+    '<div style="background:#f0f7ee;border:1px solid #b8d9b2;border-radius:7px;padding:9px 13px;font-size:.82rem;color:#2e6b28;display:flex;gap:8px;align-items:flex-start">'+
+      '<span style="font-size:1rem;line-height:1.3">⚰️</span>'+
+      '<span><strong>Widoczność na wirtualnym cmentarzu:</strong> Wypełnienie pól Sektor, Rząd i Miejsce grobu spowoduje automatyczne pojawienie się zmarłego na publicznej stronie cmentarza. Możesz najpierw założyć kartotekę, a lokalizację grobu uzupełnić po pogrzebie.</span>'+
+    '</div>'+
     '<div><label>Cmentarz</label><input id="f-cmentarz" type="text" placeholder="Cmentarz Komunalny Czerwionka…"></div>'+
     '<div class="row3">'+
       '<div><label>Sektor</label><input id="f-sektor" type="text" placeholder="np. A"></div>'+
       '<div><label>Rząd</label><input id="f-rzad" type="text" placeholder="np. 3"></div>'+
       '<div><label>Miejsce grobu</label><input id="f-miejscegrobu" type="text" placeholder="np. 12"></div>'+
-    '</div>';
+    '</div>'+
+    '<div><label>Opłata za grób — ważna do <small style="font-weight:400;color:var(--ink-soft)">(np. 2030-12-31)</small></label><input id="f-oplacony-do" type="date" style="max-width:200px"></div>';
 
   // ---- wyszukiwanie / powiązanie z kartoteką parafian ----
   function getParafianie(){ return parafianieCache; }
@@ -572,6 +698,7 @@
     document.getElementById('f-sektor').value = d.sektor||'';
     document.getElementById('f-rzad').value = d.rzad||'';
     document.getElementById('f-miejscegrobu').value = d.miejsce_grobu||'';
+    document.getElementById('f-oplacony-do').value = d.oplacony_do||'';
     if(window.fpSync)window.fpSync();
     document.getElementById('modal-overlay').style.display='flex';
     wireParafianinSearch(d.parafianin_id);
@@ -612,7 +739,8 @@
       rzad: document.getElementById('f-rzad').value.trim(),
       miejsce_grobu: document.getElementById('f-miejscegrobu').value.trim(),
       rok: rok,
-      parafianin_id: parafianinId
+      parafianin_id: parafianinId,
+      oplacony_do: document.getElementById('f-oplacony-do').value || ''
     };
 
     try {
@@ -724,5 +852,294 @@
 </script>
 <script src="assets/admin.js"></script>
 <script src="assets/auth-guard.js"></script>
+
+<script>
+// ── ZAKŁADKI ─────────────────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+
+  // Pokaż/ukryj przyciski topbara tylko dla rejestru
+  var actions = document.querySelector('.topbar .actions');
+  if (actions) actions.style.display = (name === 'rejestr') ? '' : 'none';
+
+  if (name === 'kartoteka') gLoad();
+}
+
+// ── KARTOTEKA GROBÓW ─────────────────────────────────────────────────────────
+var gAllGroby = [], gFlatList = [], gFiltered = [], gActiveSector = '', gPage = 0;
+var gHistoricalData = null; // cache historyczny (ładowany raz)
+const G_PAGE = 100;
+
+function gBuildFlat() {
+  gFlatList = gAllGroby.flatMap(g =>
+    g.pochowani.length > 0
+      ? g.pochowani.map(p => ({
+          _grobId: g._live ? 'live_' + g.id : g.id,
+          lok: g.lokalizacja, arch: g.nr_archiwalny,
+          sektor: g.sektor, uplynął: g.uplynął, oplacony_do: g.oplacony_do, _live: g._live,
+          imie_nazwisko: p.imie_nazwisko || '',
+          data_urodzenia: p.data_urodzenia || null,
+          data_smierci: p.data_smierci || null
+        }))
+      : []
+  );
+}
+
+async function gLoad() {
+  // Historyczne groby: ładuj raz i cachuj (2000+ rekordów)
+  if (!gHistoricalData) {
+    const dbRes = await fetch('/api/groby');
+    gHistoricalData = await dbRes.json();
+  }
+  const dbData = gHistoricalData;
+
+  // Live CRM: zawsze świeże przy każdym wejściu na zakładkę
+  const liveRes = await fetch('/api/groby/live').catch(() => null);
+  const liveData = liveRes && liveRes.ok ? await liveRes.json() : [];
+  liveData.forEach(g => { g._live = true; });
+  gAllGroby = [...liveData, ...dbData];
+  gBuildFlat();
+
+  // Statystyki
+  const osoby = gFlatList.filter(r => r.imie_nazwisko).length;
+  const sektory = new Set(gAllGroby.map(g => g.sektor)).size;
+  const upl = gAllGroby.filter(g => g.uplynął).length;
+  const live = liveData.length;
+  document.getElementById('gs-groby').textContent = gAllGroby.length.toLocaleString('pl');
+  document.getElementById('gs-osoby').textContent = osoby.toLocaleString('pl');
+  document.getElementById('gs-sektory').textContent = sektory;
+  document.getElementById('gs-uplynal').textContent = upl.toLocaleString('pl');
+  document.getElementById('gs-crm').textContent = live;
+
+  // Przyciski sektorów
+  const sekt = [...new Set(gAllGroby.map(g => g.sektor))].filter(Boolean).sort();
+  document.getElementById('g-sektory').innerHTML =
+    '<button class="sektor-pill active" onclick="gSetSector(\'\',this)">Wszystkie</button>' +
+    sekt.map(s => `<button class="sektor-pill" onclick="gSetSector('${s}',this)">${s}</button>`).join('');
+
+  gApplyFilters();
+}
+
+function gSetSector(s, btn) {
+  gActiveSector = s;
+  document.querySelectorAll('.sektor-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  gPage = 0;
+  gApplyFilters();
+}
+
+function gApplyFilters() {
+  const q = (document.getElementById('g-search').value || '').trim().toLowerCase();
+  gFiltered = gFlatList.filter(r => {
+    if (gActiveSector && r.sektor !== gActiveSector) return false;
+    if (!q) return true;
+    return (r.lok || '').toLowerCase().includes(q) || r.imie_nazwisko.toLowerCase().includes(q);
+  });
+  gPage = 0;
+  gRender();
+}
+
+function gRender() {
+  const total = gFiltered.length;
+  document.getElementById('g-empty').style.display = total ? 'none' : 'block';
+  const slice = gFiltered.slice(gPage * G_PAGE, (gPage + 1) * G_PAGE);
+  const today2 = new Date().toISOString().slice(0,10);
+  document.getElementById('g-tbody').innerHTML = slice.map(r => {
+    const opl = (function(){
+      var o=r.oplacony_do;
+      if(!o)return '<span style="color:var(--ink-soft)">—</span>';
+      var p=o.split('-');var label=p[2]+'.'+p[1]+'.'+p[0];
+      var color=o>=today2?'#2e7a3a':'#b91c1c';
+      var bg=o>=today2?'#e8f5ea':'#fde8e8';
+      return '<span style="background:'+bg+';color:'+color+';padding:2px 7px;border-radius:5px;font-weight:600;font-size:.8rem">'+label+'</span>';
+    })();
+    const liveBadge = r._live ? '<span class="badge-live">CRM</span>' : '';
+    const arch = (!r._live && r.arch) ? `<div class="loc-arch">${escHtml(r.arch)}</div>` : '';
+    const stBadge = r.uplynął ? '<span class="badge-upl">upłynął</span>' : '<span class="badge-ok">aktywny</span>';
+    const nameHtml = r.imie_nazwisko ? escHtml(r.imie_nazwisko) : '<em style="color:var(--ink-soft);opacity:.6">brak danych</em>';
+    return `<tr onclick="gOpenModal(${typeof r._grobId === 'string' ? '"'+r._grobId+'"' : r._grobId})">
+      <td><div class="loc-main">${escHtml(r.lok || '')}${liveBadge}</div>${arch}</td>
+      <td>${nameHtml}</td>
+      <td style="font-size:.84rem;white-space:nowrap">${r.data_urodzenia ? gFmtDate(r.data_urodzenia) : '—'}</td>
+      <td style="font-size:.84rem;white-space:nowrap">${r.data_smierci ? gFmtDate(r.data_smierci) : '—'}</td>
+      <td style="font-size:.84rem;white-space:nowrap">${opl}</td>
+      <td>${stBadge}</td>
+    </tr>`;
+  }).join('');
+  gRenderPag(total);
+}
+
+function gRenderPag(total) {
+  const pages = Math.ceil(total / G_PAGE);
+  if (pages <= 1) { document.getElementById('g-pag').innerHTML = ''; return; }
+  let html = `<button onclick="gGoPage(${gPage-1})" ${gPage===0?'disabled':''}>‹</button>`;
+  for (let i = 0; i < pages; i++) {
+    if (pages > 8 && Math.abs(i - gPage) > 2 && i !== 0 && i !== pages-1) {
+      if (i === gPage - 3 || i === gPage + 3) html += '<span style="padding:0 4px">…</span>';
+      continue;
+    }
+    html += `<button onclick="gGoPage(${i})" class="${i===gPage?'active':''}">${i+1}</button>`;
+  }
+  html += `<button onclick="gGoPage(${gPage+1})" ${gPage===pages-1?'disabled':''}>›</button>`;
+  document.getElementById('g-pag').innerHTML = html;
+}
+
+function gGoPage(p) {
+  gPage = p;
+  gRender();
+  document.getElementById('tab-kartoteka').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function gOpenModal(id) {
+  var g;
+  if (typeof id === 'string' && id.startsWith('live_')) {
+    const rid = id.replace('live_','');
+    g = gAllGroby.find(x => x._live && String(x.id) === rid);
+  } else {
+    g = gAllGroby.find(x => !x._live && x.id === id);
+  }
+  if (!g) return;
+
+  document.getElementById('gm-title').textContent = 'Grób ' + g.lokalizacja;
+
+  const isLive = !!g._live;
+  const upl = g.uplynął ? '<span class="badge-upl">upłynął termin</span>' : '<span class="badge-ok">aktywny</span>';
+
+  let html = '';
+  if (isLive) {
+    html += `<div style="background:#e8f0f8;border:1px solid #b0c8e8;border-radius:7px;padding:8px 12px;font-size:.81rem;color:#3a6ea8;margin-bottom:12px">
+      <strong>Rekord z CRM (Pogrzeby)</strong> — edycja przez zakładkę Rejestr pogrzebów
+    </div>`;
+  }
+
+  html += `<div class="gm-grid gm-grid g3">
+    <div class="gm-field"><label>Sektor</label><span>${escHtml(g.sektor)}</span></div>
+    <div class="gm-field"><label>Rząd</label><span>${escHtml(g.rzad)}</span></div>
+    <div class="gm-field"><label>Nr grobu</label><span>${escHtml(g.nr_grobu)}</span></div>
+  </div>`;
+
+  if (!isLive) {
+    html += `<div class="gm-grid">
+      <div class="gm-field"><label>Nr archiwalny</label><span>${escHtml(g.nr_archiwalny||'—')}</span></div>
+      <div class="gm-field"><label>Status</label><span>${upl}</span></div>
+    </div>
+    <div class="gm-grid">
+      <div class="gm-field"><label>Nienaruszalny do</label><span>${gFmtDate(g.nienaruszelny_do)}</span></div>
+      <div class="gm-field"><label>Opłacony do</label><span>${gFmtDate(g.oplacony_do)}</span></div>
+    </div>`;
+  }
+
+  html += `<div class="gm-section">Pochowani (${g.pochowani.length})</div>`;
+  if (!g.pochowani.length) {
+    html += '<p style="color:var(--ink-soft);font-size:.86rem">Brak danych.</p>';
+  } else {
+    g.pochowani.forEach(p => {
+      const ur = p.data_urodzenia ? gFmtDate(p.data_urodzenia) : '?';
+      const sm = p.data_smierci ? gFmtDate(p.data_smierci) : '?';
+      let wiek = '';
+      if (p.data_urodzenia && p.data_smierci) {
+        const lat = Math.floor((new Date(p.data_smierci) - new Date(p.data_urodzenia)) / 31557600000);
+        if (lat >= 0 && lat < 130) wiek = ' · ' + lat + ' lat';
+      }
+      html += `<div class="p-card">
+        <div class="p-name">Ś.P. ${escHtml(p.imie_nazwisko)}</div>
+        <div class="p-dates">${ur} — ${sm}${wiek}</div>
+      </div>`;
+    });
+  }
+
+  document.getElementById('gm-content').innerHTML = html;
+
+  // Link publiczny
+  const idx = isLive
+    ? `grob.html?type=live&id=${encodeURIComponent(String(g.id).replace('live_',''))}`
+    : `grob.html?i=${gAllGroby.indexOf(g)}`;
+  document.getElementById('gm-public-link').href = '../strony/' + idx;
+
+  document.getElementById('gm-overlay').classList.add('open');
+}
+
+function gmClose() { document.getElementById('gm-overlay').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') gmClose(); });
+
+function gFmtDate(d) {
+  if (!d) return '—';
+  try { const [y,m,day]=d.split('-'); return `${day}.${m}.${y}`; } catch { return d; }
+}
+
+// ─── Eksport kartoteki PDF ───
+var gLogoDataUrl = '';
+(function(){
+  try {
+    fetch(new URL('../public/img/logo1.png', location.href))
+      .then(function(r){ return r.ok ? r.blob() : null; })
+      .then(function(b){ if(!b) return; var fr=new FileReader(); fr.onload=function(){ gLogoDataUrl=fr.result; }; fr.readAsDataURL(b); })
+      .catch(function(){});
+  } catch(e){}
+})();
+
+function exportKartotekaPdf() {
+  var list = gFiltered;
+  if (!list.length) { showToast('Brak danych do eksportu'); return; }
+  var w = window.open('', '_blank');
+  if (!w) { showToast('Zezwól na otwieranie okien, aby wygenerować PDF'); return; }
+  var logo = gLogoDataUrl || new URL('../public/img/logo1.png', location.href).href;
+  var today = new Date().toISOString().slice(0,10);
+  var todayFmt = gFmtDate(today);
+  function fmtOpl(opl) {
+    if (!opl) return '—';
+    return gFmtDate(opl) + (opl < today ? ' ✗' : ' ✓');
+  }
+  var rows = list.map(function(r) {
+    var stTxt = r.uplynął ? 'Upłynął' : 'Aktywny';
+    var stColor = r.uplynął ? '#b91c1c' : '#2e7a3a';
+    return '<tr>'
+      + '<td>' + escHtml(r.lok||'—') + '</td>'
+      + '<td>' + escHtml(r.imie_nazwisko||'—') + '</td>'
+      + '<td>' + (r.data_urodzenia ? gFmtDate(r.data_urodzenia) : '—') + '</td>'
+      + '<td>' + (r.data_smierci ? gFmtDate(r.data_smierci) : '—') + '</td>'
+      + '<td style="color:' + (r.oplacony_do ? (r.oplacony_do < today ? '#b91c1c' : '#2e7a3a') : '#999') + ';font-weight:600">' + fmtOpl(r.oplacony_do) + '</td>'
+      + '<td style="color:' + stColor + ';font-weight:600">' + stTxt + '</td>'
+      + '</tr>';
+  }).join('');
+
+  var html = '<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>Kartoteka grobów</title>'
+    + '<style>'
+    + 'body{font-family:Georgia,"Times New Roman",serif;color:#2b2520;margin:0;padding:28px 36px;font-size:12px}'
+    + '.head{text-align:center;border-bottom:3px solid #7a1f2b;padding-bottom:12px;margin-bottom:16px}'
+    + '.head img{height:56px;margin-bottom:5px}'
+    + '.head h1{font-size:20px;letter-spacing:2px;margin:4px 0 2px;color:#7a1f2b}'
+    + '.head .par{font-size:11px;color:#5a5048}'
+    + '.head .rng{font-size:13px;font-weight:bold;margin-top:5px}'
+    + 'table{width:100%;border-collapse:collapse;margin-top:8px}'
+    + 'th{background:#7a1f2b;color:#fff;padding:6px 8px;font-size:11px;text-align:left;font-weight:700}'
+    + 'td{padding:5px 8px;border-bottom:1px solid #e8ddd0;vertical-align:top}'
+    + 'tr:nth-child(even) td{background:#faf8f5}'
+    + '.foot{margin-top:16px;border-top:1px solid #d8cdb6;padding-top:8px;text-align:center;font-size:10px;color:#5a5048}'
+    + '@media print{body{padding:0 10px}}'
+    + '</style></head><body>'
+    + '<div class="head">'
+    + '<img src="' + logo + '" alt="">'
+    + '<h1>KARTOTEKA GROBÓW</h1>'
+    + '<div class="par">Parafia Najświętszego Serca Pana Jezusa &middot; Czerwionka-Leszczyny</div>'
+    + '<div class="rng">Stan na dzień: ' + todayFmt + ' &nbsp;|&nbsp; Rekordów: ' + list.length + '</div>'
+    + '</div>'
+    + '<table><thead><tr><th>Lokalizacja</th><th>Imię i nazwisko</th><th>Data ur.</th><th>Data zm.</th><th>Opłacony do</th><th>Status</th></tr></thead>'
+    + '<tbody>' + rows + '</tbody></table>'
+    + '<div class="foot">ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny &middot; tel. 32 43 12 992</div>'
+    + '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},300);};</scr'+'ipt>'
+    + '</body></html>';
+
+  w.document.write(html);
+  w.document.close();
+}
+</script>
 </body>
 </html>

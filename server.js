@@ -11,9 +11,22 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// --- Tryb konserwacji ---
+var _maintFile = path.join(__dirname, 'data', 'maintenance.json');
+var maintenanceMode = (function(){
+  try { return JSON.parse(fs.readFileSync(_maintFile, 'utf8')).active === true; } catch(e){ return false; }
+})();
+app.use(function(req, res, next){
+  if (!maintenanceMode) return next();
+  var p = req.path;
+  if (p.startsWith('/admin') || p.startsWith('/api/') || p === '/maintenance.html' || p.startsWith('/img/') || p.startsWith('/public/img/')) return next();
+  res.status(503).sendFile(path.join(__dirname, 'public', 'maintenance.html'));
+});
+
 // --- SQLite ---
 fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
 const db = new Database(path.join(__dirname, 'data', 'parafia.db'));
+db.exec('PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA foreign_keys=ON;');
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS parafianie (
@@ -183,6 +196,18 @@ app.post('/api/auth/login', function(req, res) {
   });
 });
 
+// GET /api/maintenance
+app.get('/api/maintenance', function(req, res){
+  res.json({ active: maintenanceMode });
+});
+
+// POST /api/maintenance  (tylko admin/proboszcz)
+app.post('/api/maintenance', requireAuth(['admin','proboszcz']), function(req, res){
+  maintenanceMode = !!req.body.active;
+  try { fs.writeFileSync(_maintFile, JSON.stringify({ active: maintenanceMode })); } catch(e){}
+  res.json({ ok: true, active: maintenanceMode });
+});
+
 // POST /api/auth/logout
 app.post('/api/auth/logout', function(req, res) {
   var token = parseCookies(req)['_psession'];
@@ -209,16 +234,27 @@ app.get('/api/users', requireAuth(['admin','proboszcz']), function(req, res) {
   }));
 });
 
-// POST /api/users (admin only)
-app.post('/api/users', requireAuth(['admin']), function(req, res) {
+// POST /api/users (admin = wszystkie role; proboszcz = tylko pomocnik)
+app.post('/api/users', requireAuth(['admin','proboszcz']), function(req, res) {
   var b = req.body;
+  var me = req.user;
   if (!b.login || !b.password || !b.display_name) return res.status(400).json({ error: 'Wymagane: login, hasło, imię' });
   if (!['admin','proboszcz','pomocnik'].includes(b.role)) return res.status(400).json({ error: 'Nieznana rola' });
+  if (me.role === 'proboszcz' && b.role !== 'pomocnik') return res.status(403).json({ error: 'Proboszcz może tworzyć tylko konta pomocnika' });
   var exists = db.prepare('SELECT id FROM users WHERE LOWER(login)=?').get(b.login.trim().toLowerCase());
   if (exists) return res.status(409).json({ error: 'Login już zajęty' });
   var id = 'usr-' + Date.now().toString(36);
   var now = new Date().toISOString();
-  var perms = b.pomocnik_permissions ? JSON.stringify(b.pomocnik_permissions) : '{}';
+  // Uprawnienia: weź z żądania jeśli podane, fallback na istniejącego pomocnika
+  var perms = '{}';
+  if (b.role === 'pomocnik') {
+    if (b.pomocnik_permissions !== undefined) {
+      perms = JSON.stringify(b.pomocnik_permissions);
+    } else {
+      var existingHelper = db.prepare("SELECT pomocnik_permissions FROM users WHERE role='pomocnik' LIMIT 1").get();
+      if (existingHelper) perms = existingHelper.pomocnik_permissions || '{}';
+    }
+  }
   db.prepare('INSERT INTO users (id,login,display_name,role,password_hash,pomocnik_permissions,created_at) VALUES (?,?,?,?,?,?,?)')
     .run(id, b.login.trim(), b.display_name.trim(), b.role, hashPassword(b.password), perms, now);
   res.status(201).json({ ok:true, id:id });
@@ -249,14 +285,31 @@ app.put('/api/users/:id', requireAuth(['admin','proboszcz','pomocnik']), functio
   res.json({ ok:true });
 });
 
-// DELETE /api/users/:id (admin only, nie można usunąć siebie)
-app.delete('/api/users/:id', requireAuth(['admin']), function(req, res) {
-  if (req.params.id === req.user.id) return res.status(400).json({ error: 'Nie możesz usunąć własnego konta' });
+// DELETE /api/users/:id (admin = wszystkich; proboszcz = tylko pomocnika)
+app.delete('/api/users/:id', requireAuth(['admin','proboszcz']), function(req, res) {
+  var me = req.user;
+  if (req.params.id === me.id) return res.status(400).json({ error: 'Nie możesz usunąć własnego konta' });
+  if (me.role === 'proboszcz') {
+    var target = db.prepare('SELECT role FROM users WHERE id=?').get(req.params.id);
+    if (!target) return res.status(404).json({ error: 'Nie znaleziono' });
+    if (target.role !== 'pomocnik') return res.status(403).json({ error: 'Proboszcz może usuwać tylko konta pomocnika' });
+  }
   var r = db.prepare('DELETE FROM users WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono' });
   db.prepare('DELETE FROM sessions WHERE user_id=?').run(req.params.id);
   res.json({ ok:true });
 });
+
+// Middleware pomocnicze — sprawdza uprawnienia modułu dla roli pomocnik
+function requireModulePerm(module) {
+  return [requireAuth(), function(req, res, next) {
+    var u = req.user;
+    if (u.role === 'admin' || u.role === 'proboszcz') return next();
+    var perms = JSON.parse(u.pomocnik_permissions || '{}');
+    if (perms[module]) return next();
+    return res.status(403).json({ error: 'Brak uprawnień do modułu: ' + module });
+  }];
+}
 
 // ── Activity log ──────────────────────────────────────────────────────────
 db.exec(`
@@ -289,12 +342,12 @@ app.get('/api/activity-log', function(req, res) {
 // ─────────────────────────────────────────────────────────────────────────
 
 // Parafianie — CRUD
-app.get('/api/parafianie', function(req, res) {
+app.get('/api/parafianie', requireModulePerm('parafianie'), function(req, res) {
   var rows = db.prepare('SELECT * FROM parafianie ORDER BY nazwisko, imie').all();
   res.json(rows.map(rowToParafianin));
 });
 
-app.post('/api/parafianie', function(req, res) {
+app.post('/api/parafianie', requireModulePerm('parafianie'), function(req, res) {
   var b = req.body;
   if (!b.imie || !b.nazwisko) return res.status(400).json({ error: 'Imię i nazwisko są wymagane' });
   var id = 'par' + Date.now().toString(36);
@@ -313,7 +366,7 @@ app.post('/api/parafianie', function(req, res) {
   res.status(201).json(rowToParafianin(db.prepare('SELECT * FROM parafianie WHERE id=?').get(id)));
 });
 
-app.put('/api/parafianie/:id', function(req, res) {
+app.put('/api/parafianie/:id', requireModulePerm('parafianie'), function(req, res) {
   var b = req.body;
   if (!b.imie || !b.nazwisko) return res.status(400).json({ error: 'Imię i nazwisko są wymagane' });
   var r = db.prepare(`UPDATE parafianie SET
@@ -332,7 +385,7 @@ app.put('/api/parafianie/:id', function(req, res) {
   res.json(rowToParafianin(db.prepare('SELECT * FROM parafianie WHERE id=?').get(req.params.id)));
 });
 
-app.delete('/api/parafianie/:id', function(req, res) {
+app.delete('/api/parafianie/:id', requireModulePerm('parafianie'), function(req, res) {
   var old = db.prepare('SELECT imie, nazwisko FROM parafianie WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM parafianie WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono parafianina' });
@@ -361,9 +414,11 @@ db.exec(`
     rzad              TEXT DEFAULT '',
     miejsce_grobu     TEXT DEFAULT '',
     rok               INTEGER DEFAULT 0,
-    parafianin_id     TEXT DEFAULT ''
+    parafianin_id     TEXT DEFAULT '',
+    oplacony_do       TEXT DEFAULT ''
   )
 `);
+try { db.exec("ALTER TABLE pogrzeby ADD COLUMN oplacony_do TEXT DEFAULT ''"); } catch(e) {}
 
 function rowToPogrzeb(row) {
   return {
@@ -385,56 +440,169 @@ function rowToPogrzeb(row) {
     rzad: row.rzad || '',
     miejsce_grobu: row.miejsce_grobu || '',
     rok: row.rok || 0,
-    parafianin_id: row.parafianin_id || null
+    parafianin_id: row.parafianin_id || null,
+    oplacony_do: row.oplacony_do || ''
   };
 }
 
+// ── Groby historyczne (z tabeli groby + pochowani) ───────────────────────────
+
+// Publiczne: wszystkie groby historyczne
+app.get('/api/groby', function(req, res) {
+  var today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  var groby = db.prepare('SELECT * FROM groby ORDER BY sektor, rzad, nr_grobu').all();
+  var pochowani = db.prepare('SELECT * FROM pochowani').all();
+  var map = {};
+  pochowani.forEach(function(p) {
+    if (!map[p.grob_id]) map[p.grob_id] = [];
+    map[p.grob_id].push({ imie_nazwisko: p.imie_nazwisko, data_urodzenia: p.data_urodzenia, data_smierci: p.data_smierci });
+  });
+  var result = groby.map(function(g) {
+    var opl = g.oplacony_do || '';
+    var uplynął = opl ? opl < today : !!g['uplynął'];
+    return {
+      id: g.id, json_id: g.json_id,
+      lokalizacja: g.sektor + ' / ' + g.rzad + ' / ' + g.nr_grobu,
+      sektor: g.sektor, rzad: g.rzad, nr_grobu: g.nr_grobu,
+      nr_archiwalny: g.nr_archiwalny,
+      uplynął: uplynął,
+      nienaruszelny_do: g.nienaruszelny_do, oplacony_do: opl,
+      pochowani: map[g.id] || []
+    };
+  });
+  res.json(result);
+});
+
+// Publiczne: pojedynczy grób historyczny
+app.get('/api/groby/:id(\\d+)', function(req, res) {
+  var g = db.prepare('SELECT * FROM groby WHERE id=?').get(req.params.id);
+  if (!g) return res.status(404).json({ error: 'Nie znaleziono' });
+  var pochowani = db.prepare('SELECT imie_nazwisko, data_urodzenia, data_smierci FROM pochowani WHERE grob_id=?').all(g.id);
+  res.json({
+    id: g.id, json_id: g.json_id,
+    lokalizacja: g.sektor + ' / ' + g.rzad + ' / ' + g.nr_grobu,
+    sektor: g.sektor, rzad: g.rzad, nr_grobu: g.nr_grobu,
+    nr_archiwalny: g.nr_archiwalny,
+    uplynął: !!g['uplynął'],
+    nienaruszelny_do: g.nienaruszelny_do, oplacony_do: g.oplacony_do,
+    pochowani: pochowani
+  });
+});
+
+// Admin: wyszukiwanie po nazwisku (dla panelu)
+app.get('/api/admin/groby', requireModulePerm('pogrzeby'), function(req, res) {
+  var q = req.query.q ? '%' + req.query.q + '%' : '%';
+  var sektor = req.query.sektor || null;
+  var sql = sektor
+    ? "SELECT g.*, GROUP_CONCAT(p.imie_nazwisko, ' | ') AS osoby FROM groby g LEFT JOIN pochowani p ON p.grob_id=g.id WHERE g.sektor=? AND (p.imie_nazwisko LIKE ? OR g.nr_grobu LIKE ?) GROUP BY g.id ORDER BY g.sektor, g.rzad, g.nr_grobu"
+    : "SELECT g.*, GROUP_CONCAT(p.imie_nazwisko, ' | ') AS osoby FROM groby g LEFT JOIN pochowani p ON p.grob_id=g.id WHERE p.imie_nazwisko LIKE ? OR g.nr_grobu LIKE ? GROUP BY g.id ORDER BY g.sektor, g.rzad, g.nr_grobu";
+  var rows = sektor
+    ? db.prepare(sql).all(sektor, q, q)
+    : db.prepare(sql).all(q, q);
+  res.json(rows);
+});
+
+// Groby live — publiczne, łączy pogrzeby z uzupełnioną lokalizacją → wirtualny cmentarz
+app.get('/api/groby/live', function(req, res) {
+  var today = new Date().toISOString().slice(0, 10);
+  var rows = db.prepare(
+    "SELECT * FROM pogrzeby WHERE sektor != '' AND sektor IS NOT NULL ORDER BY sektor, rzad, miejsce_grobu"
+  ).all();
+
+  // Grupuj po lokalizacji (sektor+rzad+miejsce_grobu) — jeden grób może mieć kilka pogrzebów
+  var grobMap = {};
+  rows.forEach(function(r) {
+    var key = (r.sektor + '/' + r.rzad + '/' + r.miejsce_grobu).toUpperCase();
+    if (!grobMap[key]) {
+      grobMap[key] = {
+        id: key,
+        pogrzeb_id: r.id,
+        lokalizacja: r.sektor.toUpperCase() + ' / ' + r.rzad + ' / ' + r.miejsce_grobu,
+        sektor: r.sektor.toUpperCase(),
+        rzad: r.rzad,
+        nr_grobu: r.miejsce_grobu,
+        uplynął: r.oplacony_do ? r.oplacony_do < today : false,
+        oplacony_do: r.oplacony_do || null,
+        pochowani: []
+      };
+    }
+    grobMap[key].pochowani.push({
+      imie_nazwisko: ((r.imie || '') + ' ' + (r.nazwisko || '')).trim(),
+      data_urodzenia: r.data_urodzenia || null,
+      data_smierci: r.data_zgonu || null,
+      pogrzeb_id: r.id
+    });
+  });
+
+  res.json(Object.values(grobMap));
+});
+
+// Grób live — szczegóły pojedynczego pogrzebu (publiczne)
+app.get('/api/groby/live/:id', function(req, res) {
+  var r = db.prepare('SELECT * FROM pogrzeby WHERE id=?').get(req.params.id);
+  if (!r) return res.status(404).json({ error: 'Nie znaleziono' });
+  // Zwróć tylko dane publiczne (bez adresu zamieszkania, rodziców)
+  res.json({
+    id: r.id,
+    imie: r.imie,
+    nazwisko: r.nazwisko,
+    data_urodzenia: r.data_urodzenia,
+    data_zgonu: r.data_zgonu,
+    data_pogrzebu: r.data_pogrzebu,
+    miejsce_ceremonii: r.miejsce_ceremonii,
+    cmentarz: r.cmentarz,
+    sektor: r.sektor ? r.sektor.toUpperCase() : '',
+    rzad: r.rzad,
+    miejsce_grobu: r.miejsce_grobu
+  });
+});
+
 // Pogrzeby — CRUD
-app.get('/api/pogrzeby', function(req, res) {
+app.get('/api/pogrzeby', requireModulePerm('pogrzeby'), function(req, res) {
   res.json(db.prepare('SELECT * FROM pogrzeby ORDER BY data_zgonu DESC').all().map(rowToPogrzeb));
 });
 
-app.post('/api/pogrzeby', function(req, res) {
+app.post('/api/pogrzeby', requireModulePerm('pogrzeby'), function(req, res) {
   var b = req.body;
   if (!b.data_zgonu) return res.status(400).json({ error: 'Data zgonu jest wymagana' });
   var id = 'pgr' + Date.now().toString(36);
   db.prepare(`INSERT INTO pogrzeby
     (id,imie,nazwisko,data_urodzenia,miejsce_urodzenia,rodzice,miejsce_zam,
      data_zgonu,data_pogrzebu,godz_pogrzebu,miejsce_ceremonii,ksiadz,status,
-     cmentarz,sektor,rzad,miejsce_grobu,rok,parafianin_id)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+     cmentarz,sektor,rzad,miejsce_grobu,rok,parafianin_id,oplacony_do)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
     .run(id,
       b.imie||'', b.nazwisko||'',
       b.data_urodzenia||'', b.miejsce_urodzenia||'', b.rodzice||'', b.miejsce_zam||'',
       b.data_zgonu, b.data_pogrzebu||'', b.godz_pogrzebu||'', b.miejsce_ceremonii||'',
       b.ksiadz||'', b.status||'zgloszony',
       b.cmentarz||'', b.sektor||'', b.rzad||'', b.miejsce_grobu||'',
-      b.rok||0, b.parafianin_id||'');
+      b.rok||0, b.parafianin_id||'', b.oplacony_do||'');
   logActivity('create', 'Pogrzeby', 'Zarejestrowano pogrzeb: ' + (b.imie||'') + ' ' + (b.nazwisko||''));
   res.status(201).json(rowToPogrzeb(db.prepare('SELECT * FROM pogrzeby WHERE id=?').get(id)));
 });
 
-app.put('/api/pogrzeby/:id', function(req, res) {
+app.put('/api/pogrzeby/:id', requireModulePerm('pogrzeby'), function(req, res) {
   var b = req.body;
   if (!b.data_zgonu) return res.status(400).json({ error: 'Data zgonu jest wymagana' });
   var r = db.prepare(`UPDATE pogrzeby SET
     imie=?,nazwisko=?,data_urodzenia=?,miejsce_urodzenia=?,rodzice=?,miejsce_zam=?,
     data_zgonu=?,data_pogrzebu=?,godz_pogrzebu=?,miejsce_ceremonii=?,ksiadz=?,status=?,
-    cmentarz=?,sektor=?,rzad=?,miejsce_grobu=?,rok=?,parafianin_id=? WHERE id=?`)
+    cmentarz=?,sektor=?,rzad=?,miejsce_grobu=?,rok=?,parafianin_id=?,oplacony_do=? WHERE id=?`)
     .run(
       b.imie||'', b.nazwisko||'',
       b.data_urodzenia||'', b.miejsce_urodzenia||'', b.rodzice||'', b.miejsce_zam||'',
       b.data_zgonu, b.data_pogrzebu||'', b.godz_pogrzebu||'', b.miejsce_ceremonii||'',
       b.ksiadz||'', b.status||'zgloszony',
       b.cmentarz||'', b.sektor||'', b.rzad||'', b.miejsce_grobu||'',
-      b.rok||0, b.parafianin_id||'',
+      b.rok||0, b.parafianin_id||'', b.oplacony_do||'',
       req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono pogrzebu' });
   logActivity('update', 'Pogrzeby', 'Zaktualizowano pogrzeb: ' + (b.imie||'') + ' ' + (b.nazwisko||''));
   res.json(rowToPogrzeb(db.prepare('SELECT * FROM pogrzeby WHERE id=?').get(req.params.id)));
 });
 
-app.delete('/api/pogrzeby/:id', function(req, res) {
+app.delete('/api/pogrzeby/:id', requireModulePerm('pogrzeby'), function(req, res) {
   var old = db.prepare('SELECT imie, nazwisko FROM pogrzeby WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM pogrzeby WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono pogrzebu' });
@@ -497,8 +665,14 @@ function rowToPending(row) {
 
 // Homepage tiles API
 app.get('/api/hp', function(req, res) {
-  var now   = new Date();
-  var today = now.toISOString().slice(0, 10);
+  // Czas w strefie Warsaw (obsługuje DST automatycznie)
+  var nowStr  = new Date().toLocaleString('sv-SE', { timeZone: 'Europe/Warsaw' }); // "2026-09-12 00:10:05"
+  var today   = nowStr.slice(0, 10);   // "2026-09-12"
+  var nowHHMM = nowStr.slice(11, 16);  // "00:10"
+  // Próg przełączenia: msza znika z kafelka 1h po jej rozpoczęciu
+  var threshStr  = new Date(Date.now() - 60 * 60 * 1000).toLocaleString('sv-SE', { timeZone: 'Europe/Warsaw' });
+  var threshHHMM = threshStr.slice(11, 16); // godzina sprzed 1h
+  var now = new Date();
 
   // Settings: kancelaria + wyróżniona intencja
   var rows = db.prepare('SELECT key, value FROM settings WHERE key IN (?,?,?)').all(
@@ -507,15 +681,15 @@ app.get('/api/hp', function(req, res) {
   var s = {};
   rows.forEach(function(r){ try { s[r.key] = JSON.parse(r.value); } catch(e){ s[r.key] = r.value; } });
 
-  // Najbliższe ogłoszenie po dziś
+  // Najbliższe ogłoszenie — bieżące (do 7 dni wstecz) lub nadchodzące
   var ogl = db.prepare(
-    "SELECT title, date FROM ogloszenia WHERE status='published' AND date >= ? ORDER BY date ASC LIMIT 1"
+    "SELECT title, date FROM ogloszenia WHERE status='published' AND date >= date(?, '-6 days') ORDER BY date DESC LIMIT 1"
   ).get(today);
 
-  // Najbliższa msza — auto z intencje
+  // Najbliższa msza: jutro i dalej LUB dzisiaj o godz. >= (teraz - 1h)
   var msza = db.prepare(
-    "SELECT date, time, intention FROM intencje WHERE date >= ? ORDER BY date ASC, time ASC LIMIT 1"
-  ).get(today);
+    "SELECT date, time, intention FROM intencje WHERE (date > ?) OR (date = ? AND time >= ?) ORDER BY date ASC, time ASC LIMIT 1"
+  ).get(today, today, threshHHMM);
 
   // Intencja tygodnia — wybrana przez ks. z settings
   var int_ = null;
@@ -533,11 +707,11 @@ app.get('/api/hp', function(req, res) {
 
   function fmtMsza(row) {
     var t   = (row.time || '').replace(/^(\d{2}):(\d{2}).*/, '$1:$2');
-    var tom = new Date(now); tom.setDate(tom.getDate() + 1);
+    var tomStr = new Date(Date.now() + 86400000).toLocaleString('sv-SE', { timeZone: 'Europe/Warsaw' }).slice(0, 10);
     var dni = ['Niedz.','Pon.','Wt.','Śr.','Czw.','Pt.','Sob.'];
     var label;
     if (row.date === today) label = 'Dziś';
-    else if (row.date === tom.toISOString().slice(0,10)) label = 'Jutro';
+    else if (row.date === tomStr) label = 'Jutro';
     else label = dni[new Date(row.date + 'T12:00:00').getDay()];
     return t ? label + ', ' + t : label;
   }
@@ -564,7 +738,7 @@ app.get('/api/settings', function(req, res) {
   res.json(s);
 });
 
-app.put('/api/settings', function(req, res) {
+app.put('/api/settings', requireModulePerm('ustawienia'), function(req, res) {
   var b = req.body;
   Object.keys(b).forEach(function(key) {
     db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)').run(key, JSON.stringify(b[key]));
@@ -573,11 +747,11 @@ app.put('/api/settings', function(req, res) {
 });
 
 // Intencje CRUD
-app.get('/api/intencje', function(req, res) {
+app.get('/api/intencje', requireModulePerm('intencje'), function(req, res) {
   res.json(db.prepare('SELECT * FROM intencje ORDER BY date, time').all().map(rowToIntencja));
 });
 
-app.post('/api/intencje', function(req, res) {
+app.post('/api/intencje', requireModulePerm('intencje'), function(req, res) {
   var b = req.body;
   if (!b.date || !b.intention) return res.status(400).json({ error: 'Data i treść intencji są wymagane' });
   var id = 'int' + Date.now().toString(36);
@@ -589,7 +763,7 @@ app.post('/api/intencje', function(req, res) {
   res.status(201).json(rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(id)));
 });
 
-app.put('/api/intencje/:id', function(req, res) {
+app.put('/api/intencje/:id', requireModulePerm('intencje'), function(req, res) {
   var b = req.body;
   var r1d = b.r1_days!==undefined && b.r1_days!=='' ? calcReminderDate(b.date||'', b.r1_days) : (b.r1_date !== undefined ? b.r1_date : null);
   var r2d = b.r2_days!==undefined && b.r2_days!=='' ? calcReminderDate(b.date||'', b.r2_days) : (b.r2_date !== undefined ? b.r2_date : null);
@@ -603,7 +777,7 @@ app.put('/api/intencje/:id', function(req, res) {
   res.json(rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(req.params.id)));
 });
 
-app.delete('/api/intencje/:id', function(req, res) {
+app.delete('/api/intencje/:id', requireModulePerm('intencje'), function(req, res) {
   var old = db.prepare('SELECT date, time, intention FROM intencje WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM intencje WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono intencji' });
@@ -612,7 +786,7 @@ app.delete('/api/intencje/:id', function(req, res) {
 });
 
 // Pending intencje
-app.get('/api/intencje/pending', function(req, res) {
+app.get('/api/intencje/pending', requireModulePerm('intencje'), function(req, res) {
   res.json(db.prepare('SELECT * FROM intencje_pending ORDER BY submitted_at').all().map(rowToPending));
 });
 
@@ -625,7 +799,7 @@ app.post('/api/intencje/pending', function(req, res) {
   res.status(201).json(rowToPending(db.prepare('SELECT * FROM intencje_pending WHERE id=?').get(id)));
 });
 
-app.post('/api/intencje/pending/:id/accept', function(req, res) {
+app.post('/api/intencje/pending/:id/accept', requireModulePerm('intencje'), function(req, res) {
   var item = db.prepare('SELECT * FROM intencje_pending WHERE id=?').get(req.params.id);
   if (!item) return res.status(404).json({ error: 'Nie znaleziono zgłoszenia' });
   var newId = 'int' + Date.now().toString(36);
@@ -636,7 +810,7 @@ app.post('/api/intencje/pending/:id/accept', function(req, res) {
   res.json({ intencja: rowToIntencja(db.prepare('SELECT * FROM intencje WHERE id=?').get(newId)), pending: rowToPending(item) });
 });
 
-app.put('/api/intencje/pending/:id', function(req, res) {
+app.put('/api/intencje/pending/:id', requireModulePerm('intencje'), function(req, res) {
   var { date, time, type, intention, telefon } = req.body;
   var r = db.prepare('UPDATE intencje_pending SET date=?, time=?, type=?, intention=?, telefon=? WHERE id=?')
     .run(date, time, type, intention, telefon !== undefined ? telefon : null, req.params.id);
@@ -644,7 +818,7 @@ app.put('/api/intencje/pending/:id', function(req, res) {
   res.json(rowToPending(db.prepare('SELECT * FROM intencje_pending WHERE id=?').get(req.params.id)));
 });
 
-app.delete('/api/intencje/pending/:id', function(req, res) {
+app.delete('/api/intencje/pending/:id', requireModulePerm('intencje'), function(req, res) {
   var r = db.prepare('DELETE FROM intencje_pending WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono zgłoszenia' });
   res.json({ ok: true });
@@ -689,81 +863,6 @@ db.exec(`
 });
 try { db.exec("ALTER TABLE sakramenty ADD COLUMN created_at TEXT DEFAULT ''"); } catch(e) {}
 
-// Seed sample data — INSERT OR IGNORE runs on every start, safe to repeat
-(function(){
-  var S=db.prepare('INSERT OR IGNORE INTO sakramenty (id,type,rok,imie,nazwisko,dataurodzenia,rodzic,katecheta,imie_bierzmowania,miejsce,imie_ojca,nazwisko_ojca,imie_matki,nazwisko_matki,datachrztu,ksiega_rok,ksiega_str,ksiega_nr,uwagi,oblubieniec,oblubienica,datasl,typ_slubu,zapowiedzi,szkola,datakom,status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-  [
-    // bierzmowanie (24)
-    ['bierz-01','bierzmowanie',2023,'Piotr','Kowalski','2007-03-15','Anna Kowalska','ks. Marek Wiśniewski','Józef','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-02','bierzmowanie',2023,'Katarzyna','Nowak','2007-08-22','Tomasz Nowak','ks. Marek Wiśniewski','Maria','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-03','bierzmowanie',2023,'Michał','Wójcik','2007-11-05','Beata Wójcik','ks. Marek Wiśniewski','Michał','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-04','bierzmowanie',2023,'Anna','Kowalczyk','2007-02-18','Józef Kowalczyk','ks. Marek Wiśniewski','Teresa','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-05','bierzmowanie',2023,'Tomasz','Wiśniewski','2006-12-01','Halina Wiśniewska','ks. Marek Wiśniewski','Tomasz','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-06','bierzmowanie',2023,'Magdalena','Dąbrowska','2007-04-30','Krzysztof Dąbrowski','ks. Marek Wiśniewski','Maria','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-07','bierzmowanie',2023,'Jakub','Lewandowski','2007-07-14','Irena Lewandowska','ks. Marek Wiśniewski','Jakub','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-08','bierzmowanie',2023,'Natalia','Zielińska','2007-09-28','Andrzej Zieliński','ks. Marek Wiśniewski','Anna','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-09','bierzmowanie',2023,'Bartosz','Szymański','2006-10-10','Zofia Szymańska','ks. Marek Wiśniewski','Jan','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-10','bierzmowanie',2023,'Weronika','Woźniak','2007-01-25','Paweł Woźniak','ks. Marek Wiśniewski','Weronika','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-11','bierzmowanie',2024,'Adrian','Kozłowski','2008-06-03','Monika Kozłowska','ks. Marek Wiśniewski','Adrian','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-12','bierzmowanie',2024,'Dominika','Jankowska','2008-03-17','Leszek Jankowski','ks. Marek Wiśniewski','Dominika','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-13','bierzmowanie',2024,'Łukasz','Mazur','2008-08-09','Elżbieta Mazur','ks. Marek Wiśniewski','Łukasz','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-14','bierzmowanie',2024,'Julia','Piotrowska','2008-11-22','Ryszard Piotrowski','ks. Marek Wiśniewski','Julia','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-15','bierzmowanie',2024,'Szymon','Grabowski','2008-01-07','Barbara Grabowska','ks. Marek Wiśniewski','Szymon','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-16','bierzmowanie',2024,'Aleksandra','Nowakowska','2008-05-14','Janusz Nowakowski','ks. Marek Wiśniewski','Aleksandra','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-17','bierzmowanie',2024,'Kamil','Michalski','2007-12-28','Danuta Michalska','ks. Marek Wiśniewski','Kamil','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-18','bierzmowanie',2024,'Paulina','Krawczyk','2008-04-19','Stanisław Krawczyk','ks. Marek Wiśniewski','Paulina','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-19','bierzmowanie',2024,'Dawid','Kaczmarek','2008-07-31','Halina Kaczmarek','ks. Marek Wiśniewski','Dawid','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-20','bierzmowanie',2024,'Martyna','Zając','2008-09-05','Waldemar Zając','ks. Marek Wiśniewski','Martyna','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-21','bierzmowanie',2025,'Mateusz','Król','2009-02-14','Renata Król','ks. Marek Wiśniewski','Mateusz','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-22','bierzmowanie',2025,'Oliwia','Wieczorek','2009-06-27','Grzegorz Wieczorek','ks. Marek Wiśniewski','Oliwia','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-23','bierzmowanie',2025,'Artur','Pawlak','2009-10-08','Jadwiga Pawlak','ks. Marek Wiśniewski','Artur','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    ['bierz-24','bierzmowanie',2025,'Klaudia','Sikora','2009-03-23','Tadeusz Sikora','ks. Marek Wiśniewski','Klaudia','Parafia NSPJ','','','','','',0,0,0,'','','','','',0,'','',''],
-    // chrzciny (7)
-    ['chrzest-01','chrzciny',2022,'Zuzanna','Kowalska','2022-02-10','','','','','Andrzej','Kowalski','Maria','Kowalska','2022-03-06',2022,45,12,'','','','','',0,'','',''],
-    ['chrzest-02','chrzciny',2022,'Franciszek','Nowak','2022-04-15','','','','','Robert','Nowak','Katarzyna','Nowak','2022-05-01',2022,47,3,'','','','','',0,'','',''],
-    ['chrzest-03','chrzciny',2023,'Maja','Wiśniewska','2023-01-08','','','','','Tomasz','Wiśniewski','Agnieszka','Wiśniewska','2023-02-12',2023,49,7,'','','','','',0,'','',''],
-    ['chrzest-04','chrzciny',2023,'Aleksander','Kowalczyk','2023-07-22','','','','','Krzysztof','Kowalczyk','Anna','Kowalczyk','2023-08-20',2023,51,2,'','','','','',0,'','',''],
-    ['chrzest-05','chrzciny',2024,'Hanna','Dąbrowska','2024-03-11','','','','','Paweł','Dąbrowski','Monika','Dąbrowska','2024-04-07',2024,53,9,'','','','','',0,'','',''],
-    ['chrzest-06','chrzciny',2024,'Leon','Zieliński','2024-08-05','','','','','Michał','Zieliński','Ewa','Zielińska','2024-09-01',2024,54,15,'','','','','',0,'','',''],
-    ['chrzest-07','chrzciny',2025,'Zofia','Szymańska','2025-01-19','','','','','Marcin','Szymański','Karolina','Szymańska','2025-02-16',2025,56,4,'','','','','',0,'','',''],
-    // śluby (3)
-    ['slub-01','sluby',2023,'','','','','','','','','','','','',0,0,0,'','Piotr Nowak','Marta Kowalska','2023-06-10','konkordatowy',1,'','',''],
-    ['slub-02','sluby',2024,'','','','','','','','','','','','',0,0,0,'','Tomasz Wiśniewski','Anna Dąbrowska','2024-08-24','konkordatowy',1,'','',''],
-    ['slub-03','sluby',2025,'','','','','','','','','','','','',0,0,0,'','Michał Kowalczyk','Katarzyna Zielińska','2025-05-17','kościelny',1,'','',''],
-    // komunia (31)
-    ['kom-01','komunia',2022,'Antoni','Kowalski','2014-04-12','Beata Kowalska','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2022-05-22','tak'],
-    ['kom-02','komunia',2022,'Hanna','Nowak','2014-07-30','Józef Nowak','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2022-05-22','tak'],
-    ['kom-03','komunia',2022,'Mikołaj','Wiśniewski','2014-02-14','Maria Wiśniewska','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2022-05-29','tak'],
-    ['kom-04','komunia',2022,'Lena','Kowalczyk','2014-09-08','Adam Kowalczyk','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2022-05-29','tak'],
-    ['kom-05','komunia',2022,'Kacper','Dąbrowski','2014-11-03','Irena Dąbrowska','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2022-05-22','tak'],
-    ['kom-06','komunia',2022,'Amelia','Zielińska','2014-06-25','Piotr Zieliński','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2022-05-22','tak'],
-    ['kom-07','komunia',2022,'Nikodem','Szymański','2015-01-17','Barbara Szymańska','s. Jadwiga','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2022-05-29','tak'],
-    ['kom-08','komunia',2023,'Zofia','Lewandowska','2015-03-28','Krzysztof Lewandowski','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2023-05-21','tak'],
-    ['kom-09','komunia',2023,'Jakub','Wójcik','2015-08-14','Elżbieta Wójcik','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2023-05-21','tak'],
-    ['kom-10','komunia',2023,'Natalia','Mazur','2015-12-02','Ryszard Mazur','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2023-05-28','tak'],
-    ['kom-11','komunia',2023,'Filip','Krawczyk','2015-05-19','Halina Krawczyk','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2023-05-28','tak'],
-    ['kom-12','komunia',2023,'Laura','Piotrowska','2015-10-07','Stanisław Piotrowski','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2023-05-21','tak'],
-    ['kom-13','komunia',2023,'Dawid','Grabowski','2016-02-23','Monika Grabowska','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2023-05-21','tak'],
-    ['kom-14','komunia',2023,'Julia','Nowakowska','2015-07-11','Andrzej Nowakowski','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2023-05-28','tak'],
-    ['kom-15','komunia',2023,'Szymon','Michalski','2015-11-30','Renata Michalska','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2023-05-28','tak'],
-    ['kom-16','komunia',2024,'Maja','Kozłowska','2016-04-15','Waldemar Kozłowski','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2024-05-19','tak'],
-    ['kom-17','komunia',2024,'Oliwia','Jankowska','2016-09-03','Danuta Jankowski','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2024-05-19','tak'],
-    ['kom-18','komunia',2024,'Bartłomiej','Zając','2016-06-20','Grażyna Zając','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2024-05-26','tak'],
-    ['kom-19','komunia',2024,'Wiktoria','Kaczmarek','2016-12-09','Tadeusz Kaczmarek','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2024-05-26','tak'],
-    ['kom-20','komunia',2024,'Patryk','Pawlak','2016-03-27','Jadwiga Pawlak','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2024-05-19','tak'],
-    ['kom-21','komunia',2024,'Zuzanna','Sikora','2016-07-14','Grzegorz Sikora','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2024-05-19','tak'],
-    ['kom-22','komunia',2024,'Kamil','Wieczorek','2016-11-01','Agnieszka Wieczorek','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2024-05-26','tak'],
-    ['kom-23','komunia',2024,'Alicja','Król','2016-08-18','Marek Król','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2024-05-26','tak'],
-    ['kom-24','komunia',2025,'Aleksander','Wojciechowski','2017-01-05','Anna Wojciechowska','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2025-06-01','tak'],
-    ['kom-25','komunia',2025,'Natalia','Adamska','2017-05-22','Robert Adamski','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2025-06-01','tak'],
-    ['kom-26','komunia',2025,'Szymon','Kwiatkowski','2017-09-16','Ewa Kwiatkowska','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2025-06-08','tak'],
-    ['kom-27','komunia',2025,'Amelia','Mazurek','2017-03-31','Leszek Mazurek','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2025-06-08','tak'],
-    ['kom-28','komunia',2025,'Mikołaj','Zawadzki','2017-07-08','Marta Zawadzka','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2025-06-01','tak'],
-    ['kom-29','komunia',2025,'Hanna','Nowacka','2017-11-25','Tomasz Nowacki','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 3 Mikołów','2025-06-01','tak'],
-    ['kom-30','komunia',2025,'Franciszek','Walczak','2017-04-13','Katarzyna Walczak','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2025-06-08','tak'],
-    ['kom-31','komunia',2025,'Zofia','Woźniak','2017-08-30','Paweł Woźniak','ks. Marek Wiśniewski','','','','','','','',0,0,0,'','','','','',0,'SP nr 5 Mikołów','2025-06-08','tak']
-  ].forEach(function(r){S.run(r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12],r[13],r[14],r[15],r[16],r[17],r[18],r[19],r[20],r[21],r[22],r[23],r[24],r[25],r[26]);});
-})();
 
 function rowToSakrament(row) {
   return {
@@ -789,7 +888,7 @@ function rowToSakrament(row) {
   };
 }
 
-// Sakramenty — CRUD
+// Sakramenty — CRUD (wymagane uprawnienie 'sakramenty')
 
 var TYPE_TO_SAKR_COL = {
   chrzest: 'sakr_chrzest',
@@ -807,11 +906,11 @@ function syncSakrParafianin(parafianinId, type) {
   db.prepare('UPDATE parafianie SET ' + col + '=? WHERE id=?').run(exists ? 1 : 0, parafianinId);
 }
 
-app.get('/api/sakramenty', function(req, res) {
+app.get('/api/sakramenty', requireModulePerm('sakramenty'), function(req, res) {
   res.json(db.prepare('SELECT * FROM sakramenty ORDER BY rok DESC, type, nazwisko, imie').all().map(rowToSakrament));
 });
 
-app.post('/api/sakramenty', function(req, res) {
+app.post('/api/sakramenty', requireModulePerm('sakramenty'), function(req, res) {
   var b = req.body;
   if (!b.type) return res.status(400).json({ error: 'Typ sakramentu jest wymagany' });
   var id = b.id || (b.type + '-' + Date.now().toString(36));
@@ -838,7 +937,7 @@ app.post('/api/sakramenty', function(req, res) {
   res.status(201).json(rowToSakrament(db.prepare('SELECT * FROM sakramenty WHERE id=?').get(id)));
 });
 
-app.put('/api/sakramenty/:id', function(req, res) {
+app.put('/api/sakramenty/:id', requireModulePerm('sakramenty'), function(req, res) {
   var b = req.body;
   var old = db.prepare('SELECT parafianin_id, malzonek1_id, malzonek2_id, type FROM sakramenty WHERE id=?').get(req.params.id);
   var r = db.prepare(`UPDATE sakramenty SET
@@ -866,7 +965,7 @@ app.put('/api/sakramenty/:id', function(req, res) {
   res.json(rowToSakrament(db.prepare('SELECT * FROM sakramenty WHERE id=?').get(req.params.id)));
 });
 
-app.delete('/api/sakramenty/:id', function(req, res) {
+app.delete('/api/sakramenty/:id', requireModulePerm('sakramenty'), function(req, res) {
   var old = db.prepare('SELECT parafianin_id, malzonek1_id, malzonek2_id, type, imie, nazwisko, oblubieniec FROM sakramenty WHERE id=?').get(req.params.id);
   var r = db.prepare('DELETE FROM sakramenty WHERE id=?').run(req.params.id);
   if (!r.changes) return res.status(404).json({ error: 'Nie znaleziono rekordu' });
@@ -935,33 +1034,35 @@ db.exec(`CREATE TABLE IF NOT EXISTS aktualnosci (
   ].forEach(function(r){S.run(r[0],r[1],r[2],r[3],r[4],r[5],r[6],r[7],r[8],r[9],r[10],r[11],r[12]);});
 })();
 
+try { db.exec("ALTER TABLE aktualnosci ADD COLUMN image_pos TEXT DEFAULT '40%'"); } catch(e) {}
+
 function rowToAktualnosc(row) {
   return { id:row.id, title:row.title, date:row.date||'', category:row.category||'',
     status:row.status||'draft', author:row.author||'', excerpt:row.excerpt||'',
-    content:row.content||'', image:row.image||'', tags:row.tags||'',
+    content:row.content||'', image:row.image||'', image_pos:row.image_pos||'40%', tags:row.tags||'',
     featured:!!row.featured, views:row.views||0, slug:row.slug||'' };
 }
 
 app.get('/api/aktualnosci', function(req,res) {
   res.json(db.prepare('SELECT * FROM aktualnosci ORDER BY date DESC').all().map(rowToAktualnosc));
 });
-app.post('/api/aktualnosci', function(req,res) {
+app.post('/api/aktualnosci', requireModulePerm('aktualnosci'), function(req,res) {
   var b=req.body; if(!b.title) return res.status(400).json({error:'Tytuł jest wymagany'});
   var id=b.id||('news-'+Date.now().toString(36));
-  db.prepare('INSERT INTO aktualnosci (id,title,date,category,status,author,excerpt,content,image,tags,featured,views,slug) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)')
-    .run(id,b.title,b.date||'',b.category||'',b.status||'draft',b.author||'',b.excerpt||'',b.content||'',b.image||'',b.tags||'',b.featured?1:0,b.views||0,b.slug||'');
+  db.prepare('INSERT INTO aktualnosci (id,title,date,category,status,author,excerpt,content,image,image_pos,tags,featured,views,slug) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)')
+    .run(id,b.title,b.date||'',b.category||'',b.status||'draft',b.author||'',b.excerpt||'',b.content||'',b.image||'',b.image_pos||'40%',b.tags||'',b.featured?1:0,b.views||0,b.slug||'');
   logActivity('create', 'Aktualności', (b.status==='published'?'Opublikowano':'Zapisano szkic') + ': ' + b.title);
   res.status(201).json(rowToAktualnosc(db.prepare('SELECT * FROM aktualnosci WHERE id=?').get(id)));
 });
-app.put('/api/aktualnosci/:id', function(req,res) {
+app.put('/api/aktualnosci/:id', requireModulePerm('aktualnosci'), function(req,res) {
   var b=req.body;
-  var r=db.prepare('UPDATE aktualnosci SET title=?,date=?,category=?,status=?,author=?,excerpt=?,content=?,image=?,tags=?,featured=?,views=?,slug=? WHERE id=?')
-    .run(b.title||'',b.date||'',b.category||'',b.status||'draft',b.author||'',b.excerpt||'',b.content||'',b.image||'',b.tags||'',b.featured?1:0,b.views||0,b.slug||'',req.params.id);
+  var r=db.prepare('UPDATE aktualnosci SET title=?,date=?,category=?,status=?,author=?,excerpt=?,content=?,image=?,image_pos=?,tags=?,featured=?,views=?,slug=? WHERE id=?')
+    .run(b.title||'',b.date||'',b.category||'',b.status||'draft',b.author||'',b.excerpt||'',b.content||'',b.image||'',b.image_pos||'40%',b.tags||'',b.featured?1:0,b.views||0,b.slug||'',req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
   logActivity('update', 'Aktualności', 'Zaktualizowano: ' + (b.title||''));
   res.json(rowToAktualnosc(db.prepare('SELECT * FROM aktualnosci WHERE id=?').get(req.params.id)));
 });
-app.delete('/api/aktualnosci/:id', function(req,res) {
+app.delete('/api/aktualnosci/:id', requireModulePerm('aktualnosci'), function(req,res) {
   var old=db.prepare('SELECT title FROM aktualnosci WHERE id=?').get(req.params.id);
   var r=db.prepare('DELETE FROM aktualnosci WHERE id=?').run(req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
@@ -1008,7 +1109,7 @@ function rowToOgloszenie(row) {
 app.get('/api/ogloszenia', function(req,res) {
   res.json(db.prepare('SELECT * FROM ogloszenia ORDER BY date DESC').all().map(rowToOgloszenie));
 });
-app.post('/api/ogloszenia', function(req,res) {
+app.post('/api/ogloszenia', requireModulePerm('ogloszenia'), function(req,res) {
   var b=req.body; if(!b.title) return res.status(400).json({error:'Tytuł jest wymagany'});
   var id=b.id||('ogl-'+Date.now().toString(36));
   db.prepare('INSERT INTO ogloszenia (id,title,date,status,featured,views,content) VALUES (?,?,?,?,?,?,?)')
@@ -1016,7 +1117,7 @@ app.post('/api/ogloszenia', function(req,res) {
   logActivity('create', 'Ogłoszenia', 'Dodano ogłoszenia: ' + b.title);
   res.status(201).json(rowToOgloszenie(db.prepare('SELECT * FROM ogloszenia WHERE id=?').get(id)));
 });
-app.put('/api/ogloszenia/:id', function(req,res) {
+app.put('/api/ogloszenia/:id', requireModulePerm('ogloszenia'), function(req,res) {
   var b=req.body;
   var r=db.prepare('UPDATE ogloszenia SET title=?,date=?,status=?,featured=?,views=?,content=? WHERE id=?')
     .run(b.title||'',b.date||'',b.status||'published',b.featured?1:0,b.views||0,b.content||'',req.params.id);
@@ -1024,7 +1125,7 @@ app.put('/api/ogloszenia/:id', function(req,res) {
   logActivity('update', 'Ogłoszenia', 'Zaktualizowano ogłoszenia: ' + (b.title||''));
   res.json(rowToOgloszenie(db.prepare('SELECT * FROM ogloszenia WHERE id=?').get(req.params.id)));
 });
-app.delete('/api/ogloszenia/:id', function(req,res) {
+app.delete('/api/ogloszenia/:id', requireModulePerm('ogloszenia'), function(req,res) {
   var old=db.prepare('SELECT title FROM ogloszenia WHERE id=?').get(req.params.id);
   var r=db.prepare('DELETE FROM ogloszenia WHERE id=?').run(req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
@@ -1054,19 +1155,19 @@ db.exec(`CREATE TABLE IF NOT EXISTS kaplani (
 app.get('/api/kaplani', function(req,res) {
   res.json(db.prepare('SELECT * FROM kaplani ORDER BY sort_order').all());
 });
-app.post('/api/kaplani', function(req,res) {
+app.post('/api/kaplani', requireAuth(['admin','proboszcz']), function(req,res) {
   var b=req.body;
   var m=db.prepare('SELECT MAX(sort_order) AS m FROM kaplani').get();
   var next=(m.m==null?-1:m.m)+1;
   db.prepare('INSERT INTO kaplani (id,sort_order,role,name,photo,bio) VALUES (?,?,?,?,?,?)').run(b.id,next,b.role||'',b.name||'',b.photo||'',b.bio||'');
   res.json({ok:true});
 });
-app.put('/api/kaplani/:id', function(req,res) {
+app.put('/api/kaplani/:id', requireAuth(['admin','proboszcz']), function(req,res) {
   var b=req.body;
   db.prepare('UPDATE kaplani SET sort_order=?,role=?,name=?,photo=?,bio=? WHERE id=?').run(b.sort_order??0,b.role||'',b.name||'',b.photo||'',b.bio||'',req.params.id);
   res.json({ok:true});
 });
-app.delete('/api/kaplani/:id', function(req,res) {
+app.delete('/api/kaplani/:id', requireAuth(['admin','proboszcz']), function(req,res) {
   var r=db.prepare('DELETE FROM kaplani WHERE id=?').run(req.params.id);
   if(!r.changes) return res.status(404).json({error:'Nie znaleziono'});
   res.json({ok:true});
@@ -1102,7 +1203,7 @@ app.get('/api/wspolnoty', function(req,res) {
   rows.forEach(function(r){ result[r.slug]=JSON.parse(r.data); });
   res.json(result);
 });
-app.put('/api/wspolnoty/:slug', function(req,res) {
+app.put('/api/wspolnoty/:slug', requireModulePerm('wspolnoty'), function(req,res) {
   db.prepare('INSERT OR REPLACE INTO wspolnoty (slug,data) VALUES (?,?)').run(req.params.slug, JSON.stringify(req.body));
   res.json({ok:true});
 });
@@ -1392,7 +1493,7 @@ const upload = multer({
   }
 });
 
-app.post('/api/galeria/upload', upload.array('files', 100), function (req, res) {
+app.post('/api/galeria/upload', requireModulePerm('galeria'), upload.array('files', 100), function (req, res) {
   if (!req.files || !req.files.length) {
     return res.status(400).json({ error: 'Brak plików' });
   }

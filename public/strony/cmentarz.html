@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cmentarz parafialny · Parafia NSPJ Czerwionka-Leszczyny</title>
+<meta name="description" content="Wyszukiwarka grobów na cmentarzu Parafii Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach. Nekrologi, rocznice, informacje o cmentarzu.">
+<link rel="canonical" href="https://www.nspjczerwionka.pl/strony/cmentarz.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.nspjczerwionka.pl/strony/cmentarz.html">
+<meta property="og:title" content="Cmentarz parafialny · Parafia NSPJ Czerwionka-Leszczyny">
+<meta property="og:description" content="Wyszukiwarka grobów, nekrologi i rocznice na cmentarzu parafialnym NSPJ.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--beige:#f4ede0;--beige-deep:#ebe1cd;--cream:#faf6ee;--burgundy:#7a1f2b;--burgundy-dark:#5e1620;--copper:#b87a4a;--copper-light:#d6a572;--ink:#2b2520;--ink-soft:#5a5048;--line:#d8cdb6;--white:#ffffff}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:90px}
+  body{margin:0;padding:0;font-family:'Lato',sans-serif;color:var(--ink);background:var(--beige);line-height:1.65}
+  h1,h2,h3,h4,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:var(--ink)}
+  a{color:var(--burgundy);text-decoration:none}
+  a:hover{text-decoration:underline}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--burgundy);outline-offset:3px;border-radius:4px}
+  .container{max-width:1240px;margin:0 auto;padding:0 24px}
+
+  /* ── HEADER ── */
+  .sticky-header{position:sticky;top:0;z-index:50}
+  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
+  .topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 24px;gap:12px}
+  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center}
+  .topbar a:hover{color:#fff}
+  .topbar .left,.topbar .right{display:flex;gap:18px;align-items:center}
+  .topbar svg{flex-shrink:0;margin-right:6px}
+  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,217,184,.35);color:#e8d9b8;transition:all .15s;margin-left:4px}
+  .topbar-admin svg{margin-right:0;display:block}
+  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
+  .topbar-btn-wsparcie{background:#e8d9b8;color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;white-space:nowrap}
+  .topbar-btn-wsparcie:hover{background:#fff;text-decoration:none!important}
+  @media(max-width:768px){.topbar .left span:first-child{display:none}.topbar .right a:not(.topbar-admin){display:none}.topbar .container{justify-content:center}}
+  header.site{background:var(--cream);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
+  .brand-mark{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;overflow:hidden;flex-shrink:0}
+  .brand-logo{width:46px;height:46px;object-fit:contain;display:block}
+  .brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:.95rem;line-height:1.2}
+  .brand-name small{display:block;font-family:'Lato',sans-serif;font-size:.7rem;letter-spacing:.16em;color:var(--copper);text-transform:uppercase;font-weight:700;margin-top:3px}
+  nav.main{display:flex;gap:4px;align-items:center}
+  nav.main a{padding:10px 12px;font-weight:400;font-size:.9rem;color:var(--ink);border-radius:6px;transition:background .15s;white-space:nowrap;text-decoration:none}
+  nav.main a:hover{background:var(--beige);text-decoration:none}
+  nav.main a.active{color:var(--burgundy);font-weight:700}
+  nav.main a.has-sub::after{content:"▾";font-size:.7rem;margin-left:6px;color:var(--copper)}
+  .dropdown{position:relative}
+  .dropdown-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--cream);border:1px solid var(--line);border-radius:8px;min-width:230px;z-index:200;box-shadow:0 8px 32px rgba(43,37,32,.14);padding:6px 0}
+  .dropdown:hover .dropdown-menu,.dropdown.open .dropdown-menu{display:block}
+  .dropdown-menu a{display:block;padding:9px 18px;color:var(--ink);font-size:.88rem;white-space:nowrap}
+  .dropdown-menu a:hover{background:var(--beige);text-decoration:none}
+  .dropdown-menu hr{border:none;border-top:1px solid var(--line);margin:4px 12px}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:8px}
+  @media(max-width:980px){nav.main{display:none}.menu-toggle{display:block}}
+
+  /* ── HERO ── */
+  .page-hero{padding:50px 0 30px;text-align:center}
+  .eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:.8rem;display:inline-block}
+  .page-hero h1{font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:600;margin:0 0 .6rem}
+  .page-hero .lead{font-size:1.15rem;color:var(--ink-soft);max-width:620px;margin:0 auto}
+
+  /* ── TABS ── */
+  .page-tabs{border-bottom:2px solid var(--line);margin-bottom:0;display:flex;gap:0;flex-wrap:wrap}
+  .page-tab-btn{padding:14px 24px;font-size:.95rem;font-weight:700;font-family:'Lato',sans-serif;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;color:var(--ink-soft);margin-bottom:-2px;transition:all .15s}
+  .page-tab-btn:hover{color:var(--ink)}
+  .page-tab-btn.active{color:var(--burgundy);border-bottom-color:var(--burgundy)}
+  .page-body{padding:0 0 80px}
+  .page-tab-content{display:none;padding-top:36px}
+  .page-tab-content.active{display:block}
+
+  /* ── TOOLBAR ── */
+  .cm-toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+  .cm-search{flex:1;min-width:220px;position:relative}
+  .cm-search input{width:100%;padding:10px 14px 10px 40px;border:1px solid var(--line);border-radius:7px;font-size:.95rem;font-family:'Lato',sans-serif;background:var(--white);color:var(--ink);outline:none;transition:border-color .15s}
+  .cm-search input:focus{border-color:var(--burgundy)}
+  .cm-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none}
+  .cm-filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .cm-filter-row label{font-size:.82rem;color:var(--ink-soft);font-weight:700;margin-right:4px}
+  .cm-sector-btn{padding:5px 11px;font-size:.82rem;border:1px solid var(--line);background:var(--white);border-radius:20px;cursor:pointer;color:var(--ink-soft);transition:all .15s;font-family:'Lato',sans-serif;font-weight:700}
+  .cm-sector-btn:hover,.cm-sector-btn.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .cm-count{margin-left:auto;font-size:.82rem;color:var(--ink-soft);white-space:nowrap}
+
+  /* ── GROBY LIST ── */
+  .groby-list{display:flex;flex-direction:column;gap:1px}
+  .grob-row{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:16px 20px;display:flex;gap:16px;align-items:flex-start;transition:box-shadow .15s;cursor:pointer}
+  .grob-row:hover{box-shadow:0 2px 12px rgba(43,37,32,.1)}
+  .grob-loc{flex-shrink:0;width:110px}
+  .grob-loc-sektor{display:inline-block;width:28px;height:28px;border-radius:50%;background:var(--burgundy);color:#fff;font-size:.82rem;font-weight:700;text-align:center;line-height:28px;margin-bottom:4px}
+  .grob-loc-nr{font-size:.75rem;color:var(--ink-soft);font-weight:700;display:block}
+  .grob-persons{flex:1;display:flex;flex-direction:column;gap:6px}
+  .grob-person{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .grob-person-name{font-weight:700;font-size:.95rem;color:var(--ink)}
+  .grob-person-dates{font-size:.82rem;color:var(--ink-soft)}
+  .grob-person-years{font-size:.78rem;color:var(--copper);font-weight:700}
+  .grob-status{flex-shrink:0}
+  .badge-uplynął{display:inline-block;font-size:.72rem;padding:2px 8px;border-radius:10px;background:rgba(200,80,60,.1);color:#b03020;font-weight:700}
+
+  /* ── NEKROLOGI / ROCZNICE LIST ── */
+  .nk-select{padding:8px 14px;border:1px solid var(--line);border-radius:7px;font-size:.9rem;font-family:'Lato',sans-serif;background:var(--white);color:var(--ink);cursor:pointer;outline:none}
+  .nk-select:focus{border-color:var(--burgundy)}
+  .nk-list{display:flex;flex-direction:column;gap:1px}
+  .nk-row{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:14px 20px;display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center}
+  .nk-name{font-weight:700;font-size:.95rem;color:var(--ink)}
+  .nk-dates{font-size:.82rem;color:var(--ink-soft)}
+  .nk-loc{font-size:.78rem;color:var(--copper);font-weight:700;text-align:right}
+  .nk-death{font-size:.82rem;color:var(--ink-soft);font-weight:700;text-align:right;white-space:nowrap}
+
+  /* ── ROCZNICE MONTH BUTTONS ── */
+  .mc-month-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+  .mc-month-btn{padding:7px 14px;font-size:.82rem;border:1px solid var(--line);background:var(--white);border-radius:20px;cursor:pointer;color:var(--ink-soft);transition:all .15s;font-family:'Lato',sans-serif}
+  .mc-month-btn:hover,.mc-month-btn.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+
+  /* ── INFO TAB ── */
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:40px}
+  .info-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:28px}
+  .info-card h3{font-size:1.3rem;margin:0 0 1rem;color:var(--burgundy)}
+  .info-card p,.info-card li{font-size:.95rem;color:var(--ink-soft);line-height:1.8}
+  .info-card ul{padding-left:20px;margin:0}
+  .info-card a{color:var(--burgundy);font-weight:700}
+  .info-docs{display:flex;flex-direction:column;gap:10px}
+  .info-doc-link{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--beige);border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;transition:all .15s}
+  .info-doc-link:hover{background:var(--beige-deep);color:var(--burgundy);text-decoration:none}
+  .info-doc-link svg{flex-shrink:0;color:var(--burgundy)}
+  .info-doc-title{font-weight:700;font-size:.9rem}
+  .info-doc-sub{font-size:.78rem;color:var(--ink-soft);display:block}
+
+  /* ── ROCZNICE STRIP ── */
+  .rocznice-strip{padding:0 0 36px}
+  .rocznice-strip h2{font-size:1.55rem;margin:0 0 18px;color:var(--ink)}
+  .rocznice-strip h2 span{color:var(--burgundy)}
+  .rocznice-scroll-wrap{position:relative}
+  .rocznice-cards{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+  .rocznice-cards::-webkit-scrollbar{display:none}
+  .rocznice-fade{position:absolute;top:0;right:0;height:100%;width:80px;pointer-events:none;background:linear-gradient(to right, transparent, var(--beige));z-index:2;transition:opacity .2s}
+  .rocznice-fade.hidden{opacity:0}
+  .rocznice-arrows{display:flex;gap:8px;margin-top:14px}
+  .roc-arrow{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:var(--white);cursor:pointer;display:grid;place-items:center;color:var(--ink-soft);transition:all .15s;flex-shrink:0}
+  .roc-arrow:hover{border-color:var(--burgundy);color:var(--burgundy)}
+  .roc-arrow:disabled{opacity:.3;cursor:default}
+  .roc-card{flex-shrink:0;width:160px;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:18px 14px 14px;text-align:center;transition:box-shadow .15s}
+  .roc-card:hover{box-shadow:0 4px 16px rgba(43,37,32,.12)}
+  .roc-card.today{border-color:var(--burgundy);box-shadow:0 0 0 2px rgba(122,31,43,.12)}
+  .roc-grave-icon{margin:0 auto 10px;width:52px;height:52px;display:block}
+  .roc-sp{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:4px}
+  .roc-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:8px}
+  .roc-years{font-size:.8rem;color:var(--burgundy);font-weight:700;margin-bottom:3px}
+  .roc-date{font-size:.75rem;color:var(--ink-soft)}
+  .roc-today-badge{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:10px;background:var(--burgundy);color:#fff;font-weight:700;margin-top:6px}
+  .roc-empty{color:var(--ink-soft);font-size:.9rem;padding:12px 0}
+
+  /* ── LOAD MORE ── */
+  .load-more-wrap{text-align:center;margin-top:24px}
+  .btn-load-more{background:var(--white);border:1.5px solid var(--line);color:var(--ink-soft);padding:11px 28px;border-radius:7px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:all .15s}
+  .btn-load-more:hover{border-color:var(--burgundy);color:var(--burgundy)}
+  .no-results{text-align:center;padding:48px 0;color:var(--ink-soft)}
+  .no-results svg{display:block;margin:0 auto 12px;opacity:.35}
+
+  /* ── FOOTER ── */
+  footer.site{background:var(--ink);color:#d8cdb6;padding:60px 0 30px;margin-top:40px}
+  .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+  .footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .footer-brand .brand-name{color:#e8d9b8;font-size:.88rem}
+  .footer-brand .brand-name small{color:var(--copper-light)}
+  footer p{font-size:.88rem;margin:.5rem 0;color:rgba(232,217,184,.75)}
+  .footer-bank{margin-top:14px;padding:12px 16px;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.12);border-radius:6px;font-size:.8rem}
+  .footer-bank b{display:block;color:#e8d9b8;margin-bottom:4px}
+  .footer-bank code{font-size:.78rem;color:var(--copper-light);letter-spacing:.04em}
+  .footer-social{display:flex;gap:10px;margin-top:18px}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
+  .footer-social a:hover{background:rgba(246,233,211,.14);border-color:rgba(246,233,211,.4);color:#f6e9d3;text-decoration:none}
+  .footer-social svg{width:16px;height:16px}
+  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:#f6e9d3;margin-bottom:1rem}
+  footer.site ul{list-style:none;padding:0;margin:0}
+  footer.site ul li{margin-bottom:.6rem;font-size:.92rem}
+  footer.site ul a{color:rgba(216,205,182,.78)}
+  footer.site ul a:hover{color:#f6e9d3;text-decoration:none}
+  .footer-bottom{margin-top:40px;padding-top:20px;border-top:1px solid rgba(216,205,182,.15);font-size:.82rem;color:rgba(216,205,182,.5);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  @media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}}
+  @media(max-width:600px){.footer-grid{grid-template-columns:1fr}.nk-row{grid-template-columns:1fr auto}.nk-death{grid-row:2}}
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+  <div class="topbar">
+    <div class="container">
+      <div class="left">
+        <a href="tel:+48324312992"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg><span>32 43 12 9922</span></a>
+        <a href="../index.html#aktualnosci"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg><span>ul. 3-go Maja 36, Czerwionka-Leszczyny</span></a>
+      </div>
+      <div class="right">
+        <a href="../index.html#budowa" class="topbar-btn-wsparcie">Wsparcie budowy</a>
+      </div>
+    </div>
+  </div>
+  <header class="site">
+    <div class="container">
+      <div class="nav">
+        <a href="../index.html" class="brand">
+          <div class="brand-mark"><img src="../public/img/logo1.png" alt="Logo NSPJ" class="brand-logo"></div>
+          <div class="brand-name">Parafia Najświętszego Serca Pana Jezusa<small>Czerwionka-Leszczyny · od 1925</small></div>
+        </a>
+        <nav class="main">
+          <div class="dropdown">
+            <a href="#" class="has-sub">O kościele</a>
+            <div class="dropdown-menu">
+              <a href="historia.html">Historia parafii</a>
+              <a href="duszpasterstwo.html">Duszpasterze</a>
+              <a href="wspolnoty.html">Wspólnoty i grupy</a>
+              <a href="standardy.html">Standardy ochrony małoletnich</a>
+            </div>
+          </div>
+          <a href="msze.html">Msze święte</a>
+          <div class="dropdown">
+            <a href="#" class="has-sub">Sakramenty</a>
+            <div class="dropdown-menu">
+              <a href="sakramenty/chrzest.html">Chrzest</a>
+              <a href="sakramenty/komunia.html">I Komunia Święta</a>
+              <a href="sakramenty/bierzmowanie.html">Bierzmowanie</a>
+              <a href="sakramenty/slub.html">Ślub</a>
+              <hr>
+              <a href="sakramenty/namaszczenie.html">Namaszczenie chorych</a>
+              <a href="sakramenty/pogrzeb.html">Pogrzeb</a>
+              <a href="sakramenty/spowiedz.html">Spowiedź</a>
+            </div>
+          </div>
+          <a href="cmentarz.html" class="active">Cmentarz</a>
+          <a href="galeria.html">Galeria</a>
+          <a href="aktualnosci.html">Aktualności</a>
+          <a href="kontakt.html">Kontakt</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Menu">
+          <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Parafia NSPJ · Czerwionka-Leszczyny</span>
+    <h1>Cmentarz parafialny</h1>
+    <p class="lead">Wyszukiwarka grobów, nekrologi i rocznice śmierci osób pochowanych na cmentarzu parafii Najświętszego Serca Pana Jezusa.</p>
+  </div>
+</div>
+
+<!-- ROCZNICE STRIP -->
+<div class="rocznice-strip" id="rocznice-strip" style="display:none">
+  <div class="container">
+    <h2 class="serif">Najbliższe <span>rocznice śmierci</span></h2>
+    <div class="rocznice-scroll-wrap">
+      <div class="rocznice-cards" id="rocznice-cards"></div>
+      <div class="rocznice-fade" id="rocznice-fade"></div>
+    </div>
+    <div class="rocznice-arrows">
+      <button class="roc-arrow" id="roc-prev" onclick="scrollRoc(-1)" aria-label="Poprzednie">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button class="roc-arrow" id="roc-next" onclick="scrollRoc(1)" aria-label="Następne">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="page-body">
+  <div class="container">
+    <div class="page-tabs">
+      <button class="page-tab-btn active" data-tab="groby">Groby</button>
+      <button class="page-tab-btn" data-tab="nekrologi">Nekrologi</button>
+      <button class="page-tab-btn" data-tab="rocznice">Rocznice</button>
+      <button class="page-tab-btn" data-tab="informacje">Informacje</button>
+    </div>
+
+    <!-- ── TAB: GROBY ── -->
+    <div class="page-tab-content active" id="tab-groby">
+      <div class="cm-toolbar">
+        <div class="cm-search">
+          <svg class="cm-search-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+          <input type="text" id="search-groby" placeholder="Szukaj po nazwisku, imieniu lub lokalizacji…" oninput="onSearchGroby()">
+        </div>
+        <div class="cm-filter-row">
+          <label>Sektor:</label>
+          <button class="cm-sector-btn active" data-sektor="" onclick="setSektorFilter(this,'')">Wszystkie</button>
+          <span id="sektor-btns"></span>
+        </div>
+        <span class="cm-count" id="groby-count"></span>
+      </div>
+      <div class="groby-list" id="groby-list"></div>
+      <div class="load-more-wrap" id="groby-more" style="display:none">
+        <button class="btn-load-more" onclick="loadMoreGroby()">Pokaż więcej grobów</button>
+      </div>
+    </div>
+
+    <!-- ── TAB: NEKROLOGI ── -->
+    <div class="page-tab-content" id="tab-nekrologi">
+      <div class="cm-toolbar">
+        <label style="font-weight:700;font-size:.9rem">Rok śmierci:</label>
+        <select class="nk-select" id="filter-rok" onchange="renderNekrologi()">
+          <option value="">Wszystkie lata</option>
+        </select>
+        <span class="cm-count" id="nk-count"></span>
+      </div>
+      <div class="nk-list" id="nk-list"></div>
+      <div class="load-more-wrap" id="nk-more" style="display:none">
+        <button class="btn-load-more" onclick="loadMoreNk()">Pokaż więcej</button>
+      </div>
+    </div>
+
+    <!-- ── TAB: ROCZNICE ── -->
+    <div class="page-tab-content" id="tab-rocznice">
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:16px">Rocznice śmierci — osoby, których data zgonu przypada w danym miesiącu.</p>
+      <div class="mc-month-btns" id="mc-month-btns"></div>
+      <div class="cm-toolbar" style="margin-bottom:16px">
+        <span class="cm-count" id="mc-count"></span>
+      </div>
+      <div class="nk-list" id="mc-list"></div>
+      <div class="load-more-wrap" id="mc-more" style="display:none">
+        <button class="btn-load-more" onclick="loadMoreMc()">Pokaż więcej</button>
+      </div>
+    </div>
+
+    <!-- ── TAB: INFORMACJE ── -->
+    <div class="page-tab-content" id="tab-informacje">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>O cmentarzu</h3>
+          <p>Cmentarz Parafii Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach jest miejscem pochówku wiernych od ponad stu lat. Podzielony jest na sektory oznaczone literami A–L.</p>
+          <p>Cmentarz otwarty jest codziennie. Wszelkie sprawy dotyczące miejsc pochówku, opłat i dokumentacji można załatwić w kancelarii parafialnej.</p>
+          <ul>
+            <li>Grobów ewidencjonowanych: <strong>2 348</strong></li>
+            <li>Osób pochowanych: <strong>3 924</strong></li>
+            <li>Sektory: <strong>A, B, C, D, E, F, G, H, I, J, K, L</strong></li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Kancelaria — kontakt</h3>
+          <p><strong>Parafia NSPJ</strong><br>ul. 3-go Maja 36<br>44-230 Czerwionka-Leszczyny</p>
+          <p>Telefon: <a href="tel:+48324312992">32 43 12 9922</a></p>
+          <p><strong>Godziny kancelarii:</strong><br>Poniedziałek, Środa: 17:30–20:30<br>Czwartek: 7:30–8:30 i 17:30–18:30</p>
+        </div>
+        <div class="info-card">
+          <h3>Opłaty i dokumenty</h3>
+          <p>Wszelkie informacje o opłatach za miejsca pochówku, przedłużanie prawa do grobu oraz dokumenty do pobrania:</p>
+          <div class="info-docs">
+            <a href="../grobydane/Karta_Dysponenta_Grobu.html" target="_blank" class="info-doc-link">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+              <div>
+                <span class="info-doc-title">Karta Dysponenta Grobu</span>
+                <span class="info-doc-sub">Formularz PDF do pobrania</span>
+              </div>
+            </a>
+            <a href="../grobydane/Karta_Zrzeczenie_Dysponenta_Grobu.html" target="_blank" class="info-doc-link">
+              <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+              <div>
+                <span class="info-doc-title">Karta Zrzeczenia Dysponenta Grobu</span>
+                <span class="info-doc-sub">Formularz PDF do pobrania</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="info-card">
+          <h3>Porządek na cmentarzu</h3>
+          <ul>
+            <li>Prosimy o zachowanie ciszy i szacunku</li>
+            <li>Zabrania się wjazdu pojazdami silnikowymi bez zezwolenia</li>
+            <li>Odpady należy składać w wyznaczonych miejscach</li>
+            <li>Znicze i kwiaty należy składać wyłącznie przy grobie</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</div><!-- /page-body -->
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="../public/img/logo1.png" alt="Logo NSPJ" class="brand-logo" style="width:46px;height:46px;object-fit:contain;border-radius:50%;flex-shrink:0">
+          <div class="brand-name">Parafia Najświętszego Serca Pana Jezusa<small>Czerwionka-Leszczyny · od 1925</small></div>
+        </div>
+        <p>ul. 3-go Maja 36<br>44-230 Czerwionka-Leszczyny<br>tel. <a href="tel:+48324312992" style="color:var(--copper-light)">32 43 12 992</a></p>
+        <div class="footer-bank">
+          <b>Konto parafii (Bank Spółdzielczy)</b>
+          <code>11 8454 1095 2003 0017 7467 0003</code>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=100066986484642" target="_blank" rel="noopener" title="Facebook NSPJ Czerwionka"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://www.instagram.com/nspj.budowa/" target="_blank" rel="noopener" title="Instagram NSPJ"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>Parafia</h5>
+        <ul>
+          <li><a href="historia.html">Historia</a></li>
+          <li><a href="duszpasterstwo.html">Duszpasterze</a></li>
+          <li><a href="msze.html">Msze święte</a></li>
+          <li><a href="standardy.html">Standardy ochrony małoletnich</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Wspólnota</h5>
+        <ul>
+          <li><a href="aktualnosci.html">Aktualności</a></li>
+          <li><a href="../index.html#aktualnosci">Ogłoszenia parafialne</a></li>
+          <li><a href="wspolnoty.html">Wspólnoty</a></li>
+          <li><a href="msze.html">Intencje mszalne</a></li>
+          <li><a href="cmentarz.html">Cmentarz</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Kontakt</h5>
+        <ul>
+          <li><a href="kontakt.html">Kancelaria</a></li>
+          <li><a href="polityka-prywatnosci.html">Polityka prywatności</a></li>
+          <li><a href="../index.html#budowa">Wsparcie budowy</a></li>
+          <li><a href="../admin/login.html" style="color:var(--copper-light);font-weight:700">→ Panel administracyjny</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <script>document.write(new Date().getFullYear())</script> Parafia NSPJ Czerwionka-Leszczyny. Wszelkie prawa zastrzeżone.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+let allGroby = [];
+const PAGE = 50;
+let grobyPage = 0, nkPage = 0, mcPage = 0;
+let grobyFiltered = [], nkFiltered = [], mcFiltered = [];
+let activeSektorFilter = '';
+let activeMonthFilter = '';
+
+const MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+
+function fmtPL(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${parseInt(d, 10)} ${MONTHS[parseInt(m, 10) - 1].toLowerCase()} ${y}`;
+}
+function fmtShort(iso) {
+  if (!iso) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}.${m}.${y}`;
+}
+function getAge(ur, zgon) {
+  if (!ur || !zgon) return '';
+  const a = parseInt(zgon.slice(0, 4)) - parseInt(ur.slice(0, 4));
+  return a > 0 ? `${a} lat` : '';
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.page-tab-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.page-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.page-tab-content').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+  });
+});
+
+// ── LOAD DATA ─────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const [dbRes, liveRes] = await Promise.all([
+      fetch('/api/groby'),
+      fetch('/api/groby/live').catch(() => null)
+    ]);
+    const dbData = await dbRes.json();
+    const liveData = liveRes && liveRes.ok ? await liveRes.json() : [];
+
+    // Oznacz źródło rekordów z CRM pogrzeby
+    liveData.forEach(g => { g._live = true; });
+
+    // Live rekordy (CRM) na początku, potem historyczne z DB
+    allGroby = [...liveData, ...dbData];
+  } catch(e) {
+    document.getElementById('groby-list').innerHTML = '<div class="no-results"><p>Nie można załadować danych cmentarza.</p></div>';
+    return;
+  }
+
+  // Sektory
+  const sektory = [...new Set(allGroby.map(g => g.sektor))].sort();
+  const sb = document.getElementById('sektor-btns');
+  sb.innerHTML = sektory.map(s =>
+    `<button class="cm-sector-btn" data-sektor="${s}" onclick="setSektorFilter(this,'${s}')">${s}</button>`
+  ).join('');
+
+  // Lata do nekrologi
+  const years = new Set();
+  allGroby.forEach(g => g.pochowani.forEach(p => {
+    if (p.data_smierci) years.add(p.data_smierci.slice(0, 4));
+  }));
+  const sortedYears = [...years].sort((a, b) => b - a);
+  const sel = document.getElementById('filter-rok');
+  sortedYears.forEach(y => {
+    const o = document.createElement('option'); o.value = y; o.textContent = y; sel.appendChild(o);
+  });
+
+  // Miesiące — rocznice
+  const mb = document.getElementById('mc-month-btns');
+  mb.innerHTML = `<button class="mc-month-btn active" data-m="" onclick="setMonthFilter(this,'')">Wszystkie</button>` +
+    MONTHS.map((m, i) => {
+      const mv = String(i + 1).padStart(2, '0');
+      return `<button class="mc-month-btn" data-m="${mv}" onclick="setMonthFilter(this,'${mv}')">${m}</button>`;
+    }).join('');
+
+  renderGroby();
+  renderNekrologi();
+  renderRocznice();
+  renderRoczniceStrip();
+}
+
+// ── GROBY ─────────────────────────────────────────────────────────────────────
+function onSearchGroby() { grobyPage = 0; renderGroby(); }
+
+function setSektorFilter(btn, sektor) {
+  activeSektorFilter = sektor;
+  document.querySelectorAll('.cm-sector-btn').forEach(b => b.classList.toggle('active', b.dataset.sektor === sektor));
+  grobyPage = 0;
+  renderGroby();
+}
+
+function renderGroby() {
+  const q = document.getElementById('search-groby').value.trim().toLowerCase();
+  grobyFiltered = allGroby.filter(g => {
+    if (activeSektorFilter && g.sektor !== activeSektorFilter) return false;
+    if (!q) return true;
+    const names = g.pochowani.map(p => p.imie_nazwisko.toLowerCase()).join(' ');
+    return names.includes(q) || g.lokalizacja.toLowerCase().includes(q);
+  });
+
+  document.getElementById('groby-count').textContent = `Wyniki: ${grobyFiltered.length}`;
+  const slice = grobyFiltered.slice(0, (grobyPage + 1) * PAGE);
+  const list = document.getElementById('groby-list');
+  list.innerHTML = grobyFiltered.length === 0
+    ? `<div class="no-results"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg><p>Nie znaleziono grobów</p></div>`
+    : slice.map((g) => {
+        const idx = allGroby.indexOf(g);
+        return renderGrobRow(g, idx);
+      }).join('');
+
+  const moreBtn = document.getElementById('groby-more');
+  moreBtn.style.display = slice.length < grobyFiltered.length ? 'block' : 'none';
+}
+
+function loadMoreGroby() { grobyPage++; renderGroby(); }
+
+function renderGrobRow(g, idx) {
+  const href = g._live ? `grob.html?type=live&id=${g.pogrzeb_id || g.id}` : `grob.html?i=${idx}`;
+  const persons = g.pochowani.map(p => {
+    const age = getAge(p.data_urodzenia, p.data_smierci);
+    const ur = p.data_urodzenia ? fmtShort(p.data_urodzenia) : '?';
+    const zg = p.data_smierci   ? fmtShort(p.data_smierci)   : '?';
+    const datesStr = (p.data_urodzenia || p.data_smierci) ? `${ur} – ${zg}` : '';
+    return `<div class="grob-person">
+      <span class="grob-person-name">${escH(p.imie_nazwisko)}</span>
+      ${datesStr ? `<span class="grob-person-dates">${datesStr}</span>` : ''}
+      ${age ? `<span class="grob-person-years">(${age})</span>` : ''}
+    </div>`;
+  }).join('');
+
+  return `<a class="grob-row" href="${href}" style="text-decoration:none;color:inherit">
+    <div class="grob-loc">
+      <div class="grob-loc-sektor">${g.sektor}</div>
+      <span class="grob-loc-nr">${g.lokalizacja}</span>
+    </div>
+    <div class="grob-persons">${persons}</div>
+    <div class="grob-status">${g.uplynął ? '<span class="badge-uplynął">Opłata wygasła</span>' : '<svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>'}</div>
+  </a>`;
+}
+
+// ── NEKROLOGI ─────────────────────────────────────────────────────────────────
+function renderNekrologi() {
+  const year = document.getElementById('filter-rok').value;
+  let persons = [];
+  allGroby.forEach(g => {
+    g.pochowani.forEach(p => {
+      if (!p.data_smierci) return;
+      if (year && !p.data_smierci.startsWith(year)) return;
+      persons.push({ ...p, lokalizacja: g.lokalizacja, sektor: g.sektor });
+    });
+  });
+  persons.sort((a, b) => b.data_smierci.localeCompare(a.data_smierci));
+  nkFiltered = persons;
+  nkPage = 0;
+  renderNkSlice();
+}
+
+function renderNkSlice() {
+  const slice = nkFiltered.slice(0, (nkPage + 1) * PAGE);
+  document.getElementById('nk-count').textContent = `Osób: ${nkFiltered.length}`;
+  document.getElementById('nk-list').innerHTML = nkFiltered.length === 0
+    ? '<div class="no-results"><p>Brak wpisów</p></div>'
+    : slice.map(p => `<div class="nk-row">
+        <div>
+          <div class="nk-name">${escH(p.imie_nazwisko)}</div>
+          <div class="nk-dates">${p.data_urodzenia ? 'ur. ' + fmtPL(p.data_urodzenia) : ''}</div>
+        </div>
+        <div class="nk-death">† ${fmtPL(p.data_smierci)}</div>
+        <div class="nk-loc">${p.lokalizacja}</div>
+      </div>`).join('');
+  document.getElementById('nk-more').style.display = slice.length < nkFiltered.length ? 'block' : 'none';
+}
+
+function loadMoreNk() { nkPage++; renderNkSlice(); }
+
+// ── ROCZNICE ──────────────────────────────────────────────────────────────────
+function setMonthFilter(btn, m) {
+  activeMonthFilter = m;
+  document.querySelectorAll('.mc-month-btn').forEach(b => b.classList.toggle('active', b.dataset.m === m));
+  mcPage = 0;
+  renderRocznice();
+}
+
+function renderRocznice() {
+  const m = activeMonthFilter;
+  const today = new Date().toISOString().slice(5, 10); // MM-DD
+  let persons = [];
+  allGroby.forEach(g => {
+    g.pochowani.forEach(p => {
+      if (!p.data_smierci) return;
+      const pMonth = p.data_smierci.slice(5, 7);
+      if (m && pMonth !== m) return;
+      persons.push({ ...p, lokalizacja: g.lokalizacja, sektor: g.sektor, _mmdd: p.data_smierci.slice(5) });
+    });
+  });
+  // Sortuj po MM-DD (kolejność w roku)
+  persons.sort((a, b) => a._mmdd.localeCompare(b._mmdd));
+  mcFiltered = persons;
+  renderMcSlice();
+}
+
+function renderMcSlice() {
+  const slice = mcFiltered.slice(0, (mcPage + 1) * PAGE);
+  document.getElementById('mc-count').textContent = `Osób: ${mcFiltered.length}`;
+  document.getElementById('mc-list').innerHTML = mcFiltered.length === 0
+    ? '<div class="no-results"><p>Brak wpisów</p></div>'
+    : slice.map(p => {
+        const mmdd = p.data_smierci ? p.data_smierci.slice(5) : '';
+        const d = mmdd ? `${mmdd.slice(3)}.${mmdd.slice(0,2)}` : '';
+        const rokSm = p.data_smierci ? p.data_smierci.slice(0, 4) : '';
+        return `<div class="nk-row">
+          <div>
+            <div class="nk-name">${escH(p.imie_nazwisko)}</div>
+            <div class="nk-dates">${p.data_urodzenia ? 'ur. ' + fmtPL(p.data_urodzenia) : ''}</div>
+          </div>
+          <div class="nk-death">† ${d} <span style="color:var(--ink-soft);font-weight:400">(${rokSm})</span></div>
+          <div class="nk-loc">${p.lokalizacja}</div>
+        </div>`;
+      }).join('');
+  document.getElementById('mc-more').style.display = slice.length < mcFiltered.length ? 'block' : 'none';
+}
+
+function loadMoreMc() { mcPage++; renderMcSlice(); }
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── ROCZNICE STRIP ───────────────────────────────────────────────────────────
+const GRAVE_SVG = `<svg class="roc-grave-icon" viewBox="0 0 52 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="6" y="16" width="40" height="36" rx="4" fill="#f4ede0" stroke="#d8cdb6" stroke-width="1.5"/>
+  <path d="M26 2 C16 2 10 8 10 16 H42 C42 8 36 2 26 2 Z" fill="#f4ede0" stroke="#d8cdb6" stroke-width="1.5"/>
+  <line x1="26" y1="26" x2="26" y2="40" stroke="#7a1f2b" stroke-width="2" stroke-linecap="round"/>
+  <line x1="19" y1="31" x2="33" y2="31" stroke="#7a1f2b" stroke-width="2" stroke-linecap="round"/>
+  <rect x="2" y="50" width="48" height="10" rx="3" fill="#d8cdb6"/>
+</svg>`;
+
+function getUpcomingAnniversaries(windowDays) {
+  const now = new Date();
+  // Północ dzisiejszego dnia — eliminuje problem godziny
+  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const thisYear = now.getFullYear();
+  const results = [];
+
+  allGroby.forEach(g => {
+    g.pochowani.forEach(p => {
+      if (!p.data_smierci) return;
+      const [y, m, d] = p.data_smierci.split('-');
+      const deathYear = parseInt(y, 10);
+      if (deathYear >= thisYear) return;
+      const yearsAgo = thisYear - deathYear;
+
+      // Rocznica w bieżącym roku — również o północy
+      let anniv = new Date(thisYear, parseInt(m, 10) - 1, parseInt(d, 10));
+      let diff = Math.round((anniv - todayMidnight) / 86400000);
+
+      // Jeśli już minęła w tym roku, sprawdź następny rok
+      if (diff < 0) {
+        anniv = new Date(thisYear + 1, parseInt(m, 10) - 1, parseInt(d, 10));
+        diff = Math.round((anniv - todayMidnight) / 86400000);
+      }
+
+      if (diff >= 0 && diff < windowDays) {
+        results.push({
+          imie_nazwisko: p.imie_nazwisko,
+          lokalizacja: g.lokalizacja,
+          grob_idx: allGroby.indexOf(g),
+          yearsAgo,
+          annivDateStr: `${d}.${m}`,
+          diff
+        });
+      }
+    });
+  });
+
+  results.sort((a, b) => a.diff - b.diff || a.imie_nazwisko.localeCompare(b.imie_nazwisko, 'pl'));
+  return results;
+}
+
+function scrollRoc(dir) {
+  const el = document.getElementById('rocznice-cards');
+  el.scrollBy({ left: dir * 360, behavior: 'smooth' });
+}
+
+function renderRoczniceStrip() {
+  const WINDOW = 14; // dni do przodu
+  const items = getUpcomingAnniversaries(WINDOW);
+  const strip = document.getElementById('rocznice-strip');
+  const cards = document.getElementById('rocznice-cards');
+  const fade = document.getElementById('rocznice-fade');
+
+  if (!items.length) { strip.style.display = 'none'; return; }
+
+  strip.style.display = 'block';
+  cards.innerHTML = items.map(r => {
+    const isToday = r.diff === 0;
+    const isTomorrow = r.diff === 1;
+    const ordinal = `${r.yearsAgo}. rocznica`;
+    let badge = '';
+    if (isToday) badge = '<div class="roc-today-badge">Dziś</div>';
+    else if (isTomorrow) badge = '<div class="roc-today-badge" style="background:var(--copper)">Jutro</div>';
+    const href = r.grob_idx >= 0 ? `grob.html?i=${r.grob_idx}` : '#';
+    return `<a class="roc-card${isToday ? ' today' : ''}" href="${href}" style="text-decoration:none;display:block">
+      ${GRAVE_SVG}
+      <div class="roc-sp">Ś.P.</div>
+      <div class="roc-name">${escH(r.imie_nazwisko)}</div>
+      <div class="roc-years">${ordinal} śmierci</div>
+      <div class="roc-date">${r.annivDateStr}</div>
+      ${badge}
+    </a>`;
+  }).join('');
+
+  // Fade + strzałki przy scrollowaniu
+  const updateNav = () => {
+    const atEnd = cards.scrollLeft + cards.clientWidth >= cards.scrollWidth - 4;
+    if (fade) fade.classList.toggle('hidden', atEnd);
+    const prev = document.getElementById('roc-prev');
+    const next = document.getElementById('roc-next');
+    if (prev) prev.disabled = cards.scrollLeft < 4;
+    if (next) next.disabled = atEnd;
+  };
+  cards.addEventListener('scroll', updateNav, { passive: true });
+  setTimeout(updateNav, 50); // po wyrenderowaniu
+}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

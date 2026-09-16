@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grób · Cmentarz parafialny NSPJ Czerwionka-Leszczyny</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--beige:#f4ede0;--beige-deep:#ebe1cd;--cream:#faf6ee;--burgundy:#7a1f2b;--burgundy-dark:#5e1620;--copper:#b87a4a;--copper-light:#d6a572;--ink:#2b2520;--ink-soft:#5a5048;--line:#d8cdb6;--white:#ffffff}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;padding:0;font-family:'Lato',sans-serif;color:var(--ink);background:var(--beige);line-height:1.65}
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:var(--ink)}
+  a{color:var(--burgundy);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .container{max-width:960px;margin:0 auto;padding:0 24px}
+
+  /* TOPBAR */
+  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;min-height:40px;display:flex;align-items:center}
+  .topbar .container{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:4px 24px}
+  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .topbar a:hover{color:#fff}
+  .topbar-admin{width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,217,184,.35);display:grid;place-items:center;color:#e8d9b8;transition:all .15s}
+  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
+  .topbar-btn{background:#e8d9b8;color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;white-space:nowrap}
+  .topbar-btn:hover{background:#fff;text-decoration:none!important}
+  @media(max-width:600px){.topbar .left span:first-child{display:none}.topbar .right a:not(.topbar-admin){display:none}.topbar .container{justify-content:center}}
+
+  /* HEADER */
+  .sticky-header{position:sticky;top:0;z-index:50}
+  header.site{background:var(--cream);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:16px}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
+  .brand-logo{width:44px;height:44px;object-fit:contain;border-radius:50%}
+  .brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:.9rem;line-height:1.2}
+  .brand-name small{display:block;font-family:'Lato',sans-serif;font-size:.68rem;letter-spacing:.16em;color:var(--copper);text-transform:uppercase;font-weight:700;margin-top:3px}
+  .back-link{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid var(--line);border-radius:7px;font-size:.88rem;font-weight:700;color:var(--ink-soft);transition:all .15s}
+  .back-link:hover{border-color:var(--burgundy);color:var(--burgundy);text-decoration:none}
+  .back-link svg{flex-shrink:0}
+
+  /* MAIN LAYOUT */
+  .grob-page{padding:36px 0 80px}
+  .grob-grid{display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:start}
+  @media(max-width:720px){.grob-grid{grid-template-columns:1fr}.grob-visual{max-width:260px;margin:0 auto}}
+
+  /* VISUAL — nagrobek */
+  .grob-visual{text-align:center}
+  .grob-img-wrap{position:relative;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:24px 20px 16px;margin-bottom:12px}
+  .grob-img-placeholder{display:block;margin:0 auto}
+  .grob-img-caption{font-size:.72rem;color:var(--ink-soft);line-height:1.4;margin-top:8px}
+  .grob-sector-badge{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--burgundy);color:#fff;font-size:1.3rem;font-weight:700;font-family:'Cormorant Garamond',Georgia,serif;margin:0 auto 10px;box-shadow:0 2px 8px rgba(122,31,43,.2)}
+  .grob-lokalizacja{font-size:.82rem;font-weight:700;color:var(--ink-soft);letter-spacing:.04em}
+
+  /* STATUS BADGES */
+  .grob-status-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;justify-content:center}
+  .badge{display:inline-block;font-size:.72rem;padding:4px 10px;border-radius:10px;font-weight:700}
+  .badge-ok{background:rgba(80,160,80,.1);color:#336633}
+  .badge-warn{background:rgba(200,80,60,.1);color:#b03020}
+  .badge-info{background:rgba(184,122,74,.1);color:#7a4a20}
+
+  /* DETAILS */
+  .grob-details{}
+  .eyebrow{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:.5rem}
+  .grob-details h1{font-size:clamp(1.6rem,3.5vw,2.4rem);margin:0 0 4px;line-height:1.15}
+  .grob-subtitle{font-size:.92rem;color:var(--ink-soft);margin-bottom:28px}
+
+  .persons-list{display:flex;flex-direction:column;gap:1px;margin-bottom:28px}
+  .person-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start}
+  .person-card + .person-card{margin-top:1px}
+  .person-grave-icon{flex-shrink:0;margin-top:2px}
+  .person-sp{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:3px}
+  .person-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:10px}
+  .person-dates{display:flex;gap:20px;flex-wrap:wrap}
+  .person-date-item{}
+  .person-date-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-weight:700;margin-bottom:2px}
+  .person-date-val{font-size:.95rem;font-weight:700;color:var(--ink)}
+  .person-age{display:inline-block;margin-left:8px;font-size:.8rem;color:var(--copper);font-weight:700}
+
+  /* INFO GRID */
+  .info-section{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:20px}
+  .info-section h3{font-size:1rem;margin:0 0 14px;color:var(--burgundy);font-family:'Lato',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}
+  .info-row{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px solid var(--beige)}
+  .info-row:last-child{border-bottom:none}
+  .info-label{font-size:.82rem;color:var(--ink-soft);min-width:130px;flex-shrink:0}
+  .info-val{font-size:.92rem;font-weight:700;color:var(--ink)}
+  .info-val.warn{color:#b03020}
+
+  /* PRZYSZŁE FUNKCJE */
+  .future-strip{margin-top:20px;background:var(--beige-deep);border:1.5px dashed var(--line);border-radius:10px;padding:16px 18px;text-align:center}
+  .future-strip p{margin:0;font-size:.82rem;color:var(--ink-soft)}
+  .future-strip strong{color:var(--burgundy)}
+
+  /* FOOTER */
+  footer.site{background:var(--ink);color:#d8cdb6;padding:50px 0 24px}
+  .footer-bottom{padding-top:18px;border-top:1px solid rgba(216,205,182,.15);font-size:.8rem;color:rgba(216,205,182,.5);text-align:center}
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+  <div class="topbar">
+    <div class="container">
+      <div class="left">
+        <a href="tel:+48324312992"><svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg><span>32 43 12 9922</span></a>
+      </div>
+      <div class="right">
+        <a href="../index.html#budowa" class="topbar-btn">Wsparcie budowy</a>
+        <a href="../admin/login.html" class="topbar-admin" title="Panel"><svg width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.029 10 8 10c-2.029 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <header class="site">
+    <div class="container">
+      <div class="nav">
+        <a href="../index.html" class="brand">
+          <img src="../public/img/logo1.png" alt="Logo NSPJ" class="brand-logo">
+          <div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div>
+        </a>
+        <a href="cmentarz.html" class="back-link">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Powrót do cmentarza
+        </a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="grob-page">
+  <div class="container">
+    <div id="grob-content">
+      <p style="color:var(--ink-soft);padding:48px 0;text-align:center">Ładowanie danych…</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="container">
+    <div class="footer-bottom">© <script>document.write(new Date().getFullYear())</script> Parafia NSPJ Czerwionka-Leszczyny</div>
+  </div>
+</footer>
+
+<script>
+const MONTHS_GEN = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
+const MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+
+function fmtPL(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split('-');
+  return `${parseInt(d, 10)} ${MONTHS_GEN[parseInt(m, 10) - 1]} ${y}`;
+}
+function getAge(ur, zgon) {
+  if (!ur || !zgon) return null;
+  const a = parseInt(zgon.slice(0, 4)) - parseInt(ur.slice(0, 4));
+  return a > 0 ? a : null;
+}
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// SVG nagrobka — bardziej realistyczny
+function graveSVG(label) {
+  return `<svg class="grob-img-placeholder" width="180" height="240" viewBox="0 0 180 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- cokół -->
+    <rect x="10" y="210" width="160" height="24" rx="5" fill="#c8bdb0" stroke="#a89a8c" stroke-width="1.5"/>
+    <rect x="22" y="200" width="136" height="14" rx="3" fill="#d4c9bc" stroke="#a89a8c" stroke-width="1"/>
+    <!-- główna płyta -->
+    <path d="M34 200 L34 88 Q34 20 90 14 Q146 20 146 88 L146 200 Z" fill="#ddd4c6" stroke="#a89a8c" stroke-width="1.5"/>
+    <!-- wewnętrzna ramka -->
+    <path d="M44 192 L44 96 Q44 36 90 30 Q136 36 136 96 L136 192 Z" fill="none" stroke="#bfb4a6" stroke-width="1"/>
+    <!-- krzyż -->
+    <line x1="90" y1="50" x2="90" y2="118" stroke="#8a7a6e" stroke-width="5" stroke-linecap="round"/>
+    <line x1="66" y1="74" x2="114" y2="74" stroke="#8a7a6e" stroke-width="5" stroke-linecap="round"/>
+    <!-- linie napisu -->
+    <line x1="60" y1="136" x2="120" y2="136" stroke="#bfb4a6" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="56" y1="150" x2="124" y2="150" stroke="#bfb4a6" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="60" y1="164" x2="120" y2="164" stroke="#bfb4a6" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="64" y1="178" x2="116" y2="178" stroke="#bfb4a6" stroke-width="1.5" stroke-linecap="round"/>
+    ${label ? `<text x="90" y="145" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#8a7a6e" opacity=".6">${escH(label)}</text>` : ''}
+  </svg>`;
+}
+
+// Ikona małego nagrobka do listy osób
+const personIcon = `<svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.6">
+  <rect x="1" y="34" width="30" height="5" rx="2" fill="#d8cdb6"/>
+  <path d="M6 34 L6 16 Q6 3 16 2 Q26 3 26 16 L26 34 Z" fill="#ebe1cd" stroke="#d8cdb6" stroke-width="1"/>
+  <line x1="16" y1="10" x2="16" y2="24" stroke="#b87a4a" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="9" y1="16" x2="23" y2="16" stroke="#b87a4a" stroke-width="2.5" stroke-linecap="round"/>
+</svg>`;
+
+async function init() {
+  const params = new URLSearchParams(location.search);
+  const type = params.get('type');
+  const liveId = params.get('id');
+  const idx = parseInt(params.get('i'), 10);
+
+  let g;
+
+  if (type === 'live' && liveId) {
+    // Dane z CRM — pobierz pogrzeb po ID
+    try {
+      const r = await fetch('/api/groby/live/' + encodeURIComponent(liveId));
+      if (!r.ok) throw new Error('not found');
+      const p = await r.json();
+      // Mapuj format pogrzebu → format grobu
+      g = {
+        _live: true,
+        id: p.id,
+        lokalizacja: [p.sektor, p.rzad, p.miejsce_grobu].filter(Boolean).join(' / '),
+        sektor: p.sektor || '?',
+        rzad: p.rzad || '',
+        nr_grobu: p.miejsce_grobu || '',
+        nr_archiwalny: null,
+        uplynął: false,
+        nienaruszelny_do: null,
+        oplacony_do: null,
+        _miejsce_ceremonii: p.miejsce_ceremonii,
+        _data_pogrzebu: p.data_pogrzebu,
+        _cmentarz: p.cmentarz,
+        pochowani: [{
+          imie_nazwisko: ((p.imie || '') + ' ' + (p.nazwisko || '')).trim(),
+          data_urodzenia: p.data_urodzenia || null,
+          data_smierci: p.data_zgonu || null
+        }]
+      };
+    } catch(e) {
+      document.getElementById('grob-content').innerHTML = '<p style="color:var(--ink-soft);padding:48px 0;text-align:center">Nie znaleziono grobu.</p>';
+      return;
+    }
+  } else {
+    // Dane historyczne z JSON
+    if (isNaN(idx)) {
+      document.getElementById('grob-content').innerHTML = '<p style="color:var(--ink-soft);padding:48px 0;text-align:center">Brak identyfikatora grobu w adresie URL.</p>';
+      return;
+    }
+    let groby;
+    try {
+      const r = await fetch('../data/groby.json');
+      groby = await r.json();
+    } catch(e) {
+      document.getElementById('grob-content').innerHTML = '<p style="color:var(--ink-soft);padding:48px 0;text-align:center">Nie można załadować danych.</p>';
+      return;
+    }
+    g = groby[idx];
+    if (!g) {
+      document.getElementById('grob-content').innerHTML = '<p style="color:var(--ink-soft);padding:48px 0;text-align:center">Nie znaleziono grobu.</p>';
+      return;
+    }
+  }
+
+  // Tytuł strony
+  const mainName = g.pochowani.length > 0 ? g.pochowani[0].imie_nazwisko : g.lokalizacja;
+  document.title = `${mainName} · Cmentarz NSPJ Czerwionka-Leszczyny`;
+
+  // Breadcrumb eyebrow
+  const eyebrow = `Cmentarz parafialny · Sektor ${g.sektor}`;
+
+  // Status płatności
+  let statusBadge = '';
+  if (g.uplynął) statusBadge += `<span class="badge badge-warn">Opłata wygasła</span>`;
+  else statusBadge += `<span class="badge badge-ok">Opłata aktualna</span>`;
+
+  // Osoby pochowane
+  const personsHTML = g.pochowani.map(p => {
+    const age = getAge(p.data_urodzenia, p.data_smierci);
+    const ur = fmtPL(p.data_urodzenia);
+    const zg = fmtPL(p.data_smierci);
+    return `<div class="person-card">
+      <div class="person-grave-icon">${personIcon}</div>
+      <div>
+        <div class="person-sp">Ś.P.</div>
+        <div class="person-name">${escH(p.imie_nazwisko)}</div>
+        <div class="person-dates">
+          ${ur ? `<div class="person-date-item"><div class="person-date-label">Urodzony/a</div><div class="person-date-val">${ur}</div></div>` : ''}
+          ${zg ? `<div class="person-date-item"><div class="person-date-label">Zmarły/a</div><div class="person-date-val">${zg}${age ? `<span class="person-age">(${age} lat)</span>` : ''}</div></div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const noPerson = g.pochowani.length === 0
+    ? `<div class="person-card" style="color:var(--ink-soft);font-size:.9rem;padding:20px">Brak danych o osobach pochowanych w tym miejscu.</div>`
+    : '';
+
+  // Info sekcja
+  const infoRows = [
+    ['Lokalizacja',   g.lokalizacja],
+    ['Sektor',        g.sektor],
+    ['Rząd',          g.rzad],
+    ['Numer grobu',   g.nr_grobu],
+    g.nr_archiwalny ? ['Nr archiwalny', g.nr_archiwalny] : null,
+    g._data_pogrzebu  ? ['Data pogrzebu',    fmtPL(g._data_pogrzebu)]    : null,
+    g._miejsce_ceremonii ? ['Msza pogrzebowa', g._miejsce_ceremonii]      : null,
+    g.nienaruszelny_do ? ['Nienaruszalny do', fmtPL(g.nienaruszelny_do)] : null,
+    g.oplacony_do     ? ['Opłacony do',      fmtPL(g.oplacony_do)]       : null,
+  ].filter(Boolean);
+
+  const infoHTML = infoRows.map(([label, val]) =>
+    `<div class="info-row"><span class="info-label">${label}</span><span class="info-val">${escH(String(val))}</span></div>`
+  ).join('');
+
+  // Heading — imiona i nazwiska
+  const namesTitle = g.pochowani.length > 1
+    ? g.pochowani.map(p => p.imie_nazwisko).join(' & ')
+    : (g.pochowani[0]?.imie_nazwisko || g.lokalizacja);
+
+  document.getElementById('grob-content').innerHTML = `
+    <div class="grob-grid">
+      <div class="grob-visual">
+        <div class="grob-img-wrap">
+          ${graveSVG(g.sektor)}
+          <p class="grob-img-caption">Zdjęcie nagrobka<br>zostanie dodane w przyszłości</p>
+        </div>
+        <div class="grob-sector-badge">${g.sektor}</div>
+        <div class="grob-lokalizacja">${escH(g.lokalizacja)}</div>
+        <div class="grob-status-row">${statusBadge}</div>
+      </div>
+      <div class="grob-details">
+        <div class="eyebrow">${eyebrow}</div>
+        <h1 class="serif">${escH(namesTitle)}</h1>
+        <p class="grob-subtitle">${g.pochowani.length > 1 ? `${g.pochowani.length} osoby pochowane w jednym miejscu` : 'Cmentarz Parafii Najświętszego Serca Pana Jezusa'}</p>
+
+        <div class="persons-list">
+          ${personsHTML}${noPerson}
+        </div>
+
+        <div class="info-section">
+          <h3>Lokalizacja i dane grobu</h3>
+          ${infoHTML}
+        </div>
+
+        <div class="future-strip">
+          <p><strong>W przyszłości:</strong> zdjęcie nagrobka, zapalenie e-znicza, złożenie e-kwiatów.<br>
+          Aby dodać zdjęcie lub zaktualizować dane — skontaktuj się z <a href="kontakt.html">kancelarią parafialną</a>.</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+init();
+</script>
+</body>
+</html>

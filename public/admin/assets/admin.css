@@ -1,4 +1,7 @@
 /* ===== PANEL PARAFIALNY — STYLE WSPÓLNE ===== */
+
+/* Ukryj cały nav (linki + nagłówki sekcji) dopóki auth nie potwierdzi uprawnień */
+body:not(.auth-ok) .sidebar nav { visibility: hidden; }
 :root{
   --beige:#f4ede0;
   --beige-deep:#ebe1cd;
@@ -78,7 +81,7 @@ html,body{overflow-x:hidden;max-width:100%}
 
 .topbar{
   background:var(--white);border-bottom:1px solid var(--line);
-  padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:18px
+  padding:0 28px;min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:18px
 }
 .topbar .crumbs{font-size:.85rem;color:var(--ink-soft)}
 .topbar .crumbs span{color:var(--copper);margin:0 6px}

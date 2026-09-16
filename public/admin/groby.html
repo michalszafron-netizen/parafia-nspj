@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cmentarz · Panel Parafii NSPJ</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .filter-bar{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+  .filter-bar input{padding:8px 12px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;background:var(--white);color:var(--ink);width:280px}
+  .sektor-btns{display:flex;gap:6px;flex-wrap:wrap}
+  .sektor-btn{padding:5px 13px;border:1px solid var(--line);border-radius:20px;background:var(--white);color:var(--ink);font-size:.82rem;cursor:pointer;transition:all .15s}
+  .sektor-btn.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+
+  /* Modal */
+  .modal-overlay{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;display:none}
+  .modal-overlay.open{display:flex}
+  .modal-box{background:var(--white);border-radius:12px;padding:28px;width:600px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  .modal-box h3{margin:0 0 18px;font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--ink)}
+  .modal-section{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:4px 0 2px;border-bottom:1px solid var(--line);margin:12px 0 8px}
+  .modal-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .modal-row.row3{grid-template-columns:1fr 1fr 1fr}
+  .modal-field label{font-size:.76rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:2px}
+  .modal-field span{font-size:.9rem;color:var(--ink)}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+  /* Pochowani w modalu */
+  .pochowani-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .pochowany-card{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+  .pochowany-name{font-size:.96rem;font-weight:700;color:var(--ink);font-family:'Playfair Display',serif}
+  .pochowany-dates{font-size:.8rem;color:var(--ink-soft);margin-top:2px}
+  .badge-uplynal{display:inline-block;background:#fef3cd;color:#856404;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px}
+  .badge-publiczny{display:inline-block;background:#e2f0e6;color:#2e7a3a;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px}
+
+  /* Tabela */
+  .data-table{width:100%;border-collapse:collapse}
+  .data-table th{background:var(--bg);font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);padding:9px 12px;text-align:left;border-bottom:2px solid var(--line)}
+  .data-table td{padding:10px 12px;border-bottom:1px solid var(--line);font-size:.88rem;vertical-align:middle}
+  .data-table tr:hover td{background:rgba(122,31,43,.03);cursor:pointer}
+  .osoby-cell{max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-soft);font-size:.82rem}
+
+  .no-results{text-align:center;padding:48px 24px;color:var(--ink-soft)}
+  .count-info{font-size:.82rem;color:var(--ink-soft);margin-left:auto}
+
+  .stat-strip{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+  .stat-box{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:12px 18px;min-width:120px;text-align:center}
+  .stat-box .num{font-size:1.5rem;font-weight:700;font-family:'Playfair Display',serif;color:var(--burgundy)}
+  .stat-box .lbl{font-size:.74rem;color:var(--ink-soft);margin-top:2px}
+
+  .pagination{display:flex;gap:6px;justify-content:center;margin-top:18px;align-items:center;flex-wrap:wrap}
+  .pagination button{padding:6px 12px;border:1px solid var(--line);border-radius:6px;background:var(--white);cursor:pointer;font-size:.84rem}
+  .pagination button.active{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .pagination button:disabled{opacity:.4;cursor:default}
+</style>
+</head>
+<body>
+<script src="assets/auth-guard.js"></script>
+<div id="admin-layout"></div>
+<script>
+const MODULE = 'pogrzeby';
+const SIDEBAR_ACTIVE = 'groby';
+</script>
+<script src="assets/sidebar.js"></script>
+
+<div class="main-area">
+  <div class="topbar-admin">
+    <h1 class="page-title">Cmentarz — kartoteka grobów</h1>
+    <div id="count-info" class="count-info"></div>
+  </div>
+
+  <!-- Statystyki -->
+  <div class="stat-strip">
+    <div class="stat-box"><div class="num" id="stat-groby">—</div><div class="lbl">Groby</div></div>
+    <div class="stat-box"><div class="num" id="stat-osoby">—</div><div class="lbl">Pochowani</div></div>
+    <div class="stat-box"><div class="num" id="stat-sektory">—</div><div class="lbl">Sektory</div></div>
+    <div class="stat-box"><div class="num" id="stat-uplynal">—</div><div class="lbl">Upłynął termin</div></div>
+  </div>
+
+  <!-- Filtry -->
+  <div class="filter-bar">
+    <input type="search" id="search-input" placeholder="Szukaj po nazwisku lub lokalizacji…" oninput="applyFilters()">
+    <div class="sektor-btns" id="sektor-btns"></div>
+  </div>
+
+  <!-- Tabela -->
+  <div style="overflow-x:auto">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:130px">Lokalizacja</th>
+          <th>Pochowani</th>
+          <th style="width:100px">Opłacony do</th>
+          <th style="width:80px">Status</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+  <div class="no-results" id="no-results" style="display:none">Nie znaleziono grobów.</div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- Modal szczegółów -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modal-box">
+    <h3 id="modal-title">Grób</h3>
+    <div id="modal-content"></div>
+    <div class="modal-btns">
+      <button class="btn btn-secondary" onclick="closeModal()">Zamknij</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let allGroby = [];
+let filtered = [];
+let activeSector = '';
+const PAGE = 100;
+let currentPage = 0;
+
+async function load() {
+  try {
+    const r = await fetch('/api/groby');
+    allGroby = await r.json();
+  } catch(e) {
+    document.getElementById('table-body').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--ink-soft)">Błąd ładowania danych.</td></tr>';
+    return;
+  }
+
+  // Statystyki
+  const osoby = allGroby.reduce((s,g) => s + g.pochowani.length, 0);
+  const sektory = new Set(allGroby.map(g => g.sektor)).size;
+  const uplynal = allGroby.filter(g => g.uplynął).length;
+  document.getElementById('stat-groby').textContent = allGroby.length.toLocaleString('pl');
+  document.getElementById('stat-osoby').textContent = osoby.toLocaleString('pl');
+  document.getElementById('stat-sektory').textContent = sektory;
+  document.getElementById('stat-uplynal').textContent = uplynal.toLocaleString('pl');
+
+  // Przyciski sektorów
+  const sekt = [...new Set(allGroby.map(g => g.sektor))].sort();
+  const sb = document.getElementById('sektor-btns');
+  sb.innerHTML = '<button class="sektor-btn active" onclick="setSector(\'\',this)">Wszystkie</button>' +
+    sekt.map(s => `<button class="sektor-btn" onclick="setSector('${s}',this)">${s}</button>`).join('');
+
+  applyFilters();
+}
+
+function setSector(s, btn) {
+  activeSector = s;
+  document.querySelectorAll('.sektor-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPage = 0;
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  filtered = allGroby.filter(g => {
+    if (activeSector && g.sektor !== activeSector) return false;
+    if (!q) return true;
+    const loc = (g.lokalizacja || '').toLowerCase();
+    const osoby = g.pochowani.map(p => p.imie_nazwisko || '').join(' ').toLowerCase();
+    return loc.includes(q) || osoby.includes(q);
+  });
+  currentPage = 0;
+  render();
+}
+
+function render() {
+  const total = filtered.length;
+  document.getElementById('count-info').textContent = `Wyniki: ${total.toLocaleString('pl')}`;
+  document.getElementById('no-results').style.display = total ? 'none' : 'block';
+
+  const start = currentPage * PAGE;
+  const slice = filtered.slice(start, start + PAGE);
+
+  document.getElementById('table-body').innerHTML = slice.map(g => {
+    const osoby = g.pochowani.map(p => p.imie_nazwisko).join(', ');
+    const opl = g.oplacony_do ? g.oplacony_do.slice(0, 7).replace('-', '.') : '—';
+    const badge = g.uplynął ? '<span class="badge-uplynal">upłynął</span>' : '<span class="badge-publiczny">aktywny</span>';
+    return `<tr onclick="openModal(${g.id})">
+      <td><strong>${escHtml(g.lokalizacja)}</strong>${g.nr_archiwalny ? `<br><span style="font-size:.76rem;color:var(--ink-soft)">${escHtml(g.nr_archiwalny)}</span>` : ''}</td>
+      <td class="osoby-cell">${escHtml(osoby) || '<em style="color:var(--ink-soft)">brak danych</em>'}</td>
+      <td style="font-size:.84rem">${opl}</td>
+      <td>${badge}</td>
+    </tr>`;
+  }).join('');
+
+  renderPagination(total);
+}
+
+function renderPagination(total) {
+  const pages = Math.ceil(total / PAGE);
+  if (pages <= 1) { document.getElementById('pagination').innerHTML = ''; return; }
+  let html = `<button onclick="goPage(${currentPage-1})" ${currentPage===0?'disabled':''}>‹</button>`;
+  for (let i = 0; i < pages; i++) {
+    if (pages > 10 && Math.abs(i - currentPage) > 2 && i !== 0 && i !== pages-1) {
+      if (i === currentPage - 3 || i === currentPage + 3) html += '<span style="padding:0 4px">…</span>';
+      continue;
+    }
+    html += `<button onclick="goPage(${i})" class="${i===currentPage?'active':''}">${i+1}</button>`;
+  }
+  html += `<button onclick="goPage(${currentPage+1})" ${currentPage===pages-1?'disabled':''}>›</button>`;
+  document.getElementById('pagination').innerHTML = html;
+}
+
+function goPage(p) {
+  currentPage = p;
+  render();
+  document.querySelector('.data-table').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function openModal(id) {
+  // Znajdź w lokalnych danych
+  const g = allGroby.find(x => x.id === id);
+  if (!g) return;
+
+  document.getElementById('modal-title').textContent = 'Grób ' + g.lokalizacja;
+  const upl = g.uplynął ? `<span class="badge-uplynal">upłynął termin</span>` : `<span class="badge-publiczny">aktywny</span>`;
+
+  let html = `
+    <div class="modal-row row3">
+      <div class="modal-field"><label>Sektor</label><span>${escHtml(g.sektor)}</span></div>
+      <div class="modal-field"><label>Rząd</label><span>${escHtml(g.rzad)}</span></div>
+      <div class="modal-field"><label>Nr grobu</label><span>${escHtml(g.nr_grobu)}</span></div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-field"><label>Nr archiwalny</label><span>${escHtml(g.nr_archiwalny || '—')}</span></div>
+      <div class="modal-field"><label>Status</label><span>${upl}</span></div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-field"><label>Nienaruszalny do</label><span>${formatDate(g.nienaruszelny_do)}</span></div>
+      <div class="modal-field"><label>Opłacony do</label><span>${formatDate(g.oplacony_do)}</span></div>
+    </div>
+    <div class="modal-section">Pochowani (${g.pochowani.length})</div>
+    <div class="pochowani-list">`;
+
+  if (g.pochowani.length === 0) {
+    html += '<p style="color:var(--ink-soft);font-size:.88rem">Brak danych o pochowanych.</p>';
+  } else {
+    g.pochowani.forEach(p => {
+      const ur = p.data_urodzenia ? formatDate(p.data_urodzenia) : '?';
+      const sm = p.data_smierci ? formatDate(p.data_smierci) : '?';
+      let wiek = '';
+      if (p.data_urodzenia && p.data_smierci) {
+        const lat = Math.floor((new Date(p.data_smierci) - new Date(p.data_urodzenia)) / 31557600000);
+        if (lat >= 0 && lat < 130) wiek = ` · ${lat} lat`;
+      }
+      html += `<div class="pochowany-card">
+        <div class="pochowany-name">Ś.P. ${escHtml(p.imie_nazwisko)}</div>
+        <div class="pochowany-dates">${ur} — ${sm}${wiek}</div>
+      </div>`;
+    });
+  }
+
+  html += '</div>';
+
+  const linkUrl = `../strony/grob.html?i=${allGroby.indexOf(g)}`;
+  html += `<div style="margin-top:14px;padding:10px 14px;background:var(--bg);border-radius:7px;font-size:.82rem;color:var(--ink-soft)">
+    <a href="${linkUrl}" target="_blank" style="color:var(--burgundy)">⊞ Podgląd strony publicznej grobu</a>
+  </div>`;
+
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  try {
+    const [y,m,day] = d.split('-');
+    return `${day}.${m}.${y}`;
+  } catch { return d; }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+load();
+</script>
+</body>
+</html>

@@ -11,37 +11,30 @@
   .tabs a{padding:11px 18px;color:var(--ink-soft);font-weight:600;font-size:.9rem;text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px}
   .tabs a.active{color:var(--burgundy);border-bottom-color:var(--burgundy)}
   .tabs a:hover{color:var(--ink)}
-  .users-tbl .role-badge{
-    display:inline-block;padding:2px 9px;border-radius:11px;font-size:.74rem;font-weight:700
-  }
+  .role-badge{display:inline-block;padding:2px 9px;border-radius:11px;font-size:.74rem;font-weight:700}
   .role-admin{background:#fde2dd;color:var(--burgundy)}
-  .role-editor{background:#dfe9f4;color:var(--blue)}
-  .role-viewer{background:#e5e1d7;color:var(--ink-soft)}
+  .role-proboszcz{background:#e8f0fe;color:#1a56ab}
+  .role-pomocnik{background:#e5e1d7;color:var(--ink-soft)}
+  .users-tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+  .users-tbl th{text-align:left;font-weight:700;font-size:.8rem;color:var(--ink-soft);padding:8px 10px;border-bottom:2px solid var(--line)}
+  .users-tbl td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+  .users-tbl tr:last-child td{border-bottom:none}
+  .btn-sm{padding:5px 12px;border:1px solid var(--line);border-radius:5px;font-size:.82rem;font-weight:600;cursor:pointer;background:var(--cream);color:var(--ink)}
+  .btn-sm:hover{background:var(--beige)}
+  .btn-sm.btn-primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
+  .btn-sm.btn-primary:hover{background:var(--burgundy-dark,#5e1620)}
+  .btn-sm.btn-danger{background:#fde2dd;color:var(--burgundy);border-color:#f5c0bb}
+  .btn-sm.btn-danger:hover{background:#f5c0bb}
+  .perm-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--cream)}
+  .perm-row input[type=checkbox]{margin-top:2px;accent-color:var(--burgundy);flex-shrink:0}
+  .perm-row .perm-desc{font-size:.82rem;color:var(--ink-soft);margin-top:2px;line-height:1.4}
+  .perm-rodo{color:#b87a4a;font-weight:600;font-size:.78rem}
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar">
-    <div class="brand"><img src="../public/img/logo1.png" alt="NSPJ" style="width:38px;height:38px;border-radius:50%;object-fit:contain;flex-shrink:0"><div class="brand-name">Parafia NSPJ<small>Czerwionka-Leszczyny</small></div></div>
-    <nav>
-      <a href="index.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>Pulpit</a>
-      <div class="nav-section">Strona WWW</div>
-      <a href="aktualnosci.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5m0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2zm10 1H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/></svg>Aktualności</a>
-      <a href="ogloszenia.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M11.5 2v4.793l3.347 7.36a.75.75 0 0 1-.682 1.06H1.835a.75.75 0 0 1-.682-1.06l3.347-7.36V2H4a.5.5 0 0 1 0-1h8a.5.5 0 0 1 0 1z"/></svg>Ogłoszenia parafialne</a>
-      <a href="galeria.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M14.002 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/></svg>Galeria</a>
-      <a href="strony-statyczne.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 0 0-1H5a.5.5 0 0 0-.5.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/></svg>Strony statyczne</a>
-      <div class="nav-section">Wspólnota</div>
-      <a href="intencje.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>Intencje mszalne</a>
-      <a href="sakramenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M6 1h6v7l-2-1-2 1V1z"/><path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/></svg>Sakramenty</a>
-      <a href="pogrzeby.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>Pogrzeby</a>
-      <a href="parafianie.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>Parafianie</a>
-      <a href="dokumenty.html"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path fill-rule="evenodd" d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm7-2H4a1 1 0 0 0-1 1v3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1V8a1 1 0 0 0-1-1z"/></svg>Dokumenty</a>
-      <div class="nav-section">System</div>
-      <a href="#"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H6zM1 11a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H1z"/></svg>Raporty</a>
-      <a href="ustawienia.html" class="active"><svg fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>Ustawienia parafii</a>
-    </nav>
-    <div class="user" id="sidebar-user"></div>
-  </aside>
+  <aside class="sidebar" data-active="ustawienia"></aside>
+  <script src="assets/sidebar.js"></script>
 
   <div class="main">
     <div class="topbar"><div class="crumbs"><a href="index.html">Pulpit</a><span>/</span><b>Ustawienia parafii</b></div></div>
@@ -173,10 +166,68 @@
 
       <!-- ═══ TAB: Użytkownicy i role ═══ -->
       <div id="tab-uzytkownicy" style="display:none">
-        <div class="card">
-          <div class="card-head"><h3>Użytkownicy i role</h3></div>
-          <p style="color:var(--ink-soft);font-size:.88rem;margin:0">Zarządzanie kontami użytkowników będzie dostępne w wersji produkcyjnej.</p>
+
+        <!-- Lista użytkowników -->
+        <div class="card" id="users-list-card">
+          <div class="card-head">
+            <h3>Użytkownicy</h3>
+            <button class="btn-sm btn-primary" id="btn-add-user" onclick="usersUI.openAdd()">+ Dodaj użytkownika</button>
+          </div>
+          <div id="users-table-wrap">
+            <div style="color:var(--ink-soft);font-size:.88rem;padding:10px 0">Wczytywanie…</div>
+          </div>
         </div>
+
+        <!-- Formularz dodawania / edycji -->
+        <div class="card" id="users-form-card" style="display:none">
+          <div class="card-head">
+            <h3 id="users-form-title">Nowy użytkownik</h3>
+            <button class="btn-sm" onclick="usersUI.closeForm()" style="background:var(--cream-dark,#ede8e0)">✕ Anuluj</button>
+          </div>
+          <div class="form-grid">
+            <input type="hidden" id="uf-id">
+            <div class="form-row">
+              <label>Login <span style="color:var(--ink-soft);font-weight:400;font-size:.82rem">(nie można zmienić po utworzeniu)</span></label>
+              <input id="uf-login" type="text" autocomplete="off" placeholder="np. pomocnik1">
+            </div>
+            <div class="form-row">
+              <label>Imię i nazwisko / wyświetlana nazwa</label>
+              <input id="uf-display" type="text" autocomplete="off" placeholder="np. Jan Kowalski">
+            </div>
+            <div class="form-row" id="uf-role-row">
+              <label>Rola</label>
+              <select id="uf-role">
+                <option value="pomocnik">Pomocnik</option>
+                <option value="proboszcz" class="role-opt-elevated">Proboszcz</option>
+                <option value="admin" class="role-opt-elevated">Administrator</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label id="uf-pass-label">Hasło</label>
+              <input id="uf-password" type="password" autocomplete="new-password" placeholder="Minimum 8 znaków">
+            </div>
+            <div class="form-row" id="uf-pass2-row">
+              <label>Powtórz hasło</label>
+              <input id="uf-password2" type="password" autocomplete="new-password" placeholder="">
+            </div>
+          </div>
+
+          <!-- Uprawnienia pomocnika — widoczne gdy rola = pomocnik -->
+          <div id="uf-perms-section" style="display:none;margin-top:18px">
+            <div style="font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--ink)">Uprawnienia modułów</div>
+            <div id="uf-perms-note" style="font-size:.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.5"></div>
+            <div id="uf-perms-list" style="display:grid;gap:8px"></div>
+          </div>
+
+          <div style="margin-top:20px;display:flex;align-items:center;gap:12px">
+            <button class="btn btn-primary" id="btn-save-user" onclick="usersUI.save()">
+              <svg fill="currentColor" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>
+              Zapisz
+            </button>
+            <div id="uf-error" style="color:var(--burgundy);font-size:.85rem"></div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -260,6 +311,271 @@ function saveHpSettings() {
     hp_intencja_id:       selectedIntencjaId
   });
 }
+
+// ── Users & Roles UI ──────────────────────────────────────────
+var MODULES = [
+  { id:'ogloszenia',      label:'Ogłoszenia parafialne',  desc:'Tworzenie i edycja ogłoszeń' },
+  { id:'aktualnosci',     label:'Aktualności',            desc:'Dodawanie wpisów na stronę' },
+  { id:'galeria',         label:'Galeria',                desc:'Upload zdjęć i zarządzanie albumami' },
+  { id:'strony-statyczne',label:'Strony statyczne',       desc:'Edycja podstron parafii (historia, sakramenty itp.)' },
+  { id:'intencje',        label:'Intencje mszalne',       desc:'Rejestracja intencji i SMS-y' },
+  { id:'sakramenty',      label:'Sakramenty',             desc:'Rejestry chrztów, ślubów, komunii itd.  ⚠ Dane osobowe — RODO', rodo:true },
+  { id:'pogrzeby',        label:'Pogrzeby',               desc:'Rejestr pogrzebów i dane o pochowanych  ⚠ Dane osobowe — RODO', rodo:true },
+  { id:'parafianie',      label:'Parafianie',             desc:'Lista parafian i dane kontaktowe  ⚠ Dane osobowe — RODO', rodo:true },
+  { id:'wspolnoty',       label:'Wspólnoty',              desc:'Grupy parafialne i listy członków' },
+  { id:'dokumenty',       label:'Dokumenty',              desc:'Upload i zarządzanie plikami' },
+  { id:'ustawienia',      label:'Ustawienia parafii',     desc:'Dane parafii, godziny, kafelki' }
+];
+
+var ROLE_BADGE = {
+  admin: '<span class="role-badge role-admin">Administrator</span>',
+  proboszcz: '<span class="role-badge role-proboszcz">Proboszcz</span>',
+  pomocnik: '<span class="role-badge role-pomocnik">Pomocnik</span>'
+};
+
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+var usersUI = (function() {
+  var _users = [];
+  var _editId = null;
+  var _authUser = null;
+
+  function load() {
+    fetch('/api/users').then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }).then(function(users) {
+      _users = users;
+      renderTable();
+    }).catch(function(){ document.getElementById('users-table-wrap').innerHTML = '<div style="color:var(--burgundy);font-size:.85rem">Brak dostępu lub błąd ładowania.</div>'; });
+  }
+
+  function renderTable() {
+    var wrap = document.getElementById('users-table-wrap');
+    var me = _authUser;
+    var rows = _users.map(function(u) {
+      var isMe = me && u.id === me.id;
+      var canEdit = me && (me.role === 'admin' || (me.role === 'proboszcz' && u.role !== 'admin') || isMe);
+      var canDel  = me && !isMe && (me.role === 'admin' || (me.role === 'proboszcz' && u.role === 'pomocnik'));
+      return '<tr>'
+        + '<td>' + escH(u.display_name) + (isMe ? ' <span style="font-size:.75rem;color:var(--ink-soft)">(ty)</span>' : '') + '</td>'
+        + '<td style="color:var(--ink-soft)">' + escH(u.login) + '</td>'
+        + '<td>' + (ROLE_BADGE[u.role] || escH(u.role)) + '</td>'
+        + '<td style="white-space:nowrap">'
+          + (canEdit ? '<button class="btn-sm" onclick="usersUI.openEdit(\'' + u.id + '\')" style="margin-right:6px">Edytuj</button>' : '')
+          + (canDel  ? '<button class="btn-sm btn-danger" onclick="usersUI.del(\'' + u.id + '\')">Usuń</button>' : '')
+        + '</td>'
+        + '</tr>';
+    }).join('');
+    wrap.innerHTML = '<table class="users-tbl"><thead><tr><th>Imię / nazwa</th><th>Login</th><th>Rola</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function renderPermsForm(perms) {
+    var html = MODULES.map(function(m) {
+      var checked = perms[m.id] ? 'checked' : '';
+      return '<label class="perm-row">'
+        + '<input type="checkbox" name="perm_' + m.id + '" value="' + m.id + '" ' + checked + '>'
+        + '<div><div style="font-weight:600;font-size:.87rem">' + escH(m.label) + '</div>'
+        + '<div class="perm-desc">' + (m.rodo ? '<span class="perm-rodo">⚠ Dane osobowe (RODO)</span> — ' : '') + escH(m.desc.replace(/ {2}⚠.*/, '')) + '</div></div>'
+        + '</label>';
+    }).join('');
+    document.getElementById('uf-perms-list').innerHTML = html;
+  }
+
+  function renderPermsGlobal() {
+    var perms = {};
+    var helper = _users.find(function(u){ return u.role === 'pomocnik'; });
+    if (helper) { try { perms = JSON.parse(helper.pomocnik_permissions || '{}'); } catch(e){} }
+    var html = MODULES.map(function(m) {
+      var checked = perms[m.id] ? 'checked' : '';
+      return '<label class="perm-row">'
+        + '<input type="checkbox" name="gp_' + m.id + '" value="' + m.id + '" ' + checked + '>'
+        + '<div><div style="font-weight:600;font-size:.87rem">' + escH(m.label) + '</div>'
+        + '<div class="perm-desc">' + (m.rodo ? '<span class="perm-rodo">⚠ Dane osobowe (RODO) — dostęp do danych osobowych parafian</span><br>' : '') + escH(m.desc.replace(/ {2}⚠.*/, '')) + '</div></div>'
+        + '</label>';
+    }).join('');
+    document.getElementById('perms-global-list').innerHTML = html;
+  }
+
+  function getFormPerms(prefix) {
+    var perms = {};
+    MODULES.forEach(function(m) {
+      var el = document.querySelector('input[name="' + prefix + m.id + '"]');
+      if (el && el.checked) perms[m.id] = true;
+    });
+    return perms;
+  }
+
+  function openAdd() {
+    _editId = null;
+    document.getElementById('users-form-title').textContent = 'Nowy użytkownik';
+    document.getElementById('uf-id').value = '';
+    document.getElementById('uf-login').value = '';
+    document.getElementById('uf-login').disabled = false;
+    document.getElementById('uf-display').value = '';
+    document.getElementById('uf-role').value = 'pomocnik';
+    document.getElementById('uf-password').value = '';
+    document.getElementById('uf-password2').value = '';
+    document.getElementById('uf-pass-label').textContent = 'Hasło';
+    document.getElementById('uf-pass2-row').style.display = '';
+    var isAdm = _authUser && _authUser.role === 'admin';
+    document.getElementById('uf-role-row').style.display = isAdm ? '' : 'none';
+    document.querySelectorAll('.role-opt-elevated').forEach(function(o){ o.hidden = !isAdm; });
+    document.getElementById('uf-error').textContent = '';
+    // Pokaż uprawnienia — nowy pomocnik dziedziczy od istniejących
+    var existingPerms = {};
+    var existHelper = _users.find(function(u){ return u.role === 'pomocnik'; });
+    if (existHelper && typeof existHelper.pomocnik_permissions === 'object') existingPerms = existHelper.pomocnik_permissions;
+    togglePermsSection('pomocnik', existingPerms);
+    document.getElementById('users-form-card').style.display = '';
+    document.getElementById('users-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function openEdit(id) {
+    var u = _users.find(function(u){ return u.id === id; });
+    if (!u) return;
+    _editId = id;
+    var isMe = _authUser && id === _authUser.id;
+    document.getElementById('users-form-title').textContent = 'Edytuj: ' + u.display_name;
+    document.getElementById('uf-id').value = id;
+    document.getElementById('uf-login').value = u.login;
+    document.getElementById('uf-login').disabled = true;
+    document.getElementById('uf-display').value = u.display_name;
+    document.getElementById('uf-role').value = u.role;
+    document.getElementById('uf-password').value = '';
+    document.getElementById('uf-password2').value = '';
+    document.getElementById('uf-pass-label').textContent = 'Nowe hasło (zostaw puste jeśli bez zmian)';
+    document.getElementById('uf-pass2-row').style.display = '';
+    // Proboszcz nie zmienia roli
+    var canChangeRole = _authUser && _authUser.role === 'admin' && !isMe;
+    document.getElementById('uf-role-row').style.display = canChangeRole ? '' : 'none';
+    document.getElementById('uf-error').textContent = '';
+    var perms = (u.pomocnik_permissions && typeof u.pomocnik_permissions === 'object')
+      ? u.pomocnik_permissions : {};
+    togglePermsSection(u.role, perms);
+    document.getElementById('users-form-card').style.display = '';
+    document.getElementById('users-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function togglePermsSection(role, perms) {
+    var canManage = _authUser && _authUser.role !== 'pomocnik';
+    var show = role === 'pomocnik' && canManage;
+    document.getElementById('uf-perms-section').style.display = show ? '' : 'none';
+    if (!show) return;
+    var note = _editId
+      ? 'Widoczne uprawnienia tego konta. Zmiana zaktualizuje <strong>wszystkich pomocników</strong>.'
+      : 'Ustaw uprawnienia dla nowego pomocnika. Inne konta pomocnika zostaną zaktualizowane do tego samego zestawu.';
+    document.getElementById('uf-perms-note').innerHTML = note;
+    renderPermsForm(perms || {});
+  }
+
+  function closeForm() {
+    document.getElementById('users-form-card').style.display = 'none';
+    _editId = null;
+  }
+
+  function save() {
+    var id    = document.getElementById('uf-id').value;
+    var login = document.getElementById('uf-login').value.trim();
+    var display = document.getElementById('uf-display').value.trim();
+    var role  = document.getElementById('uf-role').value;
+    var pass  = document.getElementById('uf-password').value;
+    var pass2 = document.getElementById('uf-password2').value;
+    var errEl = document.getElementById('uf-error');
+    errEl.textContent = '';
+
+    if (!display) { errEl.textContent = 'Podaj imię / nazwę wyświetlaną.'; return; }
+    if (!id && !login) { errEl.textContent = 'Podaj login.'; return; }
+    if (!id && !pass) { errEl.textContent = 'Podaj hasło dla nowego użytkownika.'; return; }
+    if (pass && pass !== pass2) { errEl.textContent = 'Hasła nie są identyczne.'; return; }
+    if (pass && pass.length < 8) { errEl.textContent = 'Hasło musi mieć co najmniej 8 znaków.'; return; }
+
+    // Uprawnienia z formularza (perm_*) — widoczne dla obu trybów gdy rola=pomocnik
+    var perms = {};
+    if (role === 'pomocnik' && document.getElementById('uf-perms-section').style.display !== 'none')
+      perms = getFormPerms('perm_');
+
+    var body = { display_name: display, role: role, pomocnik_permissions: perms };
+    if (!id) body.login = login;
+    if (pass) body.password = pass;
+
+    var btn = document.getElementById('btn-save-user');
+    btn.disabled = true; btn.textContent = 'Zapisuję…';
+    var ICON = '<svg fill="currentColor" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg> ';
+
+    var url = id ? '/api/users/' + id : '/api/users';
+    var method = id ? 'PUT' : 'POST';
+    fetch(url, { method: method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })
+      .then(function(r){ return r.json().then(function(d){ return {ok:r.ok,d:d}; }); })
+      .then(function(res) {
+        btn.disabled = false; btn.innerHTML = ICON + 'Zapisz';
+        if (!res.ok) { errEl.textContent = res.d.error || 'Błąd zapisu.'; return; }
+        // Przy edycji pomocnika — zsynchronizuj uprawnienia do wszystkich pozostałych pomocników
+        if (id && role === 'pomocnik' && document.getElementById('uf-perms-section').style.display !== 'none') {
+          _users.filter(function(u){ return u.role === 'pomocnik' && u.id !== id; }).forEach(function(u) {
+            fetch('/api/users/' + u.id, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ pomocnik_permissions: perms }) });
+          });
+        }
+        closeForm();
+        load();
+      }).catch(function(){ btn.disabled=false; btn.innerHTML=ICON+'Zapisz'; errEl.textContent='Błąd połączenia.'; });
+  }
+
+  function del(id) {
+    var u = _users.find(function(x){ return x.id===id; });
+    if (!u) return;
+    if (!confirm('Usunąć użytkownika „' + u.display_name + '"?\nTej operacji nie można cofnąć.')) return;
+    fetch('/api/users/' + id, { method:'DELETE' })
+      .then(function(r){ return r.json(); })
+      .then(function(){ load(); })
+      .catch(function(){ alert('Błąd usuwania.'); });
+  }
+
+  function savePerms() {
+    var perms = getFormPerms('gp_');
+    var helpers = _users.filter(function(u){ return u.role === 'pomocnik'; });
+    var btn = document.getElementById('btn-save-perms');
+    btn.disabled = true; btn.textContent = 'Zapisuję…';
+    var SAVE_ICON = '<svg fill="currentColor" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg> ';
+    var requests = helpers.length
+      ? helpers.map(function(h){ return fetch('/api/users/'+h.id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({pomocnik_permissions:perms})}); })
+      : [Promise.resolve()];
+    Promise.all(requests)
+      .then(function() {
+        btn.disabled = false;
+        btn.innerHTML = SAVE_ICON + 'Zapisano!';
+        setTimeout(function(){ btn.innerHTML = SAVE_ICON + 'Zapisz uprawnienia pomocnika'; }, 2500);
+        load();
+      }).catch(function(){ btn.disabled=false; btn.textContent='Błąd'; });
+  }
+
+  // Called by auth-guard after session is known
+  function init(user) {
+    _authUser = user;
+    load();
+    if (user.role === 'pomocnik') {
+      document.getElementById('users-list-card').innerHTML = '<div class="card-head"><h3>Użytkownicy i role</h3></div><p style="color:var(--ink-soft);font-size:.88rem;margin:0">Nie masz uprawnień do zarządzania kontami.</p>';
+    }
+  }
+
+  return { load:load, openAdd:openAdd, openEdit:openEdit, closeForm:closeForm, save:save, del:del, savePerms:savePerms, init:init };
+})();
+
+// Init users tab when auth is ready and tab is visible
+var _usersInited = false;
+document.getElementById('main-tabs').addEventListener('click', function(e) {
+  var a = e.target.closest('a[data-tab="uzytkownicy"]');
+  if (!a) return;
+  if (!_usersInited && window._authUser) { _usersInited = true; usersUI.init(window._authUser); }
+});
+// Also init if auth-guard fires before tab is clicked (e.g. page loads on this tab)
+(function checkPermsTabOnLoad() {
+  var orig = window._onAuthReady;
+  window._onAuthReady = function(user) {
+    if (orig) orig(user);
+    var activeTab = document.querySelector('#main-tabs a.active');
+    if (activeTab && activeTab.dataset.tab === 'uzytkownicy') {
+      _usersInited = true; usersUI.init(user);
+    }
+  };
+})();
 
 // ── Init: wczytaj wszystkie ustawienia ─────────────────────────
 var MONTHS = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
