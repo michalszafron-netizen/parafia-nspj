@@ -1,6 +1,8 @@
 ﻿<!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
+<script>function kol(n){return getComputedStyle(document.documentElement).getPropertyValue('--'+n).trim()}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Parafia Najświętszego Serca Pana Jezusa · Czerwionka-Leszczyny</title>
@@ -79,19 +81,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 <style>
-  :root{
-    --beige:#f4ede0;
-    --beige-deep:#ebe1cd;
-    --cream:#faf6ee;
-    --burgundy:#7a1f2b;
-    --burgundy-dark:#5e1620;
-    --copper:#b87a4a;
-    --copper-light:#d6a572;
-    --ink:#2b2520;
-    --ink-soft:#5a5048;
-    --line:#d8cdb6;
-    --white:#ffffff;
-  }
+  
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:90px}
   body{margin:0;padding:0}
@@ -119,9 +109,9 @@
     display:inline-block
   }
 
-  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
+  .topbar{background:var(--burgundy-dark);color:var(--beige);font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
   .topbar .container, .topbar .container-wide{display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 24px;gap:12px}
-  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center}
+  .topbar a{color:var(--beige);text-decoration:none;display:inline-flex;align-items:center}
   .topbar a:hover{color:#fff}
   .topbar .left, .topbar .right{display:flex;gap:18px;align-items:center}
   .topbar svg{flex-shrink:0;margin-right:6px}
@@ -159,11 +149,11 @@
   .topbar-admin{
     display:inline-flex;align-items:center;justify-content:center;
     width:30px;height:30px;border-radius:50%;
-    border:1px solid rgba(232,217,184,.35);
-    color:#e8d9b8;transition:all .15s;margin-left:4px;
+    border:1px solid rgba(var(--beige-rgb),.35);
+    color:var(--beige);transition:all .15s;margin-left:4px;
     text-decoration:none;
   }
-  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
+  .topbar-admin:hover{background:rgba(var(--beige-rgb),.15);border-color:rgba(var(--beige-rgb),.7);color:#fff}
   .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:8px}
   @media(max-width:980px){
     nav.main{display:none}
@@ -318,28 +308,29 @@
   .news-section{background:var(--white);border-bottom:1px solid var(--line)}
   .news-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:24px}
   .ogloszenia-card{
-    background:var(--burgundy);color:#f6e9d3;border-radius:8px;padding:36px;
+    background:var(--burgundy);color:var(--cream);border-radius:8px;padding:36px;
     position:relative;overflow:hidden;display:flex;flex-direction:column
   }
   .ogloszenia-card::before{
     content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;
-    border:2px solid rgba(246,233,211,.15);border-radius:50%
+    border:2px solid rgba(var(--cream-rgb),.15);border-radius:50%
   }
   .ogloszenia-card .eyebrow{color:var(--copper-light);margin-bottom:.6rem}
   .ogloszenia-card h3{color:#fff;font-size:1.7rem;margin-bottom:.6rem}
-  .ogloszenia-card .meta{font-size:.85rem;color:rgba(246,233,211,.7);margin-bottom:1.5rem}
-  .ogloszenia-card p{font-size:.95rem;color:rgba(246,233,211,.92);flex:1}
+  .ogloszenia-card .meta{font-size:.85rem;color:rgba(var(--cream-rgb),.7);margin-bottom:1.5rem}
+  .ogloszenia-card p{font-size:.95rem;color:rgba(var(--cream-rgb),.92);flex:1;line-height:1.9}
+  .ogloszenia-card p br{display:block;margin-bottom:.2rem}
   .ogloszenia-card .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
   .ogloszenia-card a.btn-light{
-    background:#f6e9d3;color:var(--burgundy);padding:11px 18px;border-radius:5px;
+    background:var(--cream);color:var(--burgundy);padding:11px 18px;border-radius:5px;
     font-weight:700;font-size:.85rem;letter-spacing:.04em
   }
   .ogloszenia-card a.btn-light:hover{background:#fff;text-decoration:none}
   .ogloszenia-card a.btn-outline{
-    border:1.5px solid rgba(246,233,211,.5);color:#f6e9d3;
+    border:1.5px solid rgba(var(--cream-rgb),.5);color:var(--cream);
     padding:11px 18px;border-radius:5px;font-weight:700;font-size:.85rem;letter-spacing:.04em
   }
-  .ogloszenia-card a.btn-outline:hover{border-color:#f6e9d3;text-decoration:none}
+  .ogloszenia-card a.btn-outline:hover{border-color:var(--cream);text-decoration:none}
 
   .news-card{background:var(--white);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
   .news-card .img{height:200px;background-size:cover;background-position:center;background-color:var(--beige-deep)}
@@ -372,12 +363,12 @@
   }
   .support-banner .bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.45}
   .support-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(43,37,32,.85) 0%,rgba(43,37,32,.6) 60%,rgba(43,37,32,.3) 100%)}
-  .support-banner .inner{position:relative;z-index:2;padding:60px;color:#f6e9d3;max-width:640px}
+  .support-banner .inner{position:relative;z-index:2;padding:60px;color:var(--cream);max-width:640px}
   .support-banner .eyebrow{color:var(--copper-light)}
   .support-banner h2{color:#fff;font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:1rem}
-  .support-banner p{color:rgba(246,233,211,.92);font-size:1.05rem;margin-bottom:1.5rem;max-width:520px}
+  .support-banner p{color:rgba(var(--cream-rgb),.92);font-size:1.05rem;margin-bottom:1.5rem;max-width:520px}
   .support-banner .btns{display:flex;gap:12px;flex-wrap:wrap}
-  .support-banner .btn-primary{background:#f6e9d3;color:var(--burgundy)}
+  .support-banner .btn-primary{background:var(--cream);color:var(--burgundy)}
   .support-banner .btn-primary:hover{background:#fff}
 
   /* HISTORIA SECTION */
@@ -405,26 +396,26 @@
   .group-card p{font-size:.85rem;color:var(--ink-soft);margin:0}
 
   /* FOOTER */
-  footer.site{background:var(--ink);color:#d8cdb6;padding:60px 0 30px;margin-top:40px}
+  footer.site{background:var(--ink);color:var(--line);padding:60px 0 30px;margin-top:40px}
   .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
   .footer-brand{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
   .footer-brand .brand-mark{box-shadow:none}
-  .footer-brand .brand-name{color:#f6e9d3;font-size:1.15rem}
+  .footer-brand .brand-name{color:var(--cream);font-size:1.15rem}
   .footer-brand .brand-name small{color:var(--copper-light)}
   footer.site p{color:rgba(216,205,182,.78);font-size:.92rem}
-  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:#f6e9d3;margin-bottom:1rem}
+  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:var(--cream);margin-bottom:1rem}
   footer.site ul{list-style:none;padding:0;margin:0}
   footer.site ul li{margin-bottom:.6rem;font-size:.92rem}
   footer.site ul a{color:rgba(216,205,182,.78)}
-  footer.site ul a:hover{color:#f6e9d3;text-decoration:none}
-  .footer-bank{font-size:.83rem;background:rgba(246,233,211,.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(246,233,211,.1)}
-  .footer-bank b{color:#f6e9d3;display:block;font-weight:700;margin-bottom:4px}
+  footer.site ul a:hover{color:var(--cream);text-decoration:none}
+  .footer-bank{font-size:.83rem;background:rgba(var(--cream-rgb),.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(var(--cream-rgb),.1)}
+  .footer-bank b{color:var(--cream);display:block;font-weight:700;margin-bottom:4px}
   .footer-bank code{font-family:'Lato',monospace;color:var(--copper-light);font-weight:700;letter-spacing:.5px}
   .footer-bottom{border-top:1px solid rgba(216,205,182,.14);margin-top:40px;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:.85rem;color:rgba(216,205,182,.55)}
 
   /* TOPBAR WSPARCIE BUTTON */
   .topbar-btn-wsparcie{
-    background:#e8d9b8;color:var(--burgundy-dark)!important;
+    background:var(--beige);color:var(--burgundy-dark)!important;
     font-weight:700;padding:5px 14px;border-radius:4px;
     font-size:.82rem;transition:all .15s;white-space:nowrap
   }
@@ -451,13 +442,13 @@
   .footer-social{display:flex;gap:10px;margin-top:18px}
   .footer-social a{
     width:36px;height:36px;border-radius:50%;
-    background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.15);
+    background:rgba(var(--cream-rgb),.06);border:1px solid rgba(var(--cream-rgb),.15);
     display:grid;place-items:center;color:var(--copper-light);transition:all .15s
   }
-  .footer-social a:hover{background:rgba(246,233,211,.14);border-color:rgba(246,233,211,.4);color:#f6e9d3;text-decoration:none}
+  .footer-social a:hover{background:rgba(var(--cream-rgb),.14);border-color:rgba(var(--cream-rgb),.4);color:var(--cream);text-decoration:none}
   .footer-social svg{width:16px;height:16px}
   .footer-social .social-badge{position:absolute;bottom:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--burgundy);border:1.5px solid var(--ink);display:grid;place-items:center}
-  .footer-social .social-badge svg{width:8px;height:8px;color:#e8d9b8}
+  .footer-social .social-badge svg{width:8px;height:8px;color:var(--beige)}
 
   /* INTENCJE MSZALNE SECTION */
   .intencje-section{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -476,6 +467,8 @@
   .intencje-row .i-day{font-weight:700;font-size:.9rem;color:var(--ink)}
   .intencje-row .i-time{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-weight:600;color:var(--burgundy)}
   .intencje-row .i-int{font-size:.9rem;color:var(--ink-soft)}
+  .intencje-row.free-slot .i-int{color:#3d7a54;font-style:italic}
+  .intencje-row.free-slot .i-time{color:#6aaa82}
   .intencje-row .i-type{
     font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
     padding:3px 8px;border-radius:4px;
@@ -549,7 +542,7 @@
       <span><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.61 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"/></svg><a href="tel:+48324312992">32 43 12 992</a></span>
     </div>
     <div class="right">
-      <a href="#budowa" class="topbar-btn-wsparcie">Wsparcie budowy</a>
+      <a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener" class="topbar-btn-wsparcie">Wsparcie budowy</a>
     </div>
   </div>
 </div>
@@ -721,7 +714,7 @@
         <p id="hp-ogl-excerpt">Bóg zapłać za ofiary na budowę nowego kościoła zebrane w minioną niedzielę - łącznie 14 380 zł. We wtorek o 18:00 zapraszamy na spotkanie Rady Parafialnej. W sobotę o 10:00 sprzątanie cmentarza - prosimy o zabranie rękawic i grabi.</p>
         <div class="actions">
           <a href="strony/aktualnosci.html#ogl-2026-05-10" class="btn-light" id="hp-ogl-link">Czytaj całość</a>
-          <a href="#" class="btn-outline" id="hp-ogl-download" onclick="downloadOgloszeniaTxt(event)">Pobierz TXT</a>
+          <a href="#" class="btn-outline" id="hp-ogl-download" onclick="openHpOglPdf(event)">Pobierz PDF</a>
         </div>
       </div>
 
@@ -797,7 +790,7 @@
         <p>Po stu latach od erygowania parafii kończymy najważniejszą inwestycję w jej historii. Każda ofiara - duża i mała - przybliża nas do dnia konsekracji nowej świątyni. Bóg zapłać.</p>
         <div class="btns">
           <a href="strony/kontakt.html#konta" class="btn btn-primary">Wpłać darowiznę online</a>
-          <a href="strony/kontakt.html#konta" class="btn btn-ghost" style="color:#f6e9d3;border-color:#f6e9d3">Numery kont</a>
+          <a href="strony/kontakt.html#konta" class="btn btn-ghost" style="color:var(--cream);border-color:var(--cream)">Numery kont</a>
         </div>
       </div>
     </div>
@@ -936,7 +929,7 @@
           <li><a href="strony/kontakt.html">Kancelaria</a></li>
           <li style="display:none"><a href="#">RODO</a></li><!-- TODO: osobna strona RODO w przyszłości -->
           <li><a href="strony/polityka-prywatnosci.html">Polityka prywatności</a></li>
-          <li><a href="#budowa">Wsparcie budowy</a></li>
+          <li><a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener">Wsparcie budowy</a></li>
           <li><a href="admin/login.html" style="color:var(--copper-light);font-weight:700">→ Panel administracyjny</a></li>
         </ul>
       </div>
@@ -965,6 +958,7 @@
   // Settings sync
   (function(){
     fetch('/api/settings').then(function(r){ return r.json(); }).then(function(s){
+      window._hpSettings=s;
       var ulica=s.ulica||'ul. 3-go Maja 36',miasto=s.kod_miasto||'44-230 Czerwionka-Leszczyny',tel=s.telefon||'32 43 12 992';
       var as=document.querySelector('.topbar .left span:first-child');
       if(as){var n=as.childNodes;for(var i=n.length-1;i>=0;i--){if(n[i].nodeType===3){n[i].textContent=ulica+', '+miasto;break;}}}
@@ -1074,16 +1068,21 @@ var _hpCurrentOgl = null;
     var titleEl = document.getElementById('hp-ogl-title');
     if (titleEl) titleEl.textContent = ann.title;
     var metaEl = document.getElementById('hp-ogl-meta');
-    if (metaEl && ann.date) {
-      var d = new Date(ann.date + 'T12:00:00');
-      metaEl.textContent = d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
-    }
+    if (metaEl) metaEl.style.display = 'none';
     var excerptEl = document.getElementById('hp-ogl-excerpt');
     if (excerptEl && ann.content) {
       var tmp = document.createElement('div');
       tmp.innerHTML = ann.content;
-      var plain = (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
-      excerptEl.textContent = plain.length > 240 ? plain.slice(0, 237) + '…' : plain;
+      var points = [];
+      tmp.querySelectorAll('p, div, li').forEach(function(el) {
+        if (points.length >= 3) return;
+        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!t || /^ogłoszenia/i.test(t) || /^\d{2}\.\d{2}/.test(t)) return;
+        points.push(t.length > 80 ? t.slice(0, 77) + '…' : t);
+      });
+      var header = '<span style="display:block;text-align:center;font-weight:700;letter-spacing:.1em;font-size:.78rem;color:rgba(255,248,244,.95);margin-bottom:.3rem">OGŁOSZENIA</span>';
+      var dateRange = ann.date_range ? '<span style="display:block;text-align:center;font-size:.88rem;color:rgba(255,248,244,.65);margin-bottom:.9rem">' + ann.date_range + '</span>' : '';
+      excerptEl.innerHTML = header + dateRange + points.join('<br>');
     }
     var linkEl = document.getElementById('hp-ogl-link');
     if (linkEl) linkEl.href = 'strony/aktualnosci.html#' + ann.id;
@@ -1091,59 +1090,57 @@ var _hpCurrentOgl = null;
 })();
 </script>
 
-<!-- ── OGŁOSZENIA - pobieranie TXT ── -->
+<!-- ── OGŁOSZENIA - otwórz PDF ── -->
 <script>
-function downloadOgloszeniaTxt(e) {
-  e.preventDefault();
+var _hpLogoUrl = '';
+(function(){
   try {
-    var ann = _hpCurrentOgl;
-    var title = (ann && ann.title) || document.getElementById('hp-ogl-title').textContent || 'Ogłoszenia';
-    var dateRaw = ann && ann.date ? ann.date : '';
-    var dateStr = '';
-    if (dateRaw) {
-      var d = new Date(dateRaw + 'T12:00:00');
-      dateStr = d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
-    } else {
-      dateStr = document.getElementById('hp-ogl-meta').textContent || '';
-    }
-    var plainContent = '';
-    if (ann && ann.content) {
-      var tmp = document.createElement('div');
-      tmp.innerHTML = ann.content;
-      plainContent = (tmp.textContent || tmp.innerText || '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
-    } else {
-      plainContent = document.getElementById('hp-ogl-excerpt').textContent || '';
-    }
-    var today = new Date().toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
-    var sep = '====================================';
-    var lines = [
-      'OGŁOSZENIA PARAFIALNE',
-      'Parafia Najświętszego Serca Pana Jezusa',
-      'Czerwionka-Leszczyny',
-      sep,
-      '',
-      title,
-      dateStr,
-      '',
-      '------------------------------------',
-      '',
-      plainContent,
-      '',
-      sep,
-      'Wygenerowano: ' + today
-    ];
-    var txt = lines.join('\n');
-    var blob = new Blob(['﻿' + txt], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'ogloszenia' + (dateRaw ? '-' + dateRaw : '') + '.txt';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function() { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
-  } catch(err) {
-    alert('Nie udało się pobrać pliku. Spróbuj ponownie.');
-  }
+    fetch('public/img/logo1.png')
+      .then(function(r){ return r.ok ? r.blob() : null; })
+      .then(function(b){ if(!b) return; var fr=new FileReader(); fr.onload=function(){ _hpLogoUrl=fr.result; }; fr.readAsDataURL(b); })
+      .catch(function(){});
+  } catch(e){}
+})();
+
+function openHpOglPdf(e) {
+  e.preventDefault();
+  var ann = _hpCurrentOgl;
+  if (!ann) return;
+  var logo = _hpLogoUrl || 'public/img/logo1.png';
+  var content = ann.content || '<p>brak treści</p>';
+  var s = window._hpSettings || {};
+  var parLine  = s.nazwa_pelna || 'Parafia pw. Najświętszego Serca Pana Jezusa';
+  var addrLine = (s.ulica || 'ul. 3-go Maja 36') + ', ' + (s.kod_miasto || '44-230 Czerwionka-Leszczyny');
+  var telefon  = s.telefon || '32 43 12 992';
+  var html = '<!doctype html><html lang="pl"><head><meta charset="utf-8">'
+    + '<title>Ogłoszenia duszpasterskie</title>'
+    + '<style>'
+    + '*{box-sizing:border-box;margin:0;padding:0}'
+    + 'body{font-family:Georgia,\'Times New Roman\',serif;color:'+kol('ink')+';margin:0;padding:22px 36px;font-size:13px;line-height:1.5}'
+    + '#ogl-body *{font-size:inherit}'
+    + '.head{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:3px solid '+kol('burgundy')+';padding-bottom:13px;margin-bottom:18px}'
+    + '.head-left{display:flex;align-items:center;gap:13px}'
+    + '.head img{height:52px;flex-shrink:0}'
+    + '.head h1{font-size:17px;letter-spacing:2px;color:'+kol('burgundy')+';font-weight:700;margin:0;max-width:200px}'
+    + '.head-right{font-size:9.5px;color:'+kol('ink-soft')+';line-height:1.6;text-align:right}'
+    + '.head-right .par-name{font-weight:600}'
+    + '#ogl-body p,#ogl-body div{margin:0 0 .35rem}'
+    + '#ogl-body p:last-child,#ogl-body div:last-child{margin-bottom:0}'
+    + '#ogl-body ol,#ogl-body ul{margin:0 0 .6rem;padding-left:1.4rem}'
+    + '#ogl-body li{margin-bottom:.3rem}'
+    + '.no-print{text-align:center;margin-bottom:14px}'
+    + '@page{margin:0}'
+    + '@media print{.no-print{display:none!important}body{padding:8mm 14mm 6mm}}'
+    + '</style></head><body>'
+    + '<div class="no-print"><button onclick="window.print()" style="padding:9px 28px;background:'+kol('burgundy')+';color:#fff;border:none;border-radius:5px;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.04em">&#128438; Drukuj / Zapisz PDF</button></div>'
+    + '<div class="head">'
+    + '<div class="head-left"><img src="' + logo + '" alt=""><div><h1>OGŁOSZENIA PARAFIALNE</h1></div></div>'
+    + '<div class="head-right"><div class="par-name">' + parLine + '</div><div style="font-weight:600">' + addrLine + '</div><div>tel. ' + telefon + '</div></div>'
+    + '</div>'
+    + '<div id="ogl-body">' + content + '</div>'
+    + '</body></html>';
+  var w = window.open('', '_blank');
+  if (w) { w.document.write(html); w.document.close(); }
 }
 </script>
 <!-- ── INTENCJE MSZALNE DYNAMICZNE ── -->
@@ -1243,7 +1240,8 @@ function downloadOgloszeniaTxt(e) {
       var dayName = DAY_PL[d.getDay()];
       var dayLabel = dayName + ', ' + d.getDate() + '.' + String(d.getMonth()+1).padStart(2,'0');
       var tc = TYPE_MAP[it.type] || { label: it.type, cls: '' };
-      html += '<div class="intencje-row">'
+      var isFree = /^wolna\s+intencja/i.test((it.intention || '').trim());
+      html += '<div class="intencje-row' + (isFree ? ' free-slot' : '') + '">'
         + '<div class="i-day">' + esc(dayLabel) + '</div>'
         + '<div class="i-time">' + esc(it.time) + '</div>'
         + '<div class="i-int">' + esc(it.intention) + '</div>'

@@ -1,6 +1,7 @@
 ﻿<!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sakrament Chrztu Świętego · Parafia NSPJ Czerwionka-Leszczyny</title>
@@ -13,12 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --beige:#f4ede0;--beige-deep:#ebe1cd;--cream:#faf6ee;
-    --burgundy:#7a1f2b;--burgundy-dark:#5e1620;
-    --copper:#b87a4a;--copper-light:#d6a572;
-    --ink:#2b2520;--ink-soft:#5a5048;--line:#d8cdb6;--white:#ffffff;
-  }
+  
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:90px}
   body{margin:0;padding:0;font-family:'Lato',-apple-system,sans-serif;color:var(--ink);background:var(--beige);line-height:1.6;font-weight:400}
@@ -36,14 +32,14 @@
 
   /* HEADER kopia z index */
   .sticky-header{position:sticky;top:0;z-index:50}
-  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
+  .topbar{background:var(--burgundy-dark);color:var(--beige);font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
   .topbar .container,.topbar .container-wide{display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 24px;gap:12px}
-  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center}
+  .topbar a{color:var(--beige);text-decoration:none;display:inline-flex;align-items:center}
   .topbar a:hover{color:#fff}
   .topbar .left,.topbar .right{display:flex;gap:18px;align-items:center}
   .topbar svg{flex-shrink:0;margin-right:6px}
   .topbar-admin svg{margin-right:0;display:block}
-  .topbar-btn-wsparcie{background:#e8d9b8;color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;transition:all .15s;white-space:nowrap}
+  .topbar-btn-wsparcie{background:var(--beige);color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;transition:all .15s;white-space:nowrap}
   .topbar-btn-wsparcie:hover{background:#fff;text-decoration:none!important}
   @media(max-width:768px){.topbar .left span:first-child{display:none}.topbar .right a:not(.topbar-admin){display:none}.topbar .container,.topbar .container-wide{justify-content:center}}
   header.site{background:var(--cream);border-bottom:1px solid var(--line)}
@@ -57,8 +53,8 @@
   nav.main a{padding:10px 12px;font-weight:400;font-size:.9rem;color:var(--ink);border-radius:6px;transition:background .15s;position:relative;white-space:nowrap}
   nav.main a:hover{background:var(--beige);text-decoration:none}
   nav.main a.has-sub::after{content:"▾";font-size:.7rem;margin-left:6px;color:var(--copper)}
-  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,217,184,.35);color:#e8d9b8;transition:all .15s;margin-left:4px;text-decoration:none}
-  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
+  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--beige-rgb),.35);color:var(--beige);transition:all .15s;margin-left:4px;text-decoration:none}
+  .topbar-admin:hover{background:rgba(var(--beige-rgb),.15);border-color:rgba(var(--beige-rgb),.7);color:#fff}
   .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:8px}
   .dropdown{position:relative}
   .dropdown-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--cream);border:1px solid var(--line);border-radius:8px;min-width:230px;z-index:200;box-shadow:0 8px 32px rgba(43,37,32,.14);padding:6px 0}
@@ -88,7 +84,7 @@
   .info-box ul li strong{color:var(--ink)}
 
   /* Termin box */
-  .termin-box{background:var(--burgundy);color:#f6e9d3;border-radius:10px;padding:28px;margin-bottom:24px;text-align:center}
+  .termin-box{background:var(--burgundy);color:var(--cream);border-radius:10px;padding:28px;margin-bottom:24px;text-align:center}
   .termin-box .t-label{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-light);font-weight:700;margin-bottom:8px}
   .termin-box .t-val{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:600;line-height:1.3}
 
@@ -108,25 +104,25 @@
   .req-list li::before{position:absolute;left:0;top:11px;content:"✓";font-size:.9rem;color:var(--burgundy);font-weight:700}
 
   /* FOOTER */
-  footer.site{background:var(--ink);color:#d8cdb6;padding:60px 0 30px;margin-top:40px}
+  footer.site{background:var(--ink);color:var(--line);padding:60px 0 30px;margin-top:40px}
   .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
   .footer-brand{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
-  .footer-brand .brand-name{color:#f6e9d3;font-size:1.15rem}
+  .footer-brand .brand-name{color:var(--cream);font-size:1.15rem}
   .footer-brand .brand-name small{color:var(--copper-light)}
   footer.site p{color:rgba(216,205,182,.78);font-size:.92rem}
-  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:#f6e9d3;margin-bottom:1rem}
+  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:var(--cream);margin-bottom:1rem}
   footer.site ul{list-style:none;padding:0;margin:0}
   footer.site ul li{margin-bottom:.6rem;font-size:.92rem}
   footer.site ul a{color:rgba(216,205,182,.78)}
-  footer.site ul a:hover{color:#f6e9d3;text-decoration:none}
-  .footer-bank{font-size:.83rem;background:rgba(246,233,211,.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(246,233,211,.1)}
-  .footer-bank b{color:#f6e9d3;display:block;font-weight:700;margin-bottom:4px}
+  footer.site ul a:hover{color:var(--cream);text-decoration:none}
+  .footer-bank{font-size:.83rem;background:rgba(var(--cream-rgb),.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(var(--cream-rgb),.1)}
+  .footer-bank b{color:var(--cream);display:block;font-weight:700;margin-bottom:4px}
   .footer-bank code{font-family:'Lato',monospace;color:var(--copper-light);font-weight:700;letter-spacing:.5px}
   .footer-social{display:flex;gap:10px;margin-top:18px}
-  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
-  .footer-social a:hover{background:rgba(246,233,211,.14);border-color:rgba(246,233,211,.4);color:#f6e9d3;text-decoration:none}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(var(--cream-rgb),.06);border:1px solid rgba(var(--cream-rgb),.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
+  .footer-social a:hover{background:rgba(var(--cream-rgb),.14);border-color:rgba(var(--cream-rgb),.4);color:var(--cream);text-decoration:none}
   .footer-social .social-badge{position:absolute;bottom:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--burgundy);border:1.5px solid var(--ink);display:grid;place-items:center}
-  .footer-social .social-badge svg{width:8px;height:8px;color:#e8d9b8}
+  .footer-social .social-badge svg{width:8px;height:8px;color:var(--beige)}
   .footer-social svg{width:16px;height:16px}
   .footer-bottom{border-top:1px solid rgba(216,205,182,.14);margin-top:40px;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:.85rem;color:rgba(216,205,182,.55)}
 
@@ -152,7 +148,7 @@
       <span><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.61 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"/></svg><a href="tel:+48324312992">32 43 12 992</a></span>
     </div>
     <div class="right">
-      <a href="../../index.html#budowa" class="topbar-btn-wsparcie">Wsparcie budowy</a>
+      <a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener" class="topbar-btn-wsparcie">Wsparcie budowy</a>
     </div>
   </div>
 </div>
@@ -330,7 +326,7 @@
           <li><a href="../kontakt.html">Kancelaria</a></li>
           <li style="display:none"><a href="#">RODO</a></li><!-- TODO: osobna strona RODO w przyszłości -->
           <li><a href="../polityka-prywatnosci.html">Polityka prywatności</a></li>
-          <li><a href="../../index.html#budowa">Wsparcie budowy</a></li>
+          <li><a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener">Wsparcie budowy</a></li>
           <li><a href="../../admin/login.html" style="color:var(--copper-light);font-weight:700">→ Panel administracyjny</a></li>
         </ul>
       </div>

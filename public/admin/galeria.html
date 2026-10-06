@@ -57,7 +57,7 @@
   .photo-thumb-pick.is-cover{border-color:#c8952a;box-shadow:0 0 0 1px #c8952a}
   .photo-thumb-pick .remove-btn{
     display:none;position:absolute;top:2px;right:2px;width:18px;height:18px;
-    background:rgba(122,31,43,.88);color:#fff;border:none;border-radius:50%;
+    background:rgba(var(--burgundy-rgb),.88);color:#fff;border:none;border-radius:50%;
     font-size:.55rem;cursor:pointer;line-height:1;align-items:center;justify-content:center;padding:0
   }
   .photo-thumb-pick:hover .remove-btn{display:flex}
@@ -67,7 +67,7 @@
   .toggle-row{display:flex;align-items:center;gap:10px;padding:6px 0}
   .toggle-row label{font-size:.9rem;font-weight:600;color:var(--ink);cursor:pointer}
   input[type="checkbox"].toggle{width:38px;height:20px;appearance:none;background:var(--line);border-radius:10px;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
-  input[type="checkbox"].toggle:checked{background:var(--green,#3a7d44)}
+  input[type="checkbox"].toggle:checked{background:var(--green)}
   input[type="checkbox"].toggle::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
   input[type="checkbox"].toggle:checked::after{left:20px}
 
@@ -565,7 +565,7 @@ function handleUploadFiles(files) {
     .then(function(data) {
       btn.disabled = false;
       if (data.error) {
-        status.style.color = 'var(--red,#c0392b)';
+        status.style.color = 'var(--red)';
         status.textContent = '✕ ' + data.error;
         return;
       }
@@ -578,14 +578,14 @@ function handleUploadFiles(files) {
         if (modalPhotos.indexOf(fname) < 0) { modalPhotos.push(fname); added++; }
       });
       if (!modalCover && modalPhotos.length) modalCover = modalPhotos[0];
-      status.style.color = 'var(--green,#3a7d44)';
+      status.style.color = 'var(--green)';
       status.textContent = '✓ Wgrano ' + added + ' zdjęć.';
       renderModalPhotos();
       updateCoverStrip();
     })
     .catch(function() {
       btn.disabled = false;
-      status.style.color = 'var(--red,#c0392b)';
+      status.style.color = 'var(--red)';
       status.textContent = '✕ Błąd – upload dostępny tylko na serwerze.';
     });
 }

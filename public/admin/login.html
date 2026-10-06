@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Logowanie · Panel Parafii NSPJ Czerwionka</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--beige:#f4ede0;--cream:#faf6ee;--burgundy:#7a1f2b;--burgundy-dark:#5e1620;--copper:#b87a4a;--copper-light:#d6a572;--ink:#2b2520;--ink-soft:#5a5048;--line:#d8cdb6}
+  
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;min-height:100%}
   body{
@@ -20,18 +21,18 @@
     background-image:url('../public/img/hero-1.jpg');
     background-size:cover;background-position:center
   }
-  .visual::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(43,37,32,.6),rgba(122,31,43,.55))}
-  .visual .inner{position:relative;z-index:2;color:#f6e9d3;padding:60px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+  .visual::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(43,37,32,.6),rgba(var(--burgundy-rgb),.55))}
+  .visual .inner{position:relative;z-index:2;color:var(--cream);padding:60px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
   .visual .brand{display:flex;align-items:center;gap:14px}
   .visual .brand-mark{width:48px;height:48px;border-radius:50%}
   .visual .brand-name{font-family:'Playfair Display',serif;font-size:1.05rem;line-height:1.2}
-  .visual .brand-name small{display:block;font-size:.7rem;letter-spacing:.18em;color:rgba(246,233,211,.7);text-transform:uppercase;margin-top:3px;font-family:-apple-system,sans-serif;font-weight:700}
+  .visual .brand-name small{display:block;font-size:.7rem;letter-spacing:.18em;color:rgba(var(--cream-rgb),.7);text-transform:uppercase;margin-top:3px;font-family:-apple-system,sans-serif;font-weight:700}
   .visual h1{font-family:'Playfair Display',serif;font-size:2.4rem;line-height:1.15;font-weight:600;margin:0 0 16px;max-width:540px}
   .visual h1 em{font-style:italic;color:var(--copper-light)}
-  .visual p{font-size:1rem;color:rgba(246,233,211,.85);max-width:480px;line-height:1.6;margin:0}
+  .visual p{font-size:1rem;color:rgba(var(--cream-rgb),.85);max-width:480px;line-height:1.6;margin:0}
   .visual .quote{padding:24px;border-left:3px solid var(--copper-light);background:rgba(0,0,0,.15);max-width:520px;backdrop-filter:blur(4px)}
   .visual .quote span{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem}
-  .visual .quote cite{display:block;font-size:.82rem;color:rgba(246,233,211,.7);margin-top:10px;font-style:normal;letter-spacing:.05em}
+  .visual .quote cite{display:block;font-size:.82rem;color:rgba(var(--cream-rgb),.7);margin-top:10px;font-style:normal;letter-spacing:.05em}
   .panel{background:var(--cream);display:flex;align-items:center;justify-content:center;padding:40px}
   .form-box{width:100%;max-width:400px}
   .form-box h2{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:600;color:var(--ink);margin:0 0 8px}
@@ -39,7 +40,7 @@
   .field{margin-bottom:18px}
   .field label{display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:7px}
   .field input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:6px;font-size:.95rem;font-family:inherit;background:#fff;color:var(--ink)}
-  .field input:focus{outline:none;border-color:var(--burgundy);box-shadow:0 0 0 3px rgba(122,31,43,.12)}
+  .field input:focus{outline:none;border-color:var(--burgundy);box-shadow:0 0 0 3px rgba(var(--burgundy-rgb),.12)}
   .remember{display:flex;align-items:center;gap:8px;margin-bottom:22px;font-size:.88rem;color:var(--ink-soft)}
   .btn-submit{width:100%;padding:13px;background:var(--burgundy);color:#fff;border:none;border-radius:6px;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:background .15s}
   .btn-submit:hover{background:var(--burgundy-dark)}

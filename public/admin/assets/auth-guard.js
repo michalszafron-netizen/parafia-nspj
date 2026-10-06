@@ -59,14 +59,14 @@
   function blockPage(modLabel) {
     document.body.innerHTML =
       '<div style="display:flex;align-items:center;justify-content:center;height:100vh;' +
-      'font-family:system-ui,sans-serif;flex-direction:column;gap:12px;background:#faf6ee">' +
+      'font-family:system-ui,sans-serif;flex-direction:column;gap:12px;background:var(--cream)">' +
       '<div style="font-size:2.4rem">🔒</div>' +
-      '<h2 style="margin:0;color:#7a1f2b;font-size:1.4rem">Brak dostępu</h2>' +
-      '<p style="color:#5a5048;margin:0;font-size:.95rem">Nie masz uprawnień do modułu <b>' + escH(modLabel) + '</b>.</p>' +
-      '<p style="color:#5a5048;margin:0;font-size:.85rem">Skontaktuj się z administratorem lub proboszczem.</p>' +
+      '<h2 style="margin:0;color:var(--burgundy);font-size:1.4rem">Brak dostępu</h2>' +
+      '<p style="color:var(--ink-soft);margin:0;font-size:.95rem">Nie masz uprawnień do modułu <b>' + escH(modLabel) + '</b>.</p>' +
+      '<p style="color:var(--ink-soft);margin:0;font-size:.85rem">Skontaktuj się z administratorem lub proboszczem.</p>' +
       '<a href="/admin/login.html" onclick="fetch(\'/api/auth/logout\',{method:\'POST\'}).finally(function(){window.location.href=\'/admin/login.html\'});return false;" ' +
-      'style="margin-top:10px;color:#7a1f2b;font-weight:600;font-size:.9rem;text-decoration:none;' +
-      'padding:8px 16px;border:1px solid #7a1f2b;border-radius:6px">Wyloguj się</a>' +
+      'style="margin-top:10px;color:var(--burgundy);font-weight:600;font-size:.9rem;text-decoration:none;' +
+      'padding:8px 16px;border:1px solid var(--burgundy);border-radius:6px">Wyloguj się</a>' +
       '</div>';
   }
 

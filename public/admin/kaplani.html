@@ -20,10 +20,17 @@
   .priest-card-actions button:disabled{opacity:.35;cursor:default}
   .priest-card-actions button:disabled:hover{background:var(--white)}
   .priest-card label{display:block;font-size:.78rem;font-weight:700;color:var(--ink-soft);margin:14px 0 5px}
-  .priest-card input.p-photo,.priest-card textarea.p-bio{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;font-family:inherit;color:var(--ink)}
+  .priest-card input.p-photo,.priest-card textarea.p-bio{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;font-family:inherit;color:var(--ink);box-sizing:border-box}
   .priest-card input.p-photo:focus,.priest-card textarea.p-bio:focus{outline:none;border-color:var(--burgundy)}
   .priest-card textarea.p-bio{min-height:120px;resize:vertical;line-height:1.5}
   .priest-card .p-hint{margin:5px 0 0;font-size:.78rem;color:var(--ink-soft)}
+  .photo-upload-row{display:flex;gap:12px;align-items:flex-start}
+  .photo-thumb{width:72px;height:72px;border-radius:8px;border:1px solid var(--line);object-fit:cover;background:var(--bg);flex-shrink:0}
+  .photo-thumb-empty{width:72px;height:72px;border-radius:8px;border:1px dashed var(--line);background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:1.8rem;flex-shrink:0}
+  .photo-controls{flex:1;display:flex;flex-direction:column;gap:7px;min-width:0}
+  .p-photo-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid var(--line);border-radius:6px;background:var(--white);font-size:.83rem;cursor:pointer;color:var(--ink);width:fit-content;white-space:nowrap}
+  .p-photo-btn:hover:not(:disabled){background:var(--bg);border-color:var(--burgundy);color:var(--burgundy)}
+  .p-photo-btn:disabled{opacity:.5;cursor:default}
 
   .add-priest-bar{margin-top:10px}
 
@@ -85,7 +92,7 @@
   <span id="toast-msg"></span>
 </div>
 
-<script src="assets/admin.js"></script>
+<script src="assets/admin.js?v=3"></script>
 <script>
   async function apiFetch(url, opts) {
     const r = await fetch(url, opts);
@@ -119,8 +126,17 @@
         '<button type="button" class="p-down" title="Przenieś niżej"' + (i === priests.length - 1 ? ' disabled' : '') + '><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M7.646 11.354a.5.5 0 0 0 .708 0l6-6a.5.5 0 0 0-.708-.708L8 10.293 2.354 4.646a.5.5 0 0 0-.708.708z"/></svg></button>' +
         '<button type="button" class="p-del" title="Usuń duszpasterza"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/></svg></button>' +
         '</div></div>' +
-        '<label>Zdjęcie (URL, opcjonalnie)</label>' +
-        '<input type="text" class="p-photo" value="' + esc(p.photo || '') + '" placeholder="https://...">' +
+        '<label>Zdjęcie</label>' +
+        '<div class="photo-upload-row">' +
+          (p.photo
+            ? '<img class="photo-thumb p-photo-preview" src="' + esc(p.photo) + '" alt="Zdjęcie księdza">'
+            : '<div class="photo-thumb-empty p-photo-preview">📷</div>') +
+          '<div class="photo-controls">' +
+            '<input type="file" class="p-photo-file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none">' +
+            '<button type="button" class="p-photo-btn"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/></svg> Prześlij zdjęcie</button>' +
+            '<input type="text" class="p-photo" value="' + esc(p.photo || '') + '" placeholder="lub wklej URL...">' +
+          '</div>' +
+        '</div>' +
         '<p class="p-hint">Pozostaw puste, jeśli profil ma się wyświetlać bez zdjęcia (na całą szerokość).</p>' +
         '<label>Biografia</label>' +
         '<textarea class="p-bio" placeholder="Krótka biografia...">' + esc(p.bio || '') + '</textarea>' +
@@ -137,6 +153,44 @@
       card.querySelector('.p-up').addEventListener('click', function () { moveUp(id); });
       card.querySelector('.p-down').addEventListener('click', function () { moveDown(id); });
       card.querySelector('.p-del').addEventListener('click', function () { deletePriest(id); });
+      // Upload zdjęcia
+      (function() {
+        var fileInput = card.querySelector('.p-photo-file');
+        var uploadBtn = card.querySelector('.p-photo-btn');
+        uploadBtn.addEventListener('click', function () { fileInput.click(); });
+        fileInput.addEventListener('change', async function () {
+          var file = fileInput.files[0];
+          if (!file) return;
+          uploadBtn.disabled = true;
+          uploadBtn.innerHTML = '<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/></svg> Przesyłanie...';
+          try {
+            var fd = new FormData();
+            fd.append('photo', file);
+            var data = await apiFetch('/api/kaplani/upload', { method: 'POST', body: fd });
+            if (data.url) {
+              card.querySelector('.p-photo').value = data.url;
+              var preview = card.querySelector('.p-photo-preview');
+              if (preview.tagName === 'IMG') {
+                preview.src = data.url;
+              } else {
+                var img = document.createElement('img');
+                img.className = 'photo-thumb p-photo-preview';
+                img.alt = 'Zdjęcie księdza';
+                img.src = data.url;
+                preview.parentNode.replaceChild(img, preview);
+              }
+              await updatePriest(id, 'photo', data.url);
+            }
+          } catch(e) {
+            showToast('Błąd przesyłania: ' + e.message, 'error');
+          } finally {
+            uploadBtn.disabled = false;
+            uploadBtn.innerHTML = '<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/></svg> Prześlij zdjęcie';
+            fileInput.value = '';
+          }
+        });
+      })();
+
     });
 
     renderRoleOptions();

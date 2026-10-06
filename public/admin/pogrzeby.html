@@ -32,7 +32,7 @@
   .modal-form .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
   .modal-form label{font-size:.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:3px}
   .modal-form input,.modal-form select,.modal-form textarea{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;width:100%;background:var(--white);box-sizing:border-box}
-  .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.18)}
   .modal-form .section-divider{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:4px 0 2px;border-bottom:1px solid var(--line);margin-top:4px}
   .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
 
@@ -75,7 +75,7 @@
   .grob-stat .l{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:6px}
   .groby-filter{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
   .groby-filter input{padding:9px 14px;border:1px solid var(--line);border-radius:7px;font-size:.88rem;background:var(--white);color:var(--ink);width:300px}
-  .groby-filter input:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.15)}
+  .groby-filter input:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.15)}
   .sektor-pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
   .sektor-pill{padding:5px 11px;border:1px solid var(--line);border-radius:18px;background:var(--white);color:var(--ink);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s}
   .sektor-pill:hover{border-color:var(--burgundy);color:var(--burgundy)}
@@ -85,7 +85,7 @@
   .groby-tbl th{background:var(--bg);font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:11px 16px;text-align:left;border-bottom:2px solid var(--line);white-space:nowrap}
   .groby-tbl td{padding:12px 16px;border-bottom:1px solid var(--line);font-size:.88rem;vertical-align:middle}
   .groby-tbl tbody tr:last-child td{border-bottom:none}
-  .groby-tbl tbody tr:hover td{background:rgba(122,31,43,.025);cursor:pointer}
+  .groby-tbl tbody tr:hover td{background:rgba(var(--burgundy-rgb),.025);cursor:pointer}
   .groby-tbl .loc-main{font-weight:700;font-size:.93rem;color:var(--ink);white-space:nowrap}
   .groby-tbl .loc-arch{font-size:.73rem;color:var(--ink-soft);margin-top:2px;white-space:nowrap}
   .groby-tbl .osoby-cell{max-width:480px}
@@ -112,7 +112,7 @@
   .gm-field label{font-size:.74rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:2px}
   .gm-field span{font-size:.88rem;color:var(--ink)}
   .gm-field input{padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-size:.86rem;width:100%;box-sizing:border-box;background:var(--white)}
-  .gm-field input:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .gm-field input:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.18)}
   .p-card{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:9px 12px;margin-bottom:6px}
   .p-name{font-weight:700;font-size:.93rem;font-family:'Playfair Display',serif}
   .p-dates{font-size:.78rem;color:var(--ink-soft);margin-top:2px}
@@ -226,6 +226,8 @@
               <th style="min-width:75px">M. grobu</th>
               <th style="min-width:110px">Opłacono do</th>
               <th style="min-width:160px">Kapłan</th>
+              <th style="min-width:160px">Dysponent grobu</th>
+              <th style="min-width:130px">Tel. dysponenta</th>
               <th style="min-width:110px">Status</th>
             </tr>
           </thead>
@@ -255,6 +257,9 @@
         <div class="groby-filter" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
           <input type="search" id="g-search" placeholder="Szukaj po nazwisku lub lokalizacji…" oninput="gApplyFilters()" style="flex:1;min-width:220px">
           <div class="sektor-pills" id="g-sektory" style="flex:1"></div>
+          <button class="btn btn-secondary" onclick="smsOpenPanel()" style="white-space:nowrap;flex-shrink:0;background:var(--burgundy);color:#fff;border-color:var(--burgundy)">
+            <svg fill="currentColor" viewBox="0 0 16 16" style="width:14px;height:14px;margin-right:5px;vertical-align:-2px"><path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383l4.708 2.825zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/><path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5z"/></svg>SMS o opłacie
+          </button>
           <button class="btn btn-secondary" onclick="exportKartotekaPdf()" style="white-space:nowrap;flex-shrink:0">
             <svg fill="currentColor" viewBox="0 0 16 16" style="width:14px;height:14px;margin-right:5px;vertical-align:-2px"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/><path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.712 5.712 0 0 1-.911-.95 11.651 11.651 0 0 0-1.997.406 11.307 11.307 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.793.793 0 0 1-.58.029z"/></svg>Eksport PDF
           </button>
@@ -268,6 +273,8 @@
               <th style="min-width:105px">Data ur.</th>
               <th style="min-width:105px">Data zm.</th>
               <th style="min-width:110px">Opłacony do</th>
+              <th style="min-width:150px">Dysponent</th>
+              <th style="min-width:120px">Telefon</th>
               <th style="min-width:90px">Status</th>
             </tr></thead>
             <tbody id="g-tbody"></tbody>
@@ -276,11 +283,106 @@
         <div style="text-align:center;padding:40px;color:var(--ink-soft);display:none" id="g-empty">Nie znaleziono grobów.</div>
         <div class="groby-pag" id="g-pag"></div>
 
+        <!-- Panel SMS — powiadomienia o opłacie grobowej -->
+        <div id="groby-sms-panel" style="margin-top:24px;background:var(--beige-deep);border:1px solid var(--line);border-radius:8px;padding:14px 18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div>
+              <div style="font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--burgundy)">Powiadomienia SMS — opłata grobowa</div>
+              <div style="font-size:.79rem;color:var(--ink-soft);margin-top:2px">SMS do dysponenta na X dni przed wygaśnięciem opłaty. Domyślnie wyłączone.</div>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.84rem;color:var(--ink)">
+              <span id="groby-sms-label">Wyłączone</span>
+              <div class="pub-toggle" style="width:36px;height:20px"><input type="checkbox" id="groby-sms-toggle" onchange="saveGrobySmsSetting()"><span class="pub-toggle-s" style="border-radius:10px"></span></div>
+            </label>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--ink-soft)">
+              Wyślij SMS
+              <input type="number" id="groby-sms-dni" min="7" max="180" value="30" style="width:58px;padding:4px 7px;border:1px solid var(--line);border-radius:5px;font-size:.84rem;text-align:center" onchange="saveGrobySmsSetting()">
+              dni przed wygaśnięciem
+            </label>
+            <span style="font-size:.79rem;color:var(--ink-soft)">· SMS leci o godz. 9:00 rano</span>
+          </div>
+        </div>
+
       </div><!-- /#tab-kartoteka -->
 
   </div><!-- /.content -->
   </div><!-- /.main -->
 </div><!-- /.app -->
+
+<!-- Overlay SMS — ręczna wysyłka o opłacie grobowej -->
+<div id="sms-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;overflow-y:auto;padding:24px 12px">
+  <div style="max-width:920px;margin:0 auto;background:var(--white);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.18);overflow:hidden">
+    <!-- nagłówek -->
+    <div style="background:var(--burgundy);color:#fff;padding:16px 22px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-weight:700;font-size:1rem">Wysyłka SMS — opłata grobowa</div>
+        <div style="font-size:.78rem;opacity:.82;margin-top:2px">Jeden SMS na grób, niezależnie od liczby pochowanych</div>
+      </div>
+      <button onclick="smsClosePanel()" style="background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:4px 8px;line-height:1">✕</button>
+    </div>
+    <!-- filtry -->
+    <div style="padding:14px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--beige)">
+      <label style="font-size:.85rem;color:var(--ink-soft);display:flex;align-items:center;gap:8px">
+        Wygasłe + wygasające za
+        <input type="number" id="sms-dni" value="30" min="0" max="365" style="width:60px;padding:4px 8px;border:1px solid var(--line);border-radius:5px;font-size:.85rem;text-align:center">
+        dni
+      </label>
+      <button class="btn btn-secondary" onclick="smsLoadList()" style="font-size:.84rem">Załaduj listę</button>
+      <span id="sms-stats" style="font-size:.79rem;color:var(--ink-soft);margin-left:auto"></span>
+    </div>
+    <!-- filtry sektorów + toggle ukryj wysłane -->
+    <div id="sms-filter-bar" style="display:none;padding:8px 22px;border-bottom:1px solid var(--line);background:var(--beige);display:none;align-items:center;gap:10px;flex-wrap:wrap">
+      <div id="sms-sektor-pills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      <label style="margin-left:auto;display:flex;align-items:center;gap:7px;font-size:.82rem;cursor:pointer;user-select:none;white-space:nowrap">
+        <input type="checkbox" id="sms-hide-sent" checked onchange="smsApplyFilters()">
+        Ukryj już wysłane
+      </label>
+    </div>
+    <!-- pasek akcji -->
+    <div id="sms-actions-bar" style="display:none;padding:10px 22px;border-bottom:1px solid var(--line);display:none;align-items:center;gap:12px;flex-wrap:wrap">
+      <label style="display:flex;align-items:center;gap:7px;font-size:.84rem;cursor:pointer;user-select:none">
+        <input type="checkbox" id="sms-select-all" onchange="smsToggleAll(this.checked)">
+        Zaznacz wszystkie
+      </label>
+      <span id="sms-count-label" style="font-size:.84rem;color:var(--ink-soft)"></span>
+      <button id="sms-send-btn" class="btn" onclick="smsSendSelected()" style="margin-left:auto;background:var(--burgundy);color:#fff;border-color:var(--burgundy);font-size:.85rem" disabled>Wyślij SMS (0)</button>
+    </div>
+    <!-- lista -->
+    <div id="sms-list-wrap" style="padding:16px 22px 4px">
+      <div id="sms-list-empty" style="text-align:center;padding:32px;color:var(--ink-soft);font-size:.88rem">Kliknij „Załaduj listę" aby zobaczyć groby do powiadomienia.</div>
+      <table id="sms-table" style="display:none;width:100%;border-collapse:collapse;font-size:.83rem">
+        <thead>
+          <tr style="border-bottom:2px solid var(--line);color:var(--ink-soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em">
+            <th style="width:28px;padding:6px 8px"></th>
+            <th style="padding:6px 8px;text-align:left">Lokalizacja</th>
+            <th style="padding:6px 8px;text-align:left">Pochowany / Dysponent</th>
+            <th style="padding:6px 8px;text-align:left">Telefon</th>
+            <th style="padding:6px 8px;text-align:left">Opłacony do</th>
+            <th style="padding:6px 8px;text-align:left">Status</th>
+            <th style="padding:6px 8px;text-align:left">Ostatni SMS</th>
+          </tr>
+        </thead>
+        <tbody id="sms-tbody"></tbody>
+      </table>
+    </div>
+    <!-- progress -->
+    <div id="sms-progress-wrap" style="display:none;padding:16px 22px">
+      <div style="font-size:.85rem;font-weight:600;margin-bottom:8px" id="sms-progress-label">Wysyłanie…</div>
+      <div style="background:var(--line);border-radius:4px;height:8px;overflow:hidden">
+        <div id="sms-progress-bar" style="height:100%;background:var(--burgundy);width:0%;transition:width .3s"></div>
+      </div>
+      <div id="sms-progress-detail" style="font-size:.78rem;color:var(--ink-soft);margin-top:6px"></div>
+    </div>
+    <!-- podsumowanie -->
+    <div id="sms-summary" style="display:none;padding:14px 22px;border-top:1px solid var(--line);font-size:.84rem"></div>
+    <!-- stopka -->
+    <div style="padding:12px 22px;border-top:1px solid var(--line);text-align:right">
+      <button class="btn btn-secondary" onclick="smsClosePanel()">Zamknij</button>
+    </div>
+  </div>
+</div>
 
 <!-- Modal kartoteki -->
 <div class="gm-overlay" id="gm-overlay" onclick="if(event.target===this)gmClose()">
@@ -482,6 +584,8 @@
           return '<td style="font-size:.84rem;white-space:nowrap"><span style="background:'+bg+';color:'+color+';padding:2px 7px;border-radius:5px;font-weight:600">'+label+'</span></td>';
         })()+
         '<td style="font-size:.82rem">'+escHtml(d.ksiadz||'-')+'</td>'+
+        '<td style="font-size:.82rem">'+escHtml(d.dysponent||'—')+'</td>'+
+        '<td style="font-size:.82rem">'+escHtml(d.dysponent_tel||'—')+'</td>'+
         '<td><span class="status-badge '+badgeClass+'">'+STATUS_LABELS[d.status]+'</span></td>'+
       '</tr>';
     }).join('');
@@ -606,7 +710,12 @@
       '<div><label>Rząd</label><input id="f-rzad" type="text" placeholder="np. 3"></div>'+
       '<div><label>Miejsce grobu</label><input id="f-miejscegrobu" type="text" placeholder="np. 12"></div>'+
     '</div>'+
-    '<div><label>Opłata za grób — ważna do <small style="font-weight:400;color:var(--ink-soft)">(np. 2030-12-31)</small></label><input id="f-oplacony-do" type="date" style="max-width:200px"></div>';
+    '<div><label>Opłata za grób — ważna do <small style="font-weight:400;color:var(--ink-soft)">(np. 2030-12-31)</small></label><input id="f-oplacony-do" type="date" style="max-width:200px"></div>'+
+    '<div class="section-divider">Dysponent grobu</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'+
+      '<div><label>Imię i nazwisko dysponenta</label><input id="f-dysponent" type="text" placeholder="Kto opiekuje się grobem…"></div>'+
+      '<div><label>Telefon dysponenta <small style="font-weight:400;color:var(--ink-soft)">(do SMS o opłacie)</small></label><input id="f-dysponent-tel" type="tel" placeholder="np. 500 000 000"></div>'+
+    '</div>';
 
   // ---- wyszukiwanie / powiązanie z kartoteką parafian ----
   function getParafianie(){ return parafianieCache; }
@@ -699,6 +808,8 @@
     document.getElementById('f-rzad').value = d.rzad||'';
     document.getElementById('f-miejscegrobu').value = d.miejsce_grobu||'';
     document.getElementById('f-oplacony-do').value = d.oplacony_do||'';
+    document.getElementById('f-dysponent').value = d.dysponent||'';
+    document.getElementById('f-dysponent-tel').value = d.dysponent_tel||'';
     if(window.fpSync)window.fpSync();
     document.getElementById('modal-overlay').style.display='flex';
     wireParafianinSearch(d.parafianin_id);
@@ -740,7 +851,9 @@
       miejsce_grobu: document.getElementById('f-miejscegrobu').value.trim(),
       rok: rok,
       parafianin_id: parafianinId,
-      oplacony_do: document.getElementById('f-oplacony-do').value || ''
+      oplacony_do: document.getElementById('f-oplacony-do').value || '',
+      dysponent: document.getElementById('f-dysponent').value.trim(),
+      dysponent_tel: document.getElementById('f-dysponent-tel').value.trim()
     };
 
     try {
@@ -782,6 +895,7 @@
       renderStats();
       renderTable();
       showToast(editingId?'Zaktualizowano wpis.':'Dodano nowy pogrzeb.');
+      if (typeof gLoad === 'function') gLoad();
     } catch(e) {
       alert('Błąd zapisu: '+e.message);
     }
@@ -829,6 +943,19 @@
   // ---- init ----
   document.getElementById('btn-add-top').addEventListener('click',openModal);
   window.openEdit=openEdit;
+  window.openEditSingle=async function(pogrzebId) {
+    var d = allData.find(function(x){ return String(x.id) === String(pogrzebId); });
+    if (!d) {
+      try {
+        var r = await fetch('/api/pogrzeby/' + encodeURIComponent(pogrzebId));
+        if (r.ok) {
+          d = await r.json();
+          allData.push(d);
+        }
+      } catch(e) { console.error('openEditSingle fetch error', e); }
+    }
+    if (d) openEdit(pogrzebId);
+  };
   window.askDelete=askDelete;
   window.cancelDelete=cancelDelete;
   window.confirmDelete=confirmDelete;
@@ -865,7 +992,7 @@ function switchTab(name, btn) {
   var actions = document.querySelector('.topbar .actions');
   if (actions) actions.style.display = (name === 'rejestr') ? '' : 'none';
 
-  if (name === 'kartoteka') gLoad();
+  if (name === 'kartoteka') { gLoad(); loadGrobySmsSetting(); }
 }
 
 // ── KARTOTEKA GROBÓW ─────────────────────────────────────────────────────────
@@ -880,6 +1007,7 @@ function gBuildFlat() {
           _grobId: g._live ? 'live_' + g.id : g.id,
           lok: g.lokalizacja, arch: g.nr_archiwalny,
           sektor: g.sektor, uplynął: g.uplynął, oplacony_do: g.oplacony_do, _live: g._live,
+          dysponent: g.dysponent || '', dysponent_tel: g.dysponent_tel || '',
           imie_nazwisko: p.imie_nazwisko || '',
           data_urodzenia: p.data_urodzenia || null,
           data_smierci: p.data_smierci || null
@@ -960,12 +1088,15 @@ function gRender() {
     const arch = (!r._live && r.arch) ? `<div class="loc-arch">${escHtml(r.arch)}</div>` : '';
     const stBadge = r.uplynął ? '<span class="badge-upl">upłynął</span>' : '<span class="badge-ok">aktywny</span>';
     const nameHtml = r.imie_nazwisko ? escHtml(r.imie_nazwisko) : '<em style="color:var(--ink-soft);opacity:.6">brak danych</em>';
-    return `<tr onclick="gOpenModal(${typeof r._grobId === 'string' ? '"'+r._grobId+'"' : r._grobId})">
+    const grobArg = typeof r._grobId === 'string' ? "'"+r._grobId+"'" : r._grobId;
+    return `<tr onclick="gOpenModal(${grobArg})">
       <td><div class="loc-main">${escHtml(r.lok || '')}${liveBadge}</div>${arch}</td>
       <td>${nameHtml}</td>
       <td style="font-size:.84rem;white-space:nowrap">${r.data_urodzenia ? gFmtDate(r.data_urodzenia) : '—'}</td>
       <td style="font-size:.84rem;white-space:nowrap">${r.data_smierci ? gFmtDate(r.data_smierci) : '—'}</td>
       <td style="font-size:.84rem;white-space:nowrap">${opl}</td>
+      <td style="font-size:.83rem">${r.dysponent ? escHtml(r.dysponent) : '<span style="color:var(--ink-soft)">—</span>'}</td>
+      <td style="font-size:.83rem">${r.dysponent_tel ? escHtml(r.dysponent_tel) : '<span style="color:var(--ink-soft)">—</span>'}</td>
       <td>${stBadge}</td>
     </tr>`;
   }).join('');
@@ -1010,14 +1141,16 @@ function gOpenModal(id) {
   document.getElementById('gm-title').textContent = 'Grób ' + g.lokalizacja;
 
   const isLive = !!g._live;
+
+  if (isLive && g.pogrzeb_id != null && window.openEditSingle) {
+    document.getElementById('gm-overlay').classList.remove('open');
+    window.openEditSingle(g.pogrzeb_id);
+    return;
+  }
+
   const upl = g.uplynął ? '<span class="badge-upl">upłynął termin</span>' : '<span class="badge-ok">aktywny</span>';
 
   let html = '';
-  if (isLive) {
-    html += `<div style="background:#e8f0f8;border:1px solid #b0c8e8;border-radius:7px;padding:8px 12px;font-size:.81rem;color:#3a6ea8;margin-bottom:12px">
-      <strong>Rekord z CRM (Pogrzeby)</strong> — edycja przez zakładkę Rejestr pogrzebów
-    </div>`;
-  }
 
   html += `<div class="gm-grid gm-grid g3">
     <div class="gm-field"><label>Sektor</label><span>${escHtml(g.sektor)}</span></div>
@@ -1032,7 +1165,16 @@ function gOpenModal(id) {
     </div>
     <div class="gm-grid">
       <div class="gm-field"><label>Nienaruszalny do</label><span>${gFmtDate(g.nienaruszelny_do)}</span></div>
-      <div class="gm-field"><label>Opłacony do</label><span>${gFmtDate(g.oplacony_do)}</span></div>
+    </div>
+    <div class="gm-section">Opłata i dysponent</div>
+    <div class="gm-grid" style="align-items:end;gap:10px">
+      <div class="gm-field"><label>Opłata ważna do</label><input type="date" id="gm-oplacony-do" value="${g.oplacony_do||''}" style="border:1px solid var(--line);border-radius:5px;padding:5px 8px;font-size:.85rem;width:100%"></div>
+      <div class="gm-field"><label>Dysponent grobu</label><input type="text" id="gm-dysponent" value="${escHtml(g.dysponent||'')}" placeholder="Imię i nazwisko…" style="border:1px solid var(--line);border-radius:5px;padding:5px 8px;font-size:.85rem;width:100%"></div>
+      <div class="gm-field"><label>Telefon dysponenta</label><input type="tel" id="gm-dysponent-tel" value="${escHtml(g.dysponent_tel||'')}" placeholder="np. 500 000 000" style="border:1px solid var(--line);border-radius:5px;padding:5px 8px;font-size:.85rem;width:100%"></div>
+    </div>
+    <div style="margin-top:8px">
+      <button onclick="gSaveGrobFields(${g.id})" style="background:var(--burgundy);color:#fff;border:none;padding:7px 18px;border-radius:6px;font-size:.84rem;cursor:pointer;font-weight:600">Zapisz zmiany</button>
+      <span id="gm-save-status" style="margin-left:10px;font-size:.82rem;color:var(--ink-soft)"></span>
     </div>`;
   }
 
@@ -1060,7 +1202,7 @@ function gOpenModal(id) {
   // Link publiczny
   const idx = isLive
     ? `grob.html?type=live&id=${encodeURIComponent(String(g.id).replace('live_',''))}`
-    : `grob.html?i=${gAllGroby.indexOf(g)}`;
+    : `grob.html?id=${g.id}`;
   document.getElementById('gm-public-link').href = '../strony/' + idx;
 
   document.getElementById('gm-overlay').classList.add('open');
@@ -1069,9 +1211,71 @@ function gOpenModal(id) {
 function gmClose() { document.getElementById('gm-overlay').classList.remove('open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') gmClose(); });
 
+async function gSaveGrobFields(grobId) {
+  var payload = {
+    oplacony_do: document.getElementById('gm-oplacony-do').value || '',
+    dysponent: document.getElementById('gm-dysponent').value.trim(),
+    dysponent_tel: document.getElementById('gm-dysponent-tel').value.trim()
+  };
+  var st = document.getElementById('gm-save-status');
+  try {
+    var r = await fetch('/api/admin/groby/' + grobId, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    if (!r.ok) { var errBody = await r.text().catch(function(){return '';}); throw new Error('HTTP ' + r.status + ' ' + errBody); }
+    // aktualizuj lokalny cache
+    var g = gAllGroby.find(x => !x._live && x.id === grobId);
+    if (g) {
+      g.oplacony_do = payload.oplacony_do;
+      g.dysponent = payload.dysponent;
+      g.dysponent_tel = payload.dysponent_tel;
+      var today2 = new Date().toISOString().slice(0,10);
+      g.uplynął = payload.oplacony_do ? payload.oplacony_do < today2 : false;
+      gBuildFlat();
+      gApplyFilters();
+    }
+    gHistoricalData = null; // zresetuj cache historyczny
+    if (st) { st.textContent = 'Zapisano ✓'; st.style.color = '#2e7a3a'; setTimeout(function(){ if(st) st.textContent=''; }, 3000); }
+  } catch(e) {
+    if (st) { st.textContent = 'Błąd: ' + e.message; st.style.color = kol('red'); }
+  }
+}
+
 function gFmtDate(d) {
   if (!d) return '—';
   try { const [y,m,day]=d.split('-'); return `${day}.${m}.${y}`; } catch { return d; }
+}
+
+// ─── helper toast dla kodu poza IIFE ───
+function gToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+// ─── SMS ustawienia grobów ───
+async function loadGrobySmsSetting() {
+  try {
+    var s = await fetch('/api/settings').then(r => r.json());
+    var tog = document.getElementById('groby-sms-toggle');
+    var dni = document.getElementById('groby-sms-dni');
+    var lbl = document.getElementById('groby-sms-label');
+    if (tog) { tog.checked = !!s.smsGrobyEnabled; if(lbl) lbl.textContent = tog.checked ? 'Włączone' : 'Wyłączone'; }
+    if (dni && s.smsGrobyDniPrzed) dni.value = s.smsGrobyDniPrzed;
+  } catch(e) {}
+}
+async function saveGrobySmsSetting() {
+  var tog = document.getElementById('groby-sms-toggle');
+  var dni = document.getElementById('groby-sms-dni');
+  var lbl = document.getElementById('groby-sms-label');
+  if (!tog) return;
+  var enabled = tog.checked;
+  if (lbl) lbl.textContent = enabled ? 'Włączone' : 'Wyłączone';
+  try {
+    await fetch('/api/settings', {method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({smsGrobyEnabled: enabled, smsGrobyDniPrzed: parseInt(dni?.value)||30})
+    });
+    gToast(enabled ? 'SMS o opłacie grobowej: włączone ✓' : 'SMS o opłacie grobowej: wyłączone');
+  } catch(e) { gToast('Błąd zapisu ustawień'); }
 }
 
 // ─── Eksport kartoteki PDF ───
@@ -1084,6 +1288,200 @@ var gLogoDataUrl = '';
       .catch(function(){});
   } catch(e){}
 })();
+
+// ============ SMS — ręczna wysyłka o opłacie grobowej ============
+var smsListData = [];      // pełna lista z API
+var smsFilteredData = [];  // po filtrach
+var smsActiveSector = 'Wszystkie';
+var smsSending = false;
+
+function smsOpenPanel() {
+  document.getElementById('sms-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function smsClosePanel() {
+  if (smsSending) return;
+  document.getElementById('sms-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function smsLoadList() {
+  var dni = parseInt(document.getElementById('sms-dni').value) || 30;
+  document.getElementById('sms-list-empty').textContent = 'Ładowanie…';
+  document.getElementById('sms-list-empty').style.display = 'block';
+  document.getElementById('sms-table').style.display = 'none';
+  document.getElementById('sms-actions-bar').style.display = 'none';
+  document.getElementById('sms-summary').style.display = 'none';
+  document.getElementById('sms-stats').textContent = '';
+
+  try {
+    var r = await fetch('/api/admin/groby/sms-preview?dni=' + dni);
+    if (!r.ok) {
+      var errBody = await r.json().catch(function(){ return {}; });
+      throw new Error('HTTP ' + r.status + (errBody.error ? ': ' + errBody.error : ''));
+    }
+    var data = await r.json();
+    smsListData = data.groby || [];
+    document.getElementById('sms-stats').textContent =
+      'SMS w tym miesiącu: ' + data.sms_this_month + ' / ' + data.sms_limit;
+
+    if (!smsListData.length) {
+      document.getElementById('sms-list-empty').textContent = 'Brak grobów spełniających kryteria.';
+      return;
+    }
+    smsActiveSector = 'Wszystkie';
+    smsBuildSektorPills();
+    document.getElementById('sms-filter-bar').style.display = 'flex';
+    smsApplyFilters();
+  } catch(e) {
+    document.getElementById('sms-list-empty').style.display = 'block';
+    document.getElementById('sms-list-empty').textContent = 'Błąd ładowania: ' + e.message;
+  }
+}
+
+function smsBuildSektorPills() {
+  var sektory = ['Wszystkie'];
+  smsListData.forEach(function(g) {
+    var s = g.lokalizacja.split('/')[0].trim();
+    if (s && sektory.indexOf(s) === -1) sektory.push(s);
+  });
+  sektory.sort(function(a,b){ return a === 'Wszystkie' ? -1 : b === 'Wszystkie' ? 1 : a.localeCompare(b); });
+  var wrap = document.getElementById('sms-sektor-pills');
+  wrap.innerHTML = '';
+  sektory.forEach(function(s) {
+    var btn = document.createElement('button');
+    var active = s === smsActiveSector;
+    btn.textContent = s;
+    btn.style.cssText = 'padding:3px 11px;border-radius:20px;font-size:.78rem;cursor:pointer;border:1px solid ' +
+      (active ? 'var(--burgundy)' : 'var(--line)') + ';background:' +
+      (active ? 'var(--burgundy)' : 'var(--white)') + ';color:' +
+      (active ? '#fff' : 'var(--ink)') + ';transition:.15s';
+    btn.onclick = function() { smsActiveSector = s; smsBuildSektorPills(); smsApplyFilters(); };
+    wrap.appendChild(btn);
+  });
+}
+
+function smsApplyFilters() {
+  var hideSent = document.getElementById('sms-hide-sent').checked;
+  smsFilteredData = smsListData.filter(function(g) {
+    if (smsActiveSector !== 'Wszystkie') {
+      var s = g.lokalizacja.split('/')[0].trim();
+      if (s !== smsActiveSector) return false;
+    }
+    if (hideSent && g.ostatni_sms) return false;
+    return true;
+  });
+  var empty = document.getElementById('sms-list-empty');
+  var tbl = document.getElementById('sms-table');
+  var bar = document.getElementById('sms-actions-bar');
+  if (!smsFilteredData.length) {
+    empty.textContent = 'Brak grobów dla wybranych filtrów.';
+    empty.style.display = 'block';
+    tbl.style.display = 'none';
+    bar.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  tbl.style.display = 'table';
+  bar.style.display = 'flex';
+  document.getElementById('sms-select-all').checked = false;
+  smsRenderList();
+  smsUpdateSendBtn();
+}
+
+function smsRenderList() {
+  var tbody = document.getElementById('sms-tbody');
+  tbody.innerHTML = '';
+  smsFilteredData.forEach(function(g, i) {
+    var alreadySent = !!g.ostatni_sms;
+    var rowStyle = alreadySent ? 'opacity:.55' : '';
+    var statusBadge = g.status === 'expired'
+      ? '<span style="background:#fde8e8;color:'+kol('red')+';border-radius:4px;padding:1px 6px;font-size:.75rem;white-space:nowrap">wygasła</span>'
+      : '<span style="background:#fff3cd;color:#856404;border-radius:4px;padding:1px 6px;font-size:.75rem;white-space:nowrap">wygasa</span>';
+    var lastSmsTxt = g.ostatni_sms
+      ? '<span title="Wysłano ' + g.ostatni_sms + '" style="color:var(--ink-soft)">' + g.ostatni_sms + '</span>'
+      : '<span style="color:var(--ink-soft)">—</span>';
+    var sourceTag = g.grob_type === 'pogrzeby'
+      ? '<span style="font-size:.7rem;background:#e8f4e8;color:#2e7d32;border-radius:3px;padding:0 4px;margin-left:5px">CRM</span>'
+      : '<span style="font-size:.7rem;background:#f0f0f0;color:var(--ink-soft);border-radius:3px;padding:0 4px;margin-left:5px">arch.</span>';
+    var osobaLine = g.osoba
+      ? '<div style="font-size:.75rem;color:var(--ink-soft);margin-top:1px">' + escHtml(g.osoba) + '</div>'
+      : '';
+    var dysponentCell = escHtml(g.dysponent||'—') + sourceTag + osobaLine;
+    var tr = document.createElement('tr');
+    tr.style.cssText = 'border-bottom:1px solid var(--line);' + rowStyle;
+    tr.innerHTML =
+      '<td style="padding:7px 8px"><input type="checkbox" class="sms-chk" data-idx="' + i + '" onchange="smsUpdateSendBtn()"' + (alreadySent?' title="SMS wysłany '+g.ostatni_sms+'"':'') + '></td>' +
+      '<td style="padding:7px 8px;font-size:.82rem">' + escHtml(g.lokalizacja) + '</td>' +
+      '<td style="padding:7px 8px">' + dysponentCell + '</td>' +
+      '<td style="padding:7px 8px;font-family:monospace;font-size:.82rem">' + escHtml(g.telefon) + '</td>' +
+      '<td style="padding:7px 8px;font-size:.82rem">' + (g.oplacono_do||'—') + '</td>' +
+      '<td style="padding:7px 8px">' + statusBadge + '</td>' +
+      '<td style="padding:7px 8px">' + lastSmsTxt + '</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function smsToggleAll(checked) {
+  document.querySelectorAll('.sms-chk').forEach(function(c) { c.checked = checked; });
+  smsUpdateSendBtn();
+}
+
+function smsUpdateSendBtn() {
+  var checked = document.querySelectorAll('.sms-chk:checked').length;
+  var btn = document.getElementById('sms-send-btn');
+  var lbl = document.getElementById('sms-count-label');
+  btn.textContent = 'Wyślij SMS (' + checked + ')';
+  btn.disabled = checked === 0;
+  lbl.textContent = 'Zaznaczonych: ' + checked + ' z ' + smsFilteredData.length;
+  var selAll = document.getElementById('sms-select-all');
+  if (selAll) selAll.indeterminate = checked > 0 && checked < smsFilteredData.length;
+}
+
+async function smsSendSelected() {
+  var indices = [];
+  document.querySelectorAll('.sms-chk:checked').forEach(function(c) {
+    indices.push(parseInt(c.dataset.idx));
+  });
+  if (!indices.length) return;
+  if (!confirm('Wysłać ' + indices.length + ' SMS-ów do dysponentów grobów?')) return;
+
+  smsSending = true;
+  document.getElementById('sms-send-btn').disabled = true;
+  document.getElementById('sms-actions-bar').style.display = 'none';
+  document.getElementById('sms-filter-bar').style.display = 'none';
+  document.getElementById('sms-progress-wrap').style.display = 'block';
+  document.getElementById('sms-summary').style.display = 'none';
+
+  var ok = 0, fail = 0, errors = [];
+  for (var n = 0; n < indices.length; n++) {
+    var g = smsFilteredData[indices[n]];
+    var pct = Math.round((n / indices.length) * 100);
+    document.getElementById('sms-progress-bar').style.width = pct + '%';
+    document.getElementById('sms-progress-label').textContent = 'Wysyłanie ' + (n+1) + ' / ' + indices.length + '…';
+    document.getElementById('sms-progress-detail').textContent = g.lokalizacja + ' → ' + g.telefon;
+    try {
+      var r = await fetch('/api/admin/groby/sms-wyslij', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ grob_id: g.grob_id, grob_type: g.grob_type, telefon: g.telefon, dysponent: g.dysponent, lokalizacja: g.lokalizacja, oplacono_do: g.oplacono_do })
+      });
+      if (r.ok) { ok++; } else { var e = await r.json().catch(function(){return {};}); fail++; errors.push(g.lokalizacja + ': ' + (e.error||'błąd')); }
+    } catch(e) { fail++; errors.push(g.lokalizacja + ': ' + e.message); }
+    await new Promise(function(res){ setTimeout(res, 300); });
+  }
+
+  document.getElementById('sms-progress-bar').style.width = '100%';
+  document.getElementById('sms-progress-label').textContent = 'Gotowe';
+  document.getElementById('sms-progress-detail').textContent = '';
+  smsSending = false;
+
+  var sumDiv = document.getElementById('sms-summary');
+  var sumHtml = '<b>Wynik wysyłki:</b> wysłano <b style="color:green">' + ok + '</b>';
+  if (fail) sumHtml += ', błędy: <b style="color:'+kol('red')+'">' + fail + '</b><br><small style="color:var(--ink-soft)">' + errors.join('<br>') + '</small>';
+  sumHtml += '.<br><button class="btn btn-secondary" style="margin-top:8px;font-size:.82rem" onclick="smsLoadList()">Odśwież listę</button>';
+  sumDiv.innerHTML = sumHtml;
+  sumDiv.style.display = 'block';
+}
 
 function exportKartotekaPdf() {
   var list = gFiltered;
@@ -1112,17 +1510,17 @@ function exportKartotekaPdf() {
 
   var html = '<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>Kartoteka grobów</title>'
     + '<style>'
-    + 'body{font-family:Georgia,"Times New Roman",serif;color:#2b2520;margin:0;padding:28px 36px;font-size:12px}'
-    + '.head{text-align:center;border-bottom:3px solid #7a1f2b;padding-bottom:12px;margin-bottom:16px}'
+    + 'body{font-family:Georgia,"Times New Roman",serif;color:'+kol('ink')+';margin:0;padding:28px 36px;font-size:12px}'
+    + '.head{text-align:center;border-bottom:3px solid '+kol('burgundy')+';padding-bottom:12px;margin-bottom:16px}'
     + '.head img{height:56px;margin-bottom:5px}'
-    + '.head h1{font-size:20px;letter-spacing:2px;margin:4px 0 2px;color:#7a1f2b}'
-    + '.head .par{font-size:11px;color:#5a5048}'
+    + '.head h1{font-size:20px;letter-spacing:2px;margin:4px 0 2px;color:'+kol('burgundy')+'}'
+    + '.head .par{font-size:11px;color:'+kol('ink-soft')+'}'
     + '.head .rng{font-size:13px;font-weight:bold;margin-top:5px}'
     + 'table{width:100%;border-collapse:collapse;margin-top:8px}'
-    + 'th{background:#7a1f2b;color:#fff;padding:6px 8px;font-size:11px;text-align:left;font-weight:700}'
+    + 'th{background:'+kol('burgundy')+';color:#fff;padding:6px 8px;font-size:11px;text-align:left;font-weight:700}'
     + 'td{padding:5px 8px;border-bottom:1px solid #e8ddd0;vertical-align:top}'
     + 'tr:nth-child(even) td{background:#faf8f5}'
-    + '.foot{margin-top:16px;border-top:1px solid #d8cdb6;padding-top:8px;text-align:center;font-size:10px;color:#5a5048}'
+    + '.foot{margin-top:16px;border-top:1px solid '+kol('line')+';padding-top:8px;text-align:center;font-size:10px;color:'+kol('ink-soft')+'}'
     + '@media print{body{padding:0 10px}}'
     + '</style></head><body>'
     + '<div class="head">'

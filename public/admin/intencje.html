@@ -14,7 +14,7 @@
   .week-nav .nav-btn{width:34px;height:34px;border-radius:6px;border:1px solid var(--line);background:var(--white);display:grid;place-items:center;cursor:pointer;color:var(--ink-soft)}
   .week-nav .nav-btn:hover{background:var(--bg);color:var(--burgundy);border-color:var(--copper)}
 
-  .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+  .calendar{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
   .day-col{background:var(--white);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;min-height:480px}
   .day-col.today{border-color:var(--burgundy);box-shadow:0 0 0 1px var(--burgundy)}
   .day-head{padding:11px 14px;background:var(--bg);border-bottom:1px solid var(--line)}
@@ -23,7 +23,7 @@
   .day-check{width:14px;height:14px;accent-color:var(--burgundy);cursor:pointer;margin:0;flex-shrink:0}
   .day-col.today .day-check{accent-color:#fff}
   .day-head .dow{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--copper);font-weight:700}
-  .day-col.today .day-head .dow{color:var(--copper-light,#d6a572)}
+  .day-col.today .day-head .dow{color:var(--copper-light)}
   .day-head .num{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;line-height:1}
   .day-head .saint{font-size:.72rem;color:var(--ink-soft);margin-top:3px;line-height:1.3}
   .day-col.today .day-head .saint{color:rgba(255,255,255,.85)}
@@ -31,10 +31,10 @@
   .mass-time{font-weight:700;font-size:.82rem;color:var(--burgundy)}
   .mass-int{font-size:.78rem;color:var(--ink);line-height:1.35;margin-top:2px;padding-right:68px}
   .del-int-btn{position:absolute;top:6px;right:5px;background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:1rem;width:20px;height:20px;display:none;align-items:center;justify-content:center;border-radius:3px;padding:0;line-height:1}
-  .del-int-btn:hover{color:var(--burgundy);background:var(--beige,#f4ede0)}
+  .del-int-btn:hover{color:var(--burgundy);background:var(--beige)}
   .mass:hover .del-int-btn{display:flex}
   .edit-int-btn{position:absolute;top:6px;right:48px;background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:.78rem;width:20px;height:20px;display:none;align-items:center;justify-content:center;border-radius:3px;padding:0;line-height:1}
-  .edit-int-btn:hover{color:var(--burgundy);background:var(--beige,#f4ede0)}
+  .edit-int-btn:hover{color:var(--burgundy);background:var(--beige)}
   .mass:hover .edit-int-btn{display:flex}
   .add-int{
     margin:8px;padding:6px;background:var(--bg);border:1px dashed var(--line);border-radius:5px;
@@ -62,6 +62,10 @@
   .pay-badge.paid{background:rgba(46,122,58,.12);color:#2e7a3a;border-color:rgba(46,122,58,.3)}
   .pay-badge.unpaid{background:rgba(176,106,26,.12);color:#b06a1a;border-color:rgba(176,106,26,.3)}
   .pay-badge.free{background:rgba(100,100,100,.08);color:#666;border-color:rgba(100,100,100,.2)}
+  .mass.wolna{background:rgba(46,122,58,.06);border-left:3px solid rgba(46,122,58,.5)}
+  .mass.wolna .mass-int{color:#2e7a3a}
+  .li-row.wolna .li-int{color:#2e7a3a}
+  .li-row.wolna{background:rgba(46,122,58,.04)}
   .mass .pay-badge{display:block;margin-top:4px;width:fit-content}
   .li-row .pay-badge{flex-shrink:0}
 
@@ -90,7 +94,7 @@
   .int-modal-form{display:grid;gap:10px}
   .int-modal-form label{font-size:.78rem;font-weight:600;color:var(--ink-soft)}
   .int-modal-form input,.int-modal-form select{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;width:100%;background:var(--white);box-sizing:border-box}
-  .int-modal-form input:focus,.int-modal-form select:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .int-modal-form input:focus,.int-modal-form select:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.18)}
   .int-modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
 
   /* Toast */
@@ -102,7 +106,7 @@
 
   /* Zgłoszenia parafian */
   .pending-panel{background:var(--white);border:1px solid var(--copper);border-radius:8px;margin-bottom:18px;overflow:hidden}
-  .pending-ph{background:rgba(184,122,74,.09);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(184,122,74,.2)}
+  .pending-ph{background:rgba(var(--copper-rgb),.09);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(var(--copper-rgb),.2)}
   .pending-ph h4{margin:0;font-size:.88rem;color:var(--copper);font-weight:700;flex:1}
   .pend-badge{background:var(--copper);color:#fff;border-radius:10px;font-size:.72rem;font-weight:700;padding:1px 9px}
   .pend-row{display:flex;align-items:center;gap:10px;padding:8px 18px;border-bottom:1px solid var(--line);font-size:.83rem}
@@ -132,7 +136,7 @@
   .sms-rem-sub.visible{display:block}
   /* Bell per-intencja */
   .bell-btn{position:absolute;top:6px;right:26px;background:none;border:none;color:var(--ink-soft);cursor:pointer;width:20px;height:20px;display:none;align-items:center;justify-content:center;border-radius:3px;padding:0}
-  .bell-btn:hover{color:var(--burgundy);background:var(--beige,#f4ede0)}
+  .bell-btn:hover{color:var(--burgundy);background:var(--beige)}
   .bell-btn.active{display:flex;color:var(--burgundy)}
   .mass:hover .bell-btn{display:flex}
   .bell-btn-i{background:none;border:none;color:var(--ink-soft);cursor:pointer;padding:0 3px;flex-shrink:0;display:flex;align-items:center}
@@ -169,13 +173,13 @@
           <div class="lead" id="week-summary">Wczytywanie…</div>
         </div>
         <div class="right">
-          <button class="btn btn-secondary" onclick="exportIntencjeCSV()">
-            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2h5.5zM3 10h10v2H3zm0 3h10v1H3z"/></svg>
-            Eksport CSV
-          </button>
-          <button class="btn btn-primary" onclick="exportIntencjePdf()">
+          <button class="btn btn-secondary" onclick="exportIntencjePdf()" title="Otwiera gotowy dokument i od razu drukuje">
             <svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 0h6a2 2 0 0 1 2 2v4h1.5A1.5 1.5 0 0 1 16 7.5v4a1.5 1.5 0 0 1-1.5 1.5H13v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H1.5A1.5 1.5 0 0 1 0 11.5v-4A1.5 1.5 0 0 1 1.5 6H3V2a2 2 0 0 1 2-2"/></svg>
-            Generuj PDF do druku
+            Generuj PDF
+          </button>
+          <button class="btn btn-primary" onclick="exportIntencjeEditable()" title="Podgląd z możliwością edycji tytułu, stopki i regulacji czcionki">
+            <svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 0h6a2 2 0 0 1 2 2v4h1.5A1.5 1.5 0 0 1 16 7.5v4a1.5 1.5 0 0 1-1.5 1.5H13v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H1.5A1.5 1.5 0 0 1 0 11.5v-4A1.5 1.5 0 0 1 1.5 6H3V2a2 2 0 0 1 2-2"/></svg>
+            Edytowalny PDF
           </button>
           <div class="pub-toggle-wrap" title="Włącz lub wyłącz formularz zgłoszeń dla parafian na stronie WWW">
             <label class="pub-toggle">
@@ -194,7 +198,7 @@
         <div class="sms-rem-row">
           <span style="font-size:.85rem;color:var(--ink-soft)">Ustawienie per-intencja — kliknij 🔔 przy każdej mszy</span>
         </div>
-        <div id="sms-limit-banner" style="display:none;margin-top:8px;padding:8px 14px;background:#fdecea;border:1px solid #e74c3c;border-radius:6px;color:#c0392b;font-size:.85rem;font-weight:600">
+        <div id="sms-limit-banner" style="display:none;margin-top:8px;padding:8px 14px;background:#fdecea;border:1px solid #e74c3c;border-radius:6px;color:var(--red);font-size:.85rem;font-weight:600">
           ⛔ Miesięczny limit 300 SMS został wyczerpany. Kolejne SMS-y będą dostępne od 1. dnia następnego miesiąca. Aby zwiększyć limit — skontaktuj się z administratorem.
         </div>
       </div>
@@ -372,13 +376,12 @@ async function apiFetch(url, opts) {
 }
 
 const MONTHS_PL = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
-const DOW_NAMES = ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela'];
+const DOW_NAMES = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
 
 // ─── Helpers ───────────────────────────────────────────────
 function getMonday(d) {
-  var dt = new Date(d); var day = dt.getDay();
-  var diff = day === 0 ? -6 : 1 - day;
-  dt.setDate(dt.getDate() + diff); dt.setHours(0,0,0,0); return dt;
+  var dt = new Date(d);
+  dt.setDate(dt.getDate() - dt.getDay()); dt.setHours(0,0,0,0); return dt;
 }
 function addDays(d, n) { var dt = new Date(d); dt.setDate(dt.getDate() + n); return dt; }
 function isoDate(d) {
@@ -390,14 +393,14 @@ function isoDate(d) {
 function timeToNum(t) { var p = t.split(':').map(Number); return p[0]*60+(p[1]||0); }
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function formatWeekRange(monday) {
-  var sun = addDays(monday, 6);
-  var mD = monday.getDate(), sD = sun.getDate();
-  var mM = MONTHS_PL[monday.getMonth()], sM = MONTHS_PL[sun.getMonth()];
-  var yr = sun.getFullYear();
-  return monday.getMonth() === sun.getMonth()
-    ? mD + '-' + sD + ' ' + mM + ' ' + yr
-    : mD + ' ' + mM + ' - ' + sD + ' ' + sM + ' ' + yr;
+function formatWeekRange(sunday) {
+  var sun2 = addDays(sunday, 7);
+  var d1 = sunday.getDate(), d2 = sun2.getDate();
+  var m1 = MONTHS_PL[sunday.getMonth()], m2 = MONTHS_PL[sun2.getMonth()];
+  var yr = sun2.getFullYear();
+  return sunday.getMonth() === sun2.getMonth()
+    ? d1 + '-' + d2 + ' ' + m1 + ' ' + yr
+    : d1 + ' ' + m1 + ' - ' + d2 + ' ' + m2 + ' ' + yr;
 }
 
 
@@ -412,7 +415,7 @@ function showToast(msg) {
 // ─── Wybór intencji do druku + tryb widoku ─────────────────
 var viewMode = 'week';
 var selectedInts = {};
-function setView(mode){ viewMode = mode; renderCalendar(); }
+function setView(mode){ viewMode = mode; document.getElementById('btn-today').textContent = mode === 'month' ? 'Bieżący miesiąc' : 'Dziś'; renderCalendar(); }
 function updateSelHint(){
   var n = Object.keys(selectedInts).filter(function(k){ return selectedInts[k]; }).length;
   var el = document.getElementById('sel-hint');
@@ -464,9 +467,10 @@ function renderGroupedList(list, emptyMsg){
   return '<div class="int-list">' + dates.map(function(ds){
     var arr = byDate[ds].sort(function(a,b){ return timeToNum(a.time) - timeToNum(b.time); });
     var d = new Date(ds + 'T12:00:00');
-    var head = DOW_NAMES[(d.getDay()+6)%7] + ', ' + d.getDate() + ' ' + MONTHS_PL[d.getMonth()] + ' ' + d.getFullYear();
+    var head = DOW_NAMES[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS_PL[d.getMonth()] + ' ' + d.getFullYear();
     var items = arr.map(function(m){
-      return '<div class="li-row">' + massCheck(m)
+      var isWolna = /wolna/i.test(m.intention);
+      return '<div class="li-row' + (isWolna ? ' wolna' : '') + '">' + massCheck(m)
         + '<span class="li-time">' + esc(m.time) + '</span>'
         + '<span class="li-int">' + esc(m.intention) + (m.zamawiajacy ? ' <span style="font-size:.78rem;color:var(--ink-soft)">(zam. ' + esc(m.zamawiajacy) + ')</span>' : '') + '</span>'
         + payBadge(m)
@@ -504,7 +508,7 @@ function renderCalendar() {
 
   grid.style.display = '';
   var days = [];
-  for (var i = 0; i < 7; i++) days.push(addDays(currentMonday, i));
+  for (var i = 0; i < 8; i++) days.push(addDays(currentMonday, i));
   var weekDates = days.map(isoDate);
 
   var byDate = {};
@@ -522,7 +526,8 @@ function renderCalendar() {
     var isToday = dateStr === todayStr;
     var dayInts = byDate[dateStr] || [];
     var massHtml = dayInts.map(function(m){
-      return '<div class="mass">' + massCheck(m)
+      var isWolna = /wolna/i.test(m.intention);
+      return '<div class="mass' + (isWolna ? ' wolna' : '') + '">' + massCheck(m)
         + '<div class="mass-time">' + esc(m.time) + '</div>'
         + '<div class="mass-int">' + esc(m.intention) + (m.zamawiajacy ? '<div style="font-size:.75rem;color:var(--ink-soft);margin-top:2px">zam. ' + esc(m.zamawiajacy) + '</div>' : '') + '</div>'
         + payBadge(m)
@@ -967,6 +972,7 @@ async function saveFromQuickAdd() {
 
 // ─── Eksport intencji (Word + PDF, 1 strona w stylu strony) ──
 var logoDataUrl = '';
+var _intSettings = {};
 (function(){
   try {
     fetch(new URL('../public/img/logo1.png', location.href))
@@ -983,7 +989,7 @@ function currentViewInts(){
     var mo=currentMonday.getMonth(), yr=currentMonday.getFullYear();
     return allIntencje.filter(function(it){ var d=new Date(it.date+'T12:00:00'); return d.getMonth()===mo && d.getFullYear()===yr; });
   }
-  var wd=[]; for(var i=0;i<7;i++) wd.push(isoDate(addDays(currentMonday,i)));
+  var wd=[]; for(var i=0;i<8;i++) wd.push(isoDate(addDays(currentMonday,i)));
   return allIntencje.filter(function(it){ return wd.indexOf(it.date)>=0; });
 }
 function selectedIntList(){ return allIntencje.filter(function(it){ return selectedInts[it.id]; }); }
@@ -994,8 +1000,17 @@ function exportRangeLabel(usedSelection){
   return formatWeekRange(currentMonday);
 }
 
-// Buduje samodzielny dokument HTML w stylu parafii (1 strona) z podanej listy intencji
-function buildIntencjeDocHtml(list, rangeLabel, autoPrint){
+// Buduje samodzielny dokument HTML w stylu parafii z podanej listy intencji
+// editable=true → tryb edytowalny z kontrolką czcionki i polami contenteditable
+function buildIntencjeDocHtml(list, rangeLabel, autoPrint, editable){
+  var s = _intSettings || {};
+  var nazwaPelna = s.nazwa_pelna || 'Parafia pw. Najświętszego Serca Pana Jezusa';
+  var ulica      = s.ulica       || 'ul. 3-go Maja 36';
+  var kodMiasto  = s.kod_miasto  || '44-230 Czerwionka-Leszczyny';
+  var telefon    = s.telefon     || '32 43 12 992';
+  var parLine    = nazwaPelna;
+  var footLine   = ulica + ', ' + kodMiasto + ' · tel. ' + telefon;
+
   var byDate={};
   list.forEach(function(it){ (byDate[it.date]=byDate[it.date]||[]).push(it); });
   var dates=Object.keys(byDate).sort();
@@ -1004,7 +1019,7 @@ function buildIntencjeDocHtml(list, rangeLabel, autoPrint){
   var body='';
   dates.forEach(function(ds){
     var d=new Date(ds+'T12:00:00');
-    var head=DOW_NAMES[(d.getDay()+6)%7]+', '+d.getDate()+' '+MONTHS_PL[d.getMonth()]+' '+d.getFullYear();
+    var head=DOW_NAMES[d.getDay()]+', '+d.getDate()+' '+MONTHS_PL[d.getMonth()]+' '+d.getFullYear();
     body += '<div class="day"><div class="day-h">'+esc(head)+'</div>';
     byDate[ds].forEach(function(m){
       body += '<div class="row"><span class="t">'+esc(m.time)+'</span><span class="i">'+esc(m.intention)+'</span></div>';
@@ -1013,29 +1028,53 @@ function buildIntencjeDocHtml(list, rangeLabel, autoPrint){
   });
   if(!body) body='<p style="text-align:center;color:#777">Brak intencji do wydruku.</p>';
 
+  var editAttr = editable ? ' contenteditable="true" spellcheck="false"' : '';
+  var printBtn = editable
+    ? '<div class="no-print" style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px;flex-wrap:wrap">'
+    + '<button onclick="window.print()" style="padding:9px 28px;background:'+kol('burgundy')+';color:#fff;border:none;border-radius:5px;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.04em">&#128438; Drukuj / Zapisz PDF</button>'
+    + '<span style="display:flex;align-items:center;gap:6px;font-size:.82rem;color:'+kol('ink-soft')+'">'
+    + 'Czcionka treści:'
+    + '<button onclick="intFs(-0.5)" style="width:26px;height:26px;border:1px solid #ccc;background:#f5f0e8;border-radius:4px;cursor:pointer;font-size:1rem;line-height:1">-</button>'
+    + '<span id="int-fsize" style="min-width:30px;text-align:center;font-weight:700">14px</span>'
+    + '<button onclick="intFs(0.5)" style="width:26px;height:26px;border:1px solid #ccc;background:#f5f0e8;border-radius:4px;cursor:pointer;font-size:1rem;line-height:1">+</button>'
+    + '</span></div>'
+    : '';
+  var editStyle = editable
+    ? '[contenteditable]{outline:none;border-bottom:1px dashed #b0a090}'
+    + '[contenteditable]:focus{border-bottom-color:'+kol('burgundy')+'}'
+    : '';
+
+  var addrLine = ulica + ', ' + kodMiasto;
+
   return '<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>'+esc(rangeLabel)+'</title>'
     + '<style>'
-    + 'body{font-family:Georgia,\'Times New Roman\',serif;color:#2b2520;margin:0;padding:30px 38px}'
-    + '.head{text-align:center;border-bottom:3px solid #7a1f2b;padding-bottom:14px;margin-bottom:18px}'
-    + '.head img{height:62px;margin-bottom:6px}'
-    + '.head h1{font-size:23px;letter-spacing:2px;margin:6px 0 2px;color:#7a1f2b}'
-    + '.head .par{font-size:12.5px;color:#5a5048}'
-    + '.head .rng{font-size:15px;font-weight:bold;margin-top:6px}'
-    + '.day{margin-bottom:13px;page-break-inside:avoid}'
-    + '.day-h{font-size:14.5px;font-weight:bold;color:#7a1f2b;border-bottom:1px solid #d8cdb6;padding-bottom:3px;margin-bottom:5px}'
-    + '.row{display:flex;gap:12px;padding:3px 0;font-size:13px;line-height:1.4}'
-    + '.row .t{flex:0 0 54px;font-weight:bold;color:#b87a4a}'
-    + '.row .i{flex:1}'
-    + '.foot{margin-top:22px;border-top:1px solid #d8cdb6;padding-top:9px;text-align:center;font-size:11px;color:#5a5048}'
-    + '@media print{body{padding:0 6px}}'
-    + '</style></head><body>'
-    + '<div class="head"><img src="'+logo+'" alt=""><h1>INTENCJE MSZALNE</h1>'
-    + '<div class="par">Parafia Najświętszego Serca Pana Jezusa &middot; Czerwionka-Leszczyny</div>'
-    + '<div class="rng">'+esc(rangeLabel)+'</div></div>'
-    + body
-    + '<div class="foot">ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny &middot; tel. 32 43 12 992</div>'
+    + '@page{margin:0;size:A4 portrait}'
+    + 'body{font-family:Georgia,\'Times New Roman\',serif;color:'+kol('ink')+';margin:0;padding:22px 36px}'
+    + '.head{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:3px solid '+kol('burgundy')+';padding-bottom:13px;margin-bottom:18px}'
+    + '.head-left{display:flex;align-items:center;gap:13px}'
+    + '.head img{height:52px;flex-shrink:0}'
+    + '.head h1{font-size:17px;letter-spacing:2px;color:'+kol('burgundy')+';font-weight:700;margin:0 0 4px}'
+    + '.head .rng{font-size:15px;font-weight:bold;margin:0;color:'+kol('ink')+'}'
+    + '.head-right{text-align:right;font-size:9.5px;color:'+kol('ink-soft')+';line-height:1.6;flex-shrink:0;min-width:220px}'
+    + '.head-right .par-name{font-weight:600}'
+    + '.day{margin-bottom:11px;page-break-inside:avoid}'
+    + '.day-h{font-size:13.5px;font-weight:bold;color:'+kol('burgundy')+';border-bottom:1px solid '+kol('line')+';padding-bottom:3px;margin-bottom:4px}'
+    + '.row{display:flex;gap:8px;padding:2px 0}'
+    + '.t{min-width:36px;font-weight:700;flex-shrink:0}'
+    + '@media print{.no-print{display:none!important}body{padding:8mm 14mm 6mm}}'
+    + editStyle
+    + '</style>'
+    + '<style id="int-fstyle">#int-body,#int-body *{font-size:14px}</style>'
+    + '</head><body>'
+    + printBtn
+    + '<div class="head">'
+    + '<div class="head-left"><img src="'+logo+'" alt=""><div><h1'+editAttr+'>INTENCJE MSZALNE</h1><div class="rng"'+editAttr+'>'+esc(rangeLabel)+'</div></div></div>'
+    + '<div class="head-right"><div class="par-name"'+editAttr+'>'+parLine+'</div><div style="font-weight:600"'+editAttr+'>'+addrLine+'</div><div'+editAttr+'>tel. '+telefon+'</div></div>'
+    + '</div>'
+    + '<div id="int-body"'+editAttr+'>'+body+'</div>'
+    + (editable ? '<scr'+'ipt>var _intFs=14;function intFs(d){_intFs=Math.min(20,Math.max(7,_intFs+d));document.getElementById("int-fstyle").innerHTML="#int-body,#int-body *{font-size:"+_intFs+"px!important}";document.getElementById("int-fsize").textContent=_intFs+"px";}</scr'+'ipt>' : '')
     + (autoPrint ? '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},250);};</scr'+'ipt>' : '')
-    + '<scr'+'ipt src="assets/auth-guard.js"></scr'+'ipt>\n</body></html>';
+    + '</body></html>';
 }
 
 function exportIntencjePdf(){
@@ -1044,7 +1083,17 @@ function exportIntencjePdf(){
   if(!list.length){ showToast('Brak intencji do wydruku'); return; }
   var w=window.open('', '_blank');
   if(!w){ showToast('Zezwól na otwieranie okien, aby wygenerować PDF'); return; }
-  w.document.write(buildIntencjeDocHtml(list, exportRangeLabel(sel.length>0), true));
+  w.document.write(buildIntencjeDocHtml(list, exportRangeLabel(sel.length>0), true, false));
+  w.document.close();
+}
+
+function exportIntencjeEditable(){
+  var sel=selectedIntList();
+  var list=sel.length?sel:currentViewInts();
+  if(!list.length){ showToast('Brak intencji do eksportu'); return; }
+  var w=window.open('', '_blank');
+  if(!w){ showToast('Zezwól na otwieranie okien, aby wygenerować PDF'); return; }
+  w.document.write(buildIntencjeDocHtml(list, exportRangeLabel(sel.length>0), false, true));
   w.document.close();
 }
 
@@ -1106,6 +1155,7 @@ renderCalendar();
   try { allIntencje = await apiFetch('/api/intencje'); renderCalendar(); } catch(e) {}
   try {
     var s = await apiFetch('/api/settings');
+    _intSettings = s;
     var tog = document.getElementById('pub-form-toggle');
     if (tog) tog.checked = !!s.publicIntForm;
     var remEn = document.getElementById('sms-rem-enabled');
@@ -1118,7 +1168,7 @@ renderCalendar();
     var el = document.getElementById('sms-counter');
     if (el) {
       var pct = Math.round((stats.thisMonth / stats.limit) * 100);
-      var color = pct >= 100 ? '#c0392b' : pct >= 90 ? '#c0392b' : pct >= 70 ? '#e67e22' : 'var(--ink-soft)';
+      var color = pct >= 100 ? kol('red') : pct >= 90 ? kol('red') : pct >= 70 ? '#e67e22' : 'var(--ink-soft)';
       el.textContent = '[' + stats.thisMonth + '/' + stats.limit + ' SMS w tym miesiącu]';
       el.style.color = color;
       var banner = document.getElementById('sms-limit-banner');
@@ -1140,15 +1190,24 @@ async function saveSmsSettings() {
   } catch(e) { showToast('Błąd zapisu ustawień'); }
 }
 
-// Nawigacja tygodniami
+// Nawigacja (tydzień / miesiąc)
 document.getElementById('btn-prev').addEventListener('click', function() {
-  currentMonday = addDays(currentMonday, -7); renderCalendar();
+  if (viewMode === 'month') {
+    var d = new Date(currentMonday); d.setDate(1); d.setMonth(d.getMonth() - 1); d.setHours(0,0,0,0); currentMonday = d;
+  } else { currentMonday = addDays(currentMonday, -7); }
+  renderCalendar();
 });
 document.getElementById('btn-today').addEventListener('click', function() {
-  currentMonday = getMonday(new Date()); renderCalendar();
+  if (viewMode === 'month') {
+    var d = new Date(); d.setDate(1); d.setHours(0,0,0,0); currentMonday = d;
+  } else { currentMonday = getMonday(new Date()); }
+  renderCalendar();
 });
 document.getElementById('btn-next').addEventListener('click', function() {
-  currentMonday = addDays(currentMonday, 7); renderCalendar();
+  if (viewMode === 'month') {
+    var d = new Date(currentMonday); d.setDate(1); d.setMonth(d.getMonth() + 1); d.setHours(0,0,0,0); currentMonday = d;
+  } else { currentMonday = addDays(currentMonday, 7); }
+  renderCalendar();
 });
 
 // Modal

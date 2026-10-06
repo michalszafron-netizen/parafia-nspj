@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Polityka prywatności | Parafia NSPJ Czerwionka-Leszczyny</title>
@@ -8,10 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --burgundy:#6b2737;--burgundy-dark:#4a1a25;--copper:#b87333;--copper-light:#d4956a;
-    --cream:#faf7f2;--beige:#f0e8da;--ink:#2b2520;--ink-soft:#6b5c4e;--line:#e2d5c4;
-  }
+  
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Lato',sans-serif;color:var(--ink);background:var(--beige);line-height:1.65}
   h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:var(--ink)}
@@ -22,9 +20,9 @@
 
   /* HEADER */
   .sticky-header{position:sticky;top:0;z-index:50}
-  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
+  .topbar{background:var(--burgundy-dark);color:var(--beige);font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
   .topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 24px;gap:12px}
-  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center}
+  .topbar a{color:var(--beige);text-decoration:none;display:inline-flex;align-items:center}
   .topbar a:hover{color:#fff}
   .topbar .left,.topbar .right{display:flex;gap:18px;align-items:center}
   .topbar svg{flex-shrink:0;margin-right:6px}
@@ -45,10 +43,10 @@
   nav.main a{padding:10px 12px;font-weight:400;font-size:.9rem;color:var(--ink);border-radius:6px;transition:background .15s;position:relative;white-space:nowrap;text-decoration:none}
   nav.main a:hover{background:var(--beige);text-decoration:none}
   nav.main a.has-sub::after{content:"▾";font-size:.7rem;margin-left:6px;color:var(--copper)}
-  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,217,184,.35);color:#e8d9b8;transition:all .15s;margin-left:4px;text-decoration:none}
-  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
+  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--beige-rgb),.35);color:var(--beige);transition:all .15s;margin-left:4px;text-decoration:none}
+  .topbar-admin:hover{background:rgba(var(--beige-rgb),.15);border-color:rgba(var(--beige-rgb),.7);color:#fff}
   .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:8px}
-  .topbar-btn-wsparcie{background:#e8d9b8;color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;transition:all .15s;white-space:nowrap}
+  .topbar-btn-wsparcie{background:var(--beige);color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;transition:all .15s;white-space:nowrap}
   .topbar-btn-wsparcie:hover{background:#fff;text-decoration:none!important}
   .dropdown{position:relative}
   .dropdown-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--cream);border:1px solid var(--line);border-radius:8px;min-width:230px;z-index:200;box-shadow:0 8px 32px rgba(43,37,32,.14);padding:6px 0}
@@ -81,29 +79,32 @@
   .info-note svg{flex-shrink:0;color:var(--copper);margin-top:2px}
   .info-note p{margin:0;font-size:.9rem;color:var(--ink-soft)}
   .policy-content{padding:48px 0 60px}
+  .policy-section{scroll-margin-top:150px}
+  .policy-section code{font-size:.88em;background:var(--beige);padding:1px 6px;border-radius:4px}
+  .policy-updated{font-size:.85rem;color:var(--ink-soft);margin:0 0 18px;text-align:right}
 
   /* FOOTER */
   .footer-social{display:flex;gap:10px;margin-top:18px}
-  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
-  .footer-social a:hover{background:rgba(246,233,211,.14);border-color:rgba(246,233,211,.4);color:#f6e9d3;text-decoration:none}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(var(--cream-rgb),.06);border:1px solid rgba(var(--cream-rgb),.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
+  .footer-social a:hover{background:rgba(var(--cream-rgb),.14);border-color:rgba(var(--cream-rgb),.4);color:var(--cream);text-decoration:none}
   .footer-social .social-badge{position:absolute;bottom:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--burgundy);border:1.5px solid var(--ink);display:grid;place-items:center}
-  .footer-social .social-badge svg{width:8px;height:8px;color:#e8d9b8}
+  .footer-social .social-badge svg{width:8px;height:8px;color:var(--beige)}
   .footer-social svg{width:16px;height:16px}
-  footer.site{background:var(--ink);color:#d8cdb6;padding:60px 0 30px;margin-top:40px}
+  footer.site{background:var(--ink);color:var(--line);padding:60px 0 30px;margin-top:40px}
   footer.site a{color:var(--copper-light);text-decoration:none}
   .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
   .footer-brand{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
-  .footer-brand .brand-name{color:#f6e9d3;font-size:1.15rem}
+  .footer-brand .brand-name{color:var(--cream);font-size:1.15rem}
   .footer-brand .brand-name small{color:var(--copper-light)}
   footer.site p{color:rgba(216,205,182,.78);font-size:.92rem}
-  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:#f6e9d3;margin-bottom:1rem}
+  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:var(--cream);margin-bottom:1rem}
   footer.site ul{list-style:none;padding:0;margin:0}
   footer.site ul li{margin-bottom:.6rem;font-size:.92rem}
   footer.site ul a{color:rgba(216,205,182,.78)}
-  footer.site ul a:hover{color:#f6e9d3;text-decoration:none}
-  footer.site ul a.active{color:#f6e9d3;font-weight:700}
-  .footer-bank{font-size:.83rem;background:rgba(246,233,211,.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(246,233,211,.1)}
-  .footer-bank b{color:#f6e9d3;display:block;font-weight:700;margin-bottom:4px}
+  footer.site ul a:hover{color:var(--cream);text-decoration:none}
+  footer.site ul a.active{color:var(--cream);font-weight:700}
+  .footer-bank{font-size:.83rem;background:rgba(var(--cream-rgb),.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(var(--cream-rgb),.1)}
+  .footer-bank b{color:var(--cream);display:block;font-weight:700;margin-bottom:4px}
   .footer-bank code{font-family:'Lato',monospace;color:var(--copper-light);font-weight:700;letter-spacing:.5px}
   .footer-bottom{border-top:1px solid rgba(216,205,182,.14);margin-top:40px;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:.85rem;color:rgba(216,205,182,.55)}
   @media(max-width:980px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}}
@@ -120,7 +121,7 @@
       <span><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.61 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"/></svg><a href="tel:+48324312992" id="topbar-tel">32 43 12 992</a></span>
     </div>
     <div class="right">
-      <a href="../index.html#budowa" class="topbar-btn-wsparcie">Wsparcie budowy</a>
+      <a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener" class="topbar-btn-wsparcie">Wsparcie budowy</a>
     </div>
   </div>
 </div>
@@ -175,74 +176,84 @@
   <div class="container">
     <span class="eyebrow">Informacje prawne</span>
     <h1>Polityka prywatności</h1>
-    <p class="lead">Zasady korzystania z plików cookies oraz ochrony Twoich danych osobowych na stronie naszej parafii</p>
+    <p class="lead">Jak parafia chroni Twoje dane osobowe na stronie internetowej i w formularzu zgłoszenia intencji</p>
   </div>
 </div>
 
 <div class="policy-content">
 <div class="container-content">
 
-  <div class="policy-section">
-    <h2>
-      <svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
-      Czym są pliki cookies?
-    </h2>
-    <p>Używamy plików cookies, aby ułatwić Ci korzystanie z naszego serwisu oraz do celów statystycznych. Jeśli nie blokujesz tych plików, to zgadzasz się na ich użycie oraz zapisanie w pamięci urządzenia. Pamiętaj, że możesz samodzielnie zarządzać cookies, zmieniając ustawienia przeglądarki.</p>
-    <p>Pliki cookies (tzw. „ciasteczka") to małe pliki tekstowe wysyłane przez odwiedzany serwis internetowy do urządzenia internauty. Domyślnie oprogramowanie służące do przeglądania stron internetowych (przeglądarka internetowa) dopuszcza umieszczanie plików cookies w urządzeniu końcowym. Możesz zmienić te ustawienia tak, aby blokować automatyczną obsługę plików cookies lub informować o każdorazowym zamieszczeniu cookies w urządzeniu.</p>
+  <p class="policy-updated">Ostatnia aktualizacja: 4 października 2026 r.</p>
+
+  <div class="policy-section" id="administrator">
+    <h2>Kto jest administratorem danych</h2>
+    <p>Administratorem danych osobowych jest <strong>Parafia Rzymskokatolicka pw. Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach</strong>, ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny, reprezentowana przez Proboszcza.</p>
+    <p>Parafia przetwarza dane osobowe zgodnie z <strong>Dekretem ogólnym Konferencji Episkopatu Polski w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych w Kościele katolickim</strong> z dnia 13 marca 2018 r. Nadzór nad przestrzeganiem tych przepisów sprawuje Kościelny Inspektor Ochrony Danych. Kontakt z inspektorem ochrony danych Archidiecezji Katowickiej jest możliwy za pośrednictwem kancelarii parafialnej lub Kurii Metropolitalnej w Katowicach.</p>
+  </div>
+
+  <div class="policy-section" id="intencje">
+    <h2>Formularz zgłoszenia intencji mszalnej</h2>
+    <p>Za pomocą formularza na stronie <a href="msze.html">Msze i intencje</a> możesz zgłosić intencję mszalną. Zbieramy w nim:</p>
+    <ul>
+      <li>imię i nazwisko osoby zgłaszającej,</li>
+      <li>numer telefonu komórkowego,</li>
+      <li>preferowaną datę i godzinę mszy, rodzaj i treść intencji.</li>
+    </ul>
+    <p><strong>Cel:</strong> przyjęcie intencji i wpisanie jej do kalendarza mszy, kontakt w sprawie potwierdzenia terminu oraz wysłanie przypomnienia SMS o mszy. Danych nie wykorzystujemy w innych celach, w szczególności do wysyłania informacji reklamowych.</p>
+    <p><strong>Podstawa:</strong> przetwarzanie w ramach działalności Kościoła, na podstawie przepisów Dekretu, w celu realizacji Twojej prośby o odprawienie mszy w podanej intencji. Podanie danych jest dobrowolne, ale bez nich nie możemy przyjąć zgłoszenia przez formularz. Intencję zawsze możesz zamówić osobiście w kancelarii parafialnej.</p>
+    <p><strong>Co jest publikowane:</strong> po przyjęciu intencji jej treść wraz z datą i godziną mszy pojawia się w kalendarzu na stronie internetowej i jest odczytywana w kościele. Imienia, nazwiska i numeru telefonu osoby zamawiającej nie publikujemy.</p>
+    <p>Jeżeli w treści intencji wpisujesz imię i nazwisko innej żyjącej osoby (np. jubilatów), upewnij się, że zgadza się ona na odczytanie i opublikowanie intencji.</p>
+  </div>
+
+  <div class="policy-section" id="sms">
+    <h2>Przypomnienia SMS</h2>
+    <p>Na podany numer telefonu możemy wysłać wiadomość SMS z potwierdzeniem lub przypomnieniem o terminie mszy w zamówionej intencji. Numer telefonu nie jest wykorzystywany do innych wiadomości. Jeżeli nie chcesz otrzymywać przypomnień, poinformuj o tym kancelarię parafialną.</p>
+  </div>
+
+  <div class="policy-section" id="odbiorcy">
+    <h2>Komu przekazujemy dane</h2>
+    <p>Dane nie są sprzedawane ani udostępniane innym podmiotom w celach marketingowych. Mają do nich dostęp wyłącznie:</p>
+    <ul>
+      <li>duchowni i osoby upoważnione przez Proboszcza, zobowiązane do zachowania tajemnicy;</li>
+      <li>firma utrzymująca stronę i system parafialny na zlecenie Parafii – na podstawie umowy powierzenia przetwarzania danych;</li>
+      <li>dostawca serwera, na którym działa strona (serwer na terenie Europejskiego Obszaru Gospodarczego);</li>
+      <li>operator bramki SMS (SMSPlanet) – wyłącznie numer telefonu i treść wiadomości, w celu jej doręczenia.</li>
+    </ul>
+    <p>Dane mogą zostać udostępnione organom uprawnionym na podstawie przepisów prawa.</p>
+  </div>
+
+  <div class="policy-section" id="okres">
+    <h2>Jak długo przechowujemy dane</h2>
+    <ul>
+      <li>Zgłoszenia, które nie zostały przyjęte, usuwamy z systemu.</li>
+      <li>Przyjęte intencje przechowujemy jako część ewidencji intencji mszalnych, którą Parafia prowadzi zgodnie z przepisami prawa kanonicznego.</li>
+      <li>W każdej chwili możesz poprosić o usunięcie swojego numeru telefonu – nie wpływa to na odprawienie zamówionej mszy.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section" id="prawa">
+    <h2>Twoje prawa</h2>
+    <p>Na zasadach określonych w Dekrecie masz prawo do:</p>
+    <ul>
+      <li>dostępu do swoich danych i otrzymania informacji o ich przetwarzaniu,</li>
+      <li>sprostowania danych nieprawidłowych lub niekompletnych,</li>
+      <li>usunięcia danych lub ograniczenia ich przetwarzania,</li>
+      <li>wniesienia sprzeciwu wobec przetwarzania,</li>
+      <li>wniesienia skargi do <strong>Kościelnego Inspektora Ochrony Danych</strong>.</li>
+    </ul>
+    <p>Dekret przewiduje ograniczenia tych praw, w szczególności w odniesieniu do wpisów w księgach parafialnych (np. księgach sakramentów). Aby skorzystać ze swoich praw, skontaktuj się z kancelarią parafialną – dane kontaktowe znajdziesz poniżej.</p>
+  </div>
+
+  <div class="policy-section" id="cookies">
+    <h2>Pliki cookies i statystyki</h2>
+    <p>Strona dla odwiedzających <strong>nie zapisuje plików cookies</strong> i nie korzysta z narzędzi śledzących ani reklamowych. Liczbę odwiedzin liczymy po stronie serwera, bez cookies i bez zapisywania danych odwiedzających.</p>
+    <p>Jedyny plik cookie (<code>_psession</code>) służy do logowania w panelu administracyjnym i dotyczy wyłącznie osób upoważnionych przez Parafię. Jest usuwany po wylogowaniu, a najpóźniej po 30 dniach.</p>
+    <p>Serwer, jak każdy serwer internetowy, zapisuje techniczne dzienniki połączeń (m.in. adres IP, czas i adres odwiedzanej podstrony). Służą one wyłącznie zapewnieniu bezpieczeństwa strony i są przechowywane przez krótki okres, a następnie automatycznie usuwane.</p>
+    <p>Do wyświetlania czcionek strona korzysta z usługi Google Fonts. Przy ładowaniu strony przeglądarka łączy się z serwerami Google, które otrzymują w ten sposób adres IP urządzenia.</p>
     <div class="info-note">
       <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
-      <p>Ograniczenia stosowania plików cookies mogą wpłynąć na niektóre funkcjonalności dostępne na stronie internetowej. Większość przeglądarek domyślnie akceptuje pliki cookies.</p>
+      <p>Ustawienia plików cookies możesz w każdej chwili zmienić w swojej przeglądarce – instrukcję znajdziesz w jej pomocy (zwykle w sekcji „Prywatność i bezpieczeństwo”).</p>
     </div>
-  </div>
-
-  <div class="policy-section">
-    <h2>
-      <svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>
-      Jak wyłączyć pliki cookies?
-    </h2>
-    <p>Każda przeglądarka internetowa posiada własne ustawienia dotyczące plików cookies. Aby dowiedzieć się, jak nimi zarządzać, skorzystaj z funkcji Pomocy w Twojej przeglądarce. Poniżej znajdziesz instrukcje dla najpopularniejszych przeglądarek:</p>
-
-    <div class="browser-grid">
-      <div class="browser-card">
-        <h3>Mozilla Firefox</h3>
-        <p>Menu → Opcje → Prywatność → Historia. Wybierz „Program Firefox będzie używał ustawień użytkownika", a następnie odznacz opcję „Akceptuj ciasteczka z witryn".</p>
-      </div>
-      <div class="browser-card">
-        <h3>Internet Explorer</h3>
-        <p>Menu Narzędzia → Opcje internetowe → Prywatność → Ustawienia. Przesuń suwak aż do blokowania wszystkich plików cookie, a następnie kliknij OK.</p>
-      </div>
-      <div class="browser-card">
-        <h3>Google Chrome</h3>
-        <p>Menu Google Chrome → Ustawienia → Pokaż ustawienia zaawansowane → Prywatność → Ustawienia treści → Pliki cookie. Zaznacz opcję blokowania plików cookies.</p>
-      </div>
-      <div class="browser-card">
-        <h3>Opera</h3>
-        <p>Menu → Ustawienia → Zaawansowane → Cookies → Nigdy nie akceptuj ciasteczek lub Zaakceptuj cookies tylko z odwiedzanej witryny.</p>
-      </div>
-      <div class="browser-card">
-        <h3>Safari</h3>
-        <p>Menu Safari → Preferencje → Prywatność. Wybierz opcję dotyczącą blokowania plików cookie: zawsze, ze stron trzecich i reklamodawców lub nigdy.</p>
-      </div>
-      <div class="browser-card">
-        <h3>Urządzenia mobilne</h3>
-        <p>Aby uzyskać informacje o zarządzaniu plikami cookies na urządzeniu mobilnym (Android, iPhone, WindowsPhone), zapoznaj się z dokumentacją producenta lub instrukcją obsługi swojego urządzenia.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="policy-section">
-    <h2>
-      <svg width="22" height="22" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/></svg>
-      Dane osobowe i RODO
-    </h2>
-    <p>Administratorem danych osobowych jest Parafia Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach, ul. 3-go Maja 36, 44-230 Czerwionka-Leszczyny.</p>
-    <p>Dane osobowe, które przekazujesz nam za pośrednictwem formularzy kontaktowych lub w związku z sakramentami i czynnościami duszpasterskimi, przetwarzamy wyłącznie w celach, dla których zostały przekazane, na podstawie przepisów prawa kanonicznego oraz prawa cywilnego (m.in. RODO).</p>
-    <ul>
-      <li>Masz prawo dostępu do swoich danych, ich sprostowania, usunięcia lub ograniczenia przetwarzania.</li>
-      <li>Masz prawo do wniesienia sprzeciwu wobec przetwarzania danych.</li>
-      <li>Masz prawo do złożenia skargi do organu nadzorczego (Prezes UODO).</li>
-    </ul>
-    <p>W sprawach dotyczących danych osobowych prosimy o kontakt z kancelarią parafialną.</p>
   </div>
 
   <div class="policy-section">
@@ -310,7 +321,7 @@
           <li><a href="kontakt.html">Kancelaria</a></li>
           <li style="display:none"><a href="#">RODO</a></li><!-- TODO: osobna strona RODO w przyszłości -->
           <li><a href="polityka-prywatnosci.html" class="active">Polityka prywatności</a></li>
-          <li><a href="../index.html#budowa">Wsparcie budowy</a></li>
+          <li><a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener">Wsparcie budowy</a></li>
           <li><a href="../admin/login.html" style="color:var(--copper-light);font-weight:700">→ Panel administracyjny</a></li>
         </ul>
       </div>

@@ -1,21 +1,21 @@
 ﻿<!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Panel Parafii NSPJ - Przewodnik dla księdza</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --burgundy:#7a1f2b;--burgundy-light:#f5eaec;
-    --copper:#b87a4a;--copper-light:#fdf3e7;
-    --ink:#2b2520;--ink-soft:#5a5048;
-    --green:#3a7d44;--green-light:#eaf4ec;
-    --amber:#b87a00;--amber-light:#fdf6e3;
-    --red:#c0392b;--red-light:#fdecea;
-    --blue:#2c5d80;--blue-light:#e8f2f9;
-    --line:#e2d8c5;--beige:#f4ede0;--cream:#faf6ee;--white:#fff;
-  }
+  --burgundy-light:#f5eaec;
+  --copper-light:#fdf3e7;
+  --green-light:#eaf4ec;
+  --amber-light:#fdf6e3;
+  --red-light:#fdecea;
+  --blue-light:#e8f2f9;
+  --white:#fff;
+}
   *{box-sizing:border-box}
   html{font-size:16px}
   body{
@@ -35,19 +35,19 @@
 
   /* HEADER */
   .doc-header{
-    background:var(--ink);color:#f6e9d3;padding:48px 32px 36px;
+    background:var(--ink);color:var(--cream);padding:48px 32px 36px;
     border-radius:10px;margin-bottom:40px;position:relative;overflow:hidden
   }
   .doc-header::before{
     content:"";position:absolute;top:-40px;right:-40px;width:220px;height:220px;
-    border-radius:50%;background:rgba(184,122,74,.15)
+    border-radius:50%;background:rgba(var(--copper-rgb),.15)
   }
   .doc-header .label{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);font-weight:600;margin-bottom:12px}
-  .doc-header h1{color:#f6e9d3;font-size:2rem;margin-bottom:.5rem}
-  .doc-header .sub{color:rgba(246,233,211,.7);font-size:.95rem;max-width:560px}
+  .doc-header h1{color:var(--cream);font-size:2rem;margin-bottom:.5rem}
+  .doc-header .sub{color:rgba(var(--cream-rgb),.7);font-size:.95rem;max-width:560px}
   .doc-header .meta{margin-top:20px;display:flex;gap:24px;flex-wrap:wrap}
-  .doc-header .meta span{font-size:.82rem;color:rgba(246,233,211,.6)}
-  .doc-header .meta b{color:rgba(246,233,211,.9)}
+  .doc-header .meta span{font-size:.82rem;color:rgba(var(--cream-rgb),.6)}
+  .doc-header .meta b{color:rgba(var(--cream-rgb),.9)}
 
   /* TOC */
   .toc{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:24px 28px;margin-bottom:36px}
@@ -153,7 +153,7 @@
 
   @media print{
     body{background:#fff}
-    .doc-header{background:#2b2520!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .doc-header{background:var(--ink)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     .module-icon{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     .section-label{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   }

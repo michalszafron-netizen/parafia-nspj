@@ -23,6 +23,10 @@
   .sakr-icons{display:flex;gap:4px}
   .sakr-icon{width:22px;height:22px;border-radius:4px;background:var(--beige-deep);display:grid;place-items:center;font-size:.6rem;font-weight:700;color:var(--ink-soft);cursor:default}
   .sakr-icon.yes{background:#e2f0e6;color:#2e7a3a}
+  .sakr-icon.yes-soft{background:#f0e6d2;color:#7a5030}
+  .sc-lbl{display:inline-block;border-radius:3px;padding:0 4px;font-size:.6rem;font-weight:700;line-height:16px;vertical-align:middle}
+  .sc-lbl-slub{background:var(--burgundy);color:#fff}
+  .sc-lbl-other{background:#b0a090;color:#fff}
   .sakr-th-info{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--ink-soft);color:#fff;font-size:.58rem;font-weight:700;line-height:13px;text-align:center;cursor:help;margin-left:2px;vertical-align:middle;opacity:.55}
   .sakr-th-info:hover{opacity:1}
 
@@ -41,12 +45,13 @@
   .modal-form .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .modal-form label{font-size:.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:3px}
   .modal-form input,.modal-form select,.modal-form textarea{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;width:100%;background:var(--white);box-sizing:border-box}
-  .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.18)}
   .modal-form .section-divider{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding:4px 0 2px;border-bottom:1px solid var(--line);margin-top:4px}
   .sakr-items{display:flex;flex-direction:column;gap:8px}
   .sakr-item{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg)}
   .sakr-item.open{border-color:var(--copper)}
   .sakr-check-lbl{display:flex;align-items:center;gap:8px;font-size:.84rem;font-weight:600;color:var(--ink);cursor:pointer;margin:0}
+  .sakr-item-head{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--burgundy);border-radius:4px;padding:2px 8px;flex-shrink:0}
   .sakr-check-lbl input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:var(--burgundy)}
   .sakr-panel{margin-top:12px;display:grid;gap:10px;padding-top:10px;border-top:1px dashed var(--line)}
   .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
@@ -157,7 +162,7 @@
               <th style="min-width:50px;text-align:center">Ch <span class="sakr-th-info" title="Chrzest — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze chrztów">i</span></th>
               <th style="min-width:50px;text-align:center">K <span class="sakr-th-info" title="Komunia — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze I Komunii">i</span></th>
               <th style="min-width:50px;text-align:center">B <span class="sakr-th-info" title="Bierzmowanie — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze bierzmowań">i</span></th>
-              <th style="min-width:50px;text-align:center">Ś <span class="sakr-th-info" title="Ślub — ikonka wskazuje, że dla tego parafianina istnieje wpis w rejestrze ślubów">i</span></th>
+              <th style="min-width:50px;text-align:center">SC <span class="sakr-th-info" title="Stan cywilny — Ś (ślub kościelny), SC (ślub cywilny), WZ (wolny związek), SI (singiel)">i</span></th>
               <th style="min-width:105px">Dołączył/a</th>
               <th style="min-width:200px">Uwagi</th>
             </tr>
@@ -249,7 +254,16 @@
           </div>
         </div>
         <div class="sakr-item" id="item-slub">
-          <label class="sakr-check-lbl"><input type="checkbox" id="s-slub" onchange="toggleSakrPanel('slub')"> Ślub kościelny (Ś)</label>
+          <div>
+            <div class="sakr-item-head" style="display:inline-block;margin-bottom:8px">STAN CYWILNY</div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+              <label style="font-weight:normal;display:flex;align-items:center;gap:5px"><input type="radio" name="stan-cywilny" value="" onchange="onStanCywilnyChange()"> nie podano</label>
+              <label style="font-weight:normal;display:flex;align-items:center;gap:5px"><input type="radio" name="stan-cywilny" value="koscielny" onchange="onStanCywilnyChange()"> Ślub kościelny <span class="sc-lbl sc-lbl-slub">Ś</span></label>
+              <label style="font-weight:normal;display:flex;align-items:center;gap:5px"><input type="radio" name="stan-cywilny" value="cywilny" onchange="onStanCywilnyChange()"> Ślub cywilny <span class="sc-lbl sc-lbl-slub">SC</span></label>
+              <label style="font-weight:normal;display:flex;align-items:center;gap:5px"><input type="radio" name="stan-cywilny" value="wolny_zwiazek" onchange="onStanCywilnyChange()"> Wolny związek <span class="sc-lbl sc-lbl-other">WZ</span></label>
+              <label style="font-weight:normal;display:flex;align-items:center;gap:5px"><input type="radio" name="stan-cywilny" value="singiel" onchange="onStanCywilnyChange()"> Singiel <span class="sc-lbl sc-lbl-other">SI</span></label>
+            </div>
+          </div>
           <div class="sakr-panel" id="panel-slub" style="display:none">
             <div class="row2">
               <div><label>Oblubieniec (imię i nazwisko)</label><input type="text" id="sc-oblubieniec" placeholder="np. Jan Kowalski"></div>
@@ -264,7 +278,7 @@
                 </select>
               </div>
             </div>
-            <div class="row2">
+            <div class="row2" id="row-slub-details">
               <div><label>Miejsce ślubu</label><input type="text" id="sc-miejsce_slubu" placeholder="np. par. NSPJ Czerwionka"></div>
               <div><label>Status</label>
                 <select id="sc-status_slubu">
@@ -426,7 +440,18 @@
         var yes = d.sakr && d.sakr[k];
         return '<div class="sakr-icon'+(yes?' yes':'')+'" title="'+titles[i]+'">'+labels[i]+'</div>';
       }).join('');
-      function sakrCell(k){ var yes=d.sakr&&d.sakr[k]; return '<td style="text-align:center"><span class="sakr-icon'+(yes?' yes':'')+'" style="margin:auto">'+{chrzest:'Ch',komunia:'K',bierzmowanie:'B',slub:'Ś'}[k]+'</span></td>'; }
+      function sakrCell(k){
+        if(k==='slub'){
+          var sc=d.stan_cywilny||'';
+          var lbl=sc==='koscielny'?'Ś':sc==='cywilny'?'SC':sc==='wolny_zwiazek'?'WZ':sc==='singiel'?'SI':'';
+          var isSlub=sc==='koscielny'||sc==='cywilny';
+          var isOther=sc==='wolny_zwiazek'||sc==='singiel';
+          var cls='sakr-icon'+(isSlub?' yes':isOther?' yes-soft':'');
+          return '<td style="text-align:center"><span class="'+cls+'" style="margin:auto">'+lbl+'</span></td>';
+        }
+        var yes=d.sakr&&d.sakr[k];
+        return '<td style="text-align:center"><span class="sakr-icon'+(yes?' yes':'')+'" style="margin:auto">'+{chrzest:'Ch',komunia:'K',bierzmowanie:'B'}[k]+'</span></td>';
+      }
       return '<tr>'+
         '<td class="col-check"><input type="checkbox" class="row-check" value="'+d.id+'" onclick="toggleRow(this)"'+(selected[d.id]?' checked':'')+'></td>'+
         '<td><strong>'+(d.zmarly?'<span class="deceased-mark" title="Osoba zmarła — powiązany wpis w rejestrze Pogrzebów">✝</span>':'')+escHtml(d.nazwisko)+' '+escHtml(d.imie)+'</strong></td>'+
@@ -556,6 +581,47 @@
     });
   }
 
+  function getStanCywilny(){
+    var r=document.querySelector('input[name="stan-cywilny"]:checked');
+    return r?r.value:'';
+  }
+  function setStanCywilny(val){
+    var r=document.querySelector('input[name="stan-cywilny"][value="'+val+'"]');
+    if(r) r.checked=true;
+    else { var def=document.querySelector('input[name="stan-cywilny"][value=""]'); if(def) def.checked=true; }
+    onStanCywilnyChange();
+  }
+  function onStanCywilnyChange(){
+    var val=getStanCywilny();
+    var panel=document.getElementById('panel-slub');
+    var item=document.getElementById('item-slub');
+    var open=val==='koscielny'||val==='cywilny';
+    if(panel) panel.style.display=open?'grid':'none';
+    if(item) item.classList.toggle('open',open);
+    var tsEl=document.getElementById('sc-typ_slubu');
+    var detailsRow=document.getElementById('row-slub-details');
+    if(tsEl){
+      var prev=tsEl.value;
+      if(val==='cywilny'){
+        tsEl.innerHTML='<option value="cywilny_usc">Cywilny (USC)</option>';
+        if(detailsRow) detailsRow.style.display='none';
+      } else {
+        tsEl.innerHTML='<option value="konkordatowy">Konkordatowy</option><option value="koscielny">Kościelny (bez USC)</option>';
+        if(prev==='konkordatowy'||prev==='koscielny') tsEl.value=prev;
+        if(detailsRow) detailsRow.style.display='';
+      }
+    }
+    if(open){
+      var ob=document.getElementById('sc-oblubieniec');
+      if(ob&&!ob.value){
+        var im=(document.getElementById('f-imie').value||'').trim();
+        var naz=(document.getElementById('f-nazwisko').value||'').trim();
+        if(im||naz) ob.value=(im+' '+naz).trim();
+      }
+    }
+  }
+  window.onStanCywilnyChange=onStanCywilnyChange;
+
   // ---- modal ----
   function isoToday(){
     var d=new Date();
@@ -574,7 +640,7 @@
     document.getElementById('s-chrzest').checked=false;
     document.getElementById('s-komunia').checked=false;
     document.getElementById('s-bierzmowanie').checked=false;
-    document.getElementById('s-slub').checked=false;
+    setStanCywilny('');
     hideSakrPanels();
     ['sc-imie_ojca','sc-nazwisko_ojca','sc-imie_matki','sc-nazwisko_matki','sc-datachrztu',
      'sc-datakom','sc-szkola','sc-kom-rodzic',
@@ -610,11 +676,11 @@
     document.getElementById('s-chrzest').checked=!!(d.sakr&&d.sakr.chrzest);
     document.getElementById('s-komunia').checked=!!(d.sakr&&d.sakr.komunia);
     document.getElementById('s-bierzmowanie').checked=!!(d.sakr&&d.sakr.bierzmowanie);
-    document.getElementById('s-slub').checked=!!(d.sakr&&d.sakr.slub);
     document.getElementById('f-status').value=d.status||'aktywny';
     document.getElementById('f-datadolaczenia').value=d.data_dolaczenia||'';
     document.getElementById('f-uwagi').value=d.uwagi||'';
     hideSakrPanels();
+    setStanCywilny(d.stan_cywilny||'');
     // wyczyść pola sakramentów
     ['sc-imie_ojca','sc-nazwisko_ojca','sc-imie_matki','sc-nazwisko_matki','sc-datachrztu',
      'sc-datakom','sc-szkola','sc-kom-rodzic',
@@ -662,11 +728,12 @@
       }
       var ss=editingSakrRecords.slub;
       if(ss){
-        sv('sc-oblubieniec',ss.oblubieniec);sv('sc-oblubienica',ss.oblubienica);
+        sv('sc-oblubieniec',ss.oblubieniec||(d.imie+' '+d.nazwisko));sv('sc-oblubienica',ss.oblubienica);
         sv('sc-datasl',ss.datasl);sv('sc-miejsce_slubu',ss.miejsce);
         if(ss.typ_slubu){var tsEl2=document.getElementById('sc-typ_slubu');if(tsEl2)tsEl2.value=ss.typ_slubu;}
         if(ss.status){var ssEl2=document.getElementById('sc-status_slubu');if(ssEl2)ssEl2.value=ss.status;}
-        document.getElementById('s-slub').checked=true;toggleSakrPanel('slub');
+        document.getElementById('panel-slub').style.display='grid';
+        document.getElementById('item-slub').classList.add('open');
       }
     } catch(e){}
     if(window.fpSync)window.fpSync();
@@ -689,11 +756,12 @@
       telefon: document.getElementById('f-telefon').value.trim(),
       adres: document.getElementById('f-adres').value.trim(),
       email: document.getElementById('f-email').value.trim(),
+      stan_cywilny: getStanCywilny(),
       sakr:{
         chrzest: document.getElementById('s-chrzest').checked,
         komunia: document.getElementById('s-komunia').checked,
         bierzmowanie: document.getElementById('s-bierzmowanie').checked,
-        slub: document.getElementById('s-slub').checked
+        slub: getStanCywilny()==='koscielny'
       },
       status: document.getElementById('f-status').value,
       data_dolaczenia: document.getElementById('f-datadolaczenia').value,
@@ -952,7 +1020,7 @@
   load();
 })();
 </script>
-<script src="assets/admin.js"></script>
+<script src="assets/admin.js?v=3"></script>
 <script src="assets/auth-guard.js"></script>
 </body>
 </html>

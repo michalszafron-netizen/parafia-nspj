@@ -49,7 +49,7 @@
     min-height:360px;padding:20px 24px;outline:none;
     font-family:'Lato',sans-serif;font-size:.97rem;line-height:1.85;color:var(--ink);
   }
-  .editor-content:focus{box-shadow:inset 0 0 0 2px rgba(122,31,43,.12)}
+  .editor-content:focus{box-shadow:inset 0 0 0 2px rgba(var(--burgundy-rgb),.12)}
   .editor-content p{margin:0 0 .8rem}
   .editor-content p:last-child{margin-bottom:0}
   .editor-content h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin:1.4rem 0 .5rem;color:var(--burgundy)}
@@ -151,14 +151,15 @@
                 <input type="text" class="editor-title-input" id="ed-title" placeholder="Tytuł ogłoszenia…" autocomplete="off">
                 <div class="editor-meta">
                   <input type="date" id="ed-date">
+                  <input type="text" id="ed-date-range" placeholder="zakres dat (np. 21.09–28.09)" style="width:190px" autocomplete="off">
                   <button class="status-badge pub" id="ed-status-btn" title="Kliknij aby zmienić status"></button>
                   <span class="views-info" id="ed-views"></span>
                 </div>
               </div>
               <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
-                <button class="btn btn-secondary sm" id="btn-pdf" title="Generuj PDF do druku">
-                  <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M5 0h6a2 2 0 0 1 2 2v4h1.5A1.5 1.5 0 0 1 16 7.5v4a1.5 1.5 0 0 1-1.5 1.5H13v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H1.5A1.5 1.5 0 0 1 0 11.5v-4A1.5 1.5 0 0 1 1.5 6H3V2a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v4h8V2a1 1 0 0 0-1-1zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zm1.5-3H3.5A.5.5 0 0 0 3 6.5v4A.5.5 0 0 0 3.5 11H5v-1a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1h1.5a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-.5-.5"/></svg>
-                  PDF
+                <button class="btn btn-primary" id="btn-pdf" title="Podgląd z możliwością edycji treści i regulacji czcionki">
+                  <svg fill="currentColor" viewBox="0 0 16 16"><path d="M5 0h6a2 2 0 0 1 2 2v4h1.5A1.5 1.5 0 0 1 16 7.5v4a1.5 1.5 0 0 1-1.5 1.5H13v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H1.5A1.5 1.5 0 0 1 0 11.5v-4A1.5 1.5 0 0 1 1.5 6H3V2a2 2 0 0 1 2-2"/></svg>
+                  Edytowalny PDF
                 </button>
                 <button class="btn btn-danger-ghost sm" id="btn-delete" title="Usuń ogłoszenie">
                   <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
@@ -266,6 +267,10 @@
       <input type="date" id="new-date">
     </div>
     <div class="modal-row">
+      <label for="new-date-range">Zakres dat (np. 21.09–28.09)</label>
+      <input type="text" id="new-date-range" placeholder="np. 21.09–28.09" autocomplete="off">
+    </div>
+    <div class="modal-row">
       <label for="new-content">Treść ogłoszeń (opcjonalnie - możesz uzupełnić w edytorze)</label>
       <textarea id="new-content" placeholder="1. …&#10;2. …&#10;3. …"></textarea>
     </div>
@@ -368,8 +373,9 @@ function loadAnnouncement(id) {
   if (!ann) return;
   currentId = id;
 
-  document.getElementById('ed-title').value = ann.title;
-  document.getElementById('ed-date').value  = ann.date;
+  document.getElementById('ed-title').value      = ann.title;
+  document.getElementById('ed-date').value       = ann.date;
+  document.getElementById('ed-date-range').value = ann.date_range || '';
   if(window.fpSync)window.fpSync();
   document.getElementById('editor-body').innerHTML = ann.content || '';
   document.getElementById('ed-views').textContent  = ann.views ? `· ${ann.views} wyświetleń` : '';
@@ -423,9 +429,10 @@ async function saveCurrentAnn(newStatus) {
   const ann = currentAnn();
   if (!ann) return;
 
-  const title   = document.getElementById('ed-title').value.trim();
-  const date    = document.getElementById('ed-date').value;
-  const content = document.getElementById('editor-body').innerHTML;
+  const title      = document.getElementById('ed-title').value.trim();
+  const date       = document.getElementById('ed-date').value;
+  const date_range = document.getElementById('ed-date-range').value.trim();
+  const content    = document.getElementById('editor-body').innerHTML;
 
   if (!title) { showToast('Wpisz tytuł ogłoszenia', 'error'); return; }
 
@@ -450,9 +457,10 @@ async function saveCurrentAnn(newStatus) {
   };
 
   try {
-    ann.title   = title;
-    ann.date    = date;
-    ann.content = content;
+    ann.title      = title;
+    ann.date       = date;
+    ann.date_range = date_range;
+    ann.content    = content;
     if (newStatus) ann.status = newStatus;
 
     await apiFetch('/api/ogloszenia/' + ann.id, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(ann)});
@@ -524,7 +532,8 @@ document.getElementById('ed-status-btn').addEventListener('click', async () => {
   const ann = currentAnn();
   if (!ann) return;
   const newSt = ann.status === 'published' ? 'draft' : 'published';
-  ann.status = newSt;
+  ann.status     = newSt;
+  ann.date_range = ann.date_range || '';
   await apiFetch('/api/ogloszenia/' + ann.id, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(ann)});
   updateStatusBadge(newSt);
   updateViewLink(ann);
@@ -574,8 +583,108 @@ document.getElementById('btn-feature').addEventListener('click', async () => {
   }
 });
 
-// PDF (print)
-document.getElementById('btn-pdf').addEventListener('click', () => window.print());
+// Live-sync zakres dat → paragraf w edytorze
+document.getElementById('ed-date-range').addEventListener('input', function() {
+  const body = document.getElementById('editor-body');
+  let drP = body.querySelector('[data-role="date-range"]');
+  if (!drP) {
+    for (const p of body.querySelectorAll('p')) {
+      if (p.style.textAlign === 'center' && !p.textContent.toUpperCase().includes('OGŁOSZENIA')) {
+        drP = p; break;
+      }
+    }
+  }
+  if (drP) drP.textContent = this.value;
+});
+
+// ════════════════════════════════════════════════════════
+//  PDF — edytowalny do druku
+// ════════════════════════════════════════════════════════
+var _oglLogoUrl = '';
+var _oglSettings = {};
+(function(){
+  try {
+    fetch('/public/img/logo1.png')
+      .then(function(r){ return r.ok ? r.blob() : null; })
+      .then(function(b){ if(!b) return; var fr=new FileReader(); fr.onload=function(){ _oglLogoUrl=fr.result; }; fr.readAsDataURL(b); })
+      .catch(function(){});
+  } catch(e){}
+  try {
+    fetch('/api/settings').then(function(r){ return r.ok ? r.json() : null; }).then(function(s){ if(s) _oglSettings=s; }).catch(function(){});
+  } catch(e){}
+})();
+
+function buildOglDocHtml(ann, autoPrint, editable) {
+  var dateRange   = ann.date_range || '';
+  var contentHtml = ann.content || '';
+  var logo        = _oglLogoUrl || '/public/img/logo1.png';
+  var s           = _oglSettings || {};
+  var nazwaPelna  = s.nazwa_pelna  || 'Parafia pw. Najświętszego Serca Pana Jezusa';
+  var ulica       = s.ulica        || 'ul. 3-go Maja 36';
+  var kodMiasto   = s.kod_miasto   || '44-230 Czerwionka-Leszczyny';
+  var telefon     = s.telefon      || '32 43 12 992';
+  var parLine     = nazwaPelna;
+  var addrLine    = ulica + ', ' + kodMiasto;
+  var editAttr    = editable ? ' contenteditable="true" spellcheck="true"' : '';
+  var printBtn    = editable
+    ? '<div class="no-print" style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px">'
+    + '<button onclick="window.print()" style="padding:9px 28px;background:'+kol('burgundy')+';color:#fff;border:none;border-radius:5px;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.04em">&#128438; Drukuj / Zapisz PDF</button>'
+    + '<span style="display:flex;align-items:center;gap:6px;font-size:.82rem;color:'+kol('ink-soft')+'">'
+    + 'Czcionka treści:'
+    + '<button onclick="oglFs(-0.5)" style="width:26px;height:26px;border:1px solid #ccc;background:#f5f0e8;border-radius:4px;cursor:pointer;font-size:1rem;line-height:1">-</button>'
+    + '<span id="ogl-fsize" style="min-width:30px;text-align:center;font-weight:700">14px</span>'
+    + '<button onclick="oglFs(0.5)" style="width:26px;height:26px;border:1px solid #ccc;background:#f5f0e8;border-radius:4px;cursor:pointer;font-size:1rem;line-height:1">+</button>'
+    + '</span></div>'
+    : '';
+  var addRowBtn   = editable
+    ? '<div class="no-print" style="margin-top:12px;text-align:center"><button onclick="var p=document.createElement(\'p\');p.innerHTML=\'&nbsp;\';document.getElementById(\'ogl-body\').appendChild(p);p.focus()" style="background:transparent;border:1px dashed #b0a090;color:'+kol('ink-soft')+';padding:5px 16px;border-radius:4px;cursor:pointer;font-size:.83rem">+ dodaj punkt</button></div>'
+    : '';
+
+  return '<!doctype html><html lang="pl"><head><meta charset="utf-8">'
+    + '<title>Ogłoszenia duszpasterskie</title>'
+    + '<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">'
+    + '<style>'
+    + '*{box-sizing:border-box;margin:0;padding:0}'
+    + 'body{font-family:Georgia,\'Times New Roman\',serif;color:'+kol('ink')+';margin:0;padding:22px 36px;font-size:14px;line-height:1.5}'
+    + '#ogl-body *{font-size:inherit}'
+    + '.head{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:3px solid '+kol('burgundy')+';padding-bottom:13px;margin-bottom:18px}'
+    + '.head-left{display:flex;align-items:center;gap:13px}'
+    + '.head img{height:52px;flex-shrink:0}'
+    + '.head h1{font-size:17px;letter-spacing:2px;color:'+kol('burgundy')+';font-weight:700;margin:0;max-width:200px}'
+    + '.head-right{font-size:9.5px;color:'+kol('ink-soft')+';line-height:1.6;text-align:right}'
+    + '.head-right .par-name{font-weight:600}'
+    + '#ogl-body p,#ogl-body div{margin:0 0 .35rem}'
+    + '#ogl-body p:last-child,#ogl-body div:last-child{margin-bottom:0}'
+    + '#ogl-body ol,#ogl-body ul{margin:0 0 .6rem;padding-left:1.4rem}'
+    + '#ogl-body li{margin-bottom:.3rem}'
+    + '[contenteditable]{outline:none}'
+    + '#ogl-body[contenteditable]{border:1px dashed '+kol('line')+';border-radius:4px;padding:10px 12px;display:block;min-height:60px}'
+    + '#ogl-body[contenteditable]:focus{border-color:'+kol('burgundy')+'}'
+    + '@page{margin:0;size:A4 portrait}'
+    + '@media print{.no-print{display:none!important}body{padding:8mm 14mm 6mm}}'
+    + '</style>'
+    + '<style id="ogl-fstyle">#ogl-body,#ogl-body *{font-size:14px}</style>'
+    + '</head><body>'
+    + printBtn
+    + '<div class="head">'
+    + '<div class="head-left"><img src="' + logo + '" alt=""><div><h1>OGŁOSZENIA PARAFIALNE</h1></div></div>'
+    + '<div class="head-right"><div class="par-name">' + parLine + '</div><div style="font-weight:600">' + addrLine + '</div><div>tel. ' + telefon + '</div></div>'
+    + '</div>'
+    + '<div id="ogl-body"' + editAttr + '>' + contentHtml + '</div>'
+    + addRowBtn
+    + '<scr'+'ipt>var _oglFs=14;function oglFs(d){_oglFs=Math.min(20,Math.max(7,_oglFs+d));document.getElementById("ogl-fstyle").innerHTML="#ogl-body,#ogl-body *{font-size:"+_oglFs+"px!important}";document.getElementById("ogl-fsize").textContent=_oglFs+"px";}</scr'+'ipt>'
+    + (autoPrint ? '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},250);};</scr'+'ipt>' : '')
+    + '</body></html>';
+}
+
+function exportOglEditable() {
+  const ann = currentAnn();
+  if (!ann) return;
+  var w = window.open('', '_blank');
+  if (w) { w.document.write(buildOglDocHtml(ann, false, true)); w.document.close(); }
+}
+
+document.getElementById('btn-pdf').addEventListener('click', exportOglEditable);
 
 // ════════════════════════════════════════════════════════
 //  DELETE
@@ -607,9 +716,10 @@ document.getElementById('btn-new').addEventListener('click', () => {
   const today = new Date();
   const daysToSun = (7 - today.getDay()) % 7 || 7;
   const nextSun = new Date(today); nextSun.setDate(today.getDate() + daysToSun);
-  document.getElementById('new-date').value = nextSun.toISOString().slice(0,10);
-  document.getElementById('new-title').value = '';
-  document.getElementById('new-content').value = '';
+  document.getElementById('new-date').value       = nextSun.toISOString().slice(0,10);
+  document.getElementById('new-title').value      = '';
+  document.getElementById('new-date-range').value = '';
+  document.getElementById('new-content').value    = '';
   if(window.fpSync)window.fpSync();
   modalOverlay.classList.add('open');
   setTimeout(() => document.getElementById('new-title').focus(), 100);
@@ -620,19 +730,23 @@ document.getElementById('modal-cancel').addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
 
 document.getElementById('modal-create').addEventListener('click', async () => {
-  const title   = document.getElementById('new-title').value.trim();
-  const date    = document.getElementById('new-date').value;
-  const rawText = document.getElementById('new-content').value.trim();
+  const title     = document.getElementById('new-title').value.trim();
+  const date      = document.getElementById('new-date').value;
+  const dateRange = document.getElementById('new-date-range').value.trim();
+  const rawText   = document.getElementById('new-content').value.trim();
 
   if (!title) { document.getElementById('new-title').focus(); return; }
   if (!date)  { document.getElementById('new-date').focus(); return; }
 
-  let content = rawText
-    ? rawText.split('\n').filter(l => l.trim()).map(l => `<p>${l.trim()}</p>`).join('\n')
-    : `<p style="text-align:center;font-weight:700;font-family:'Playfair Display',serif;font-size:1.2rem">OGŁOSZENIA DUSZPASTERSKIE<br>${title}</p>\n<p>1. </p>`;
+  const headerHtml = `<p style="text-align:center;font-weight:700;font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:2px">OGŁOSZENIA</p>`
+    + (dateRange ? `\n<p data-role="date-range" style="text-align:center;font-size:1rem;color:${kol('ink-soft')};margin-top:0">${dateRange}</p>` : '');
+  let content = headerHtml + '\n'
+    + (rawText
+      ? rawText.split('\n').filter(l => l.trim()).map(l => `<p>${l.trim()}</p>`).join('\n')
+      : '<p>1. </p>');
 
   const id = 'ogl-' + date + '-' + Date.now();
-  const ann = { id, title, date, status: 'draft', views: 0, content };
+  const ann = { id, title, date, date_range: dateRange, status: 'draft', views: 0, content };
 
   await apiFetch('/api/ogloszenia', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(ann)});
   announcements.unshift(ann);
@@ -664,7 +778,7 @@ document.getElementById('btn-show-all').addEventListener('click', () => {
   if (currentId) loadAnnouncement(currentId);
 })();
 </script>
-<script src="assets/admin.js"></script>
+<script src="assets/admin.js?v=3"></script>
 <script src="assets/auth-guard.js"></script>
 </body>
 </html>

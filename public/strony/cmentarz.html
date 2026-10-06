@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
+<script>function kol(n){return getComputedStyle(document.documentElement).getPropertyValue('--'+n).trim()}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cmentarz parafialny · Parafia NSPJ Czerwionka-Leszczyny</title>
@@ -12,7 +14,7 @@
 <meta property="og:description" content="Wyszukiwarka grobów, nekrologi i rocznice na cmentarzu parafialnym NSPJ.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root{--beige:#f4ede0;--beige-deep:#ebe1cd;--cream:#faf6ee;--burgundy:#7a1f2b;--burgundy-dark:#5e1620;--copper:#b87a4a;--copper-light:#d6a572;--ink:#2b2520;--ink-soft:#5a5048;--line:#d8cdb6;--white:#ffffff}
+  
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:90px}
   body{margin:0;padding:0;font-family:'Lato',sans-serif;color:var(--ink);background:var(--beige);line-height:1.65}
@@ -24,16 +26,16 @@
 
   /* ── HEADER ── */
   .sticky-header{position:sticky;top:0;z-index:50}
-  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
+  .topbar{background:var(--burgundy-dark);color:var(--beige);font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
   .topbar .container{display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 24px;gap:12px}
-  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center}
+  .topbar a{color:var(--beige);text-decoration:none;display:inline-flex;align-items:center}
   .topbar a:hover{color:#fff}
   .topbar .left,.topbar .right{display:flex;gap:18px;align-items:center}
   .topbar svg{flex-shrink:0;margin-right:6px}
-  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,217,184,.35);color:#e8d9b8;transition:all .15s;margin-left:4px}
+  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--beige-rgb),.35);color:var(--beige);transition:all .15s;margin-left:4px}
   .topbar-admin svg{margin-right:0;display:block}
-  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
-  .topbar-btn-wsparcie{background:#e8d9b8;color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;white-space:nowrap}
+  .topbar-admin:hover{background:rgba(var(--beige-rgb),.15);border-color:rgba(var(--beige-rgb),.7);color:#fff}
+  .topbar-btn-wsparcie{background:var(--beige);color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;white-space:nowrap}
   .topbar-btn-wsparcie:hover{background:#fff;text-decoration:none!important}
   @media(max-width:768px){.topbar .left span:first-child{display:none}.topbar .right a:not(.topbar-admin){display:none}.topbar .container{justify-content:center}}
   header.site{background:var(--cream);border-bottom:1px solid var(--line)}
@@ -143,7 +145,7 @@
   .roc-arrow:disabled{opacity:.3;cursor:default}
   .roc-card{flex-shrink:0;width:160px;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:18px 14px 14px;text-align:center;transition:box-shadow .15s}
   .roc-card:hover{box-shadow:0 4px 16px rgba(43,37,32,.12)}
-  .roc-card.today{border-color:var(--burgundy);box-shadow:0 0 0 2px rgba(122,31,43,.12)}
+  .roc-card.today{border-color:var(--burgundy);box-shadow:0 0 0 2px rgba(var(--burgundy-rgb),.12)}
   .roc-grave-icon{margin:0 auto 10px;width:52px;height:52px;display:block}
   .roc-sp{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper);font-weight:700;margin-bottom:4px}
   .roc-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:8px}
@@ -160,24 +162,24 @@
   .no-results svg{display:block;margin:0 auto 12px;opacity:.35}
 
   /* ── FOOTER ── */
-  footer.site{background:var(--ink);color:#d8cdb6;padding:60px 0 30px;margin-top:40px}
+  footer.site{background:var(--ink);color:var(--line);padding:60px 0 30px;margin-top:40px}
   .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
   .footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-  .footer-brand .brand-name{color:#e8d9b8;font-size:.88rem}
+  .footer-brand .brand-name{color:var(--beige);font-size:.88rem}
   .footer-brand .brand-name small{color:var(--copper-light)}
-  footer p{font-size:.88rem;margin:.5rem 0;color:rgba(232,217,184,.75)}
-  .footer-bank{margin-top:14px;padding:12px 16px;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.12);border-radius:6px;font-size:.8rem}
-  .footer-bank b{display:block;color:#e8d9b8;margin-bottom:4px}
+  footer p{font-size:.88rem;margin:.5rem 0;color:rgba(var(--beige-rgb),.75)}
+  .footer-bank{margin-top:14px;padding:12px 16px;background:rgba(var(--cream-rgb),.06);border:1px solid rgba(var(--cream-rgb),.12);border-radius:6px;font-size:.8rem}
+  .footer-bank b{display:block;color:var(--beige);margin-bottom:4px}
   .footer-bank code{font-size:.78rem;color:var(--copper-light);letter-spacing:.04em}
   .footer-social{display:flex;gap:10px;margin-top:18px}
-  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
-  .footer-social a:hover{background:rgba(246,233,211,.14);border-color:rgba(246,233,211,.4);color:#f6e9d3;text-decoration:none}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(var(--cream-rgb),.06);border:1px solid rgba(var(--cream-rgb),.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
+  .footer-social a:hover{background:rgba(var(--cream-rgb),.14);border-color:rgba(var(--cream-rgb),.4);color:var(--cream);text-decoration:none}
   .footer-social svg{width:16px;height:16px}
-  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:#f6e9d3;margin-bottom:1rem}
+  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:var(--cream);margin-bottom:1rem}
   footer.site ul{list-style:none;padding:0;margin:0}
   footer.site ul li{margin-bottom:.6rem;font-size:.92rem}
   footer.site ul a{color:rgba(216,205,182,.78)}
-  footer.site ul a:hover{color:#f6e9d3;text-decoration:none}
+  footer.site ul a:hover{color:var(--cream);text-decoration:none}
   .footer-bottom{margin-top:40px;padding-top:20px;border-top:1px solid rgba(216,205,182,.15);font-size:.82rem;color:rgba(216,205,182,.5);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
   @media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}}
   @media(max-width:600px){.footer-grid{grid-template-columns:1fr}.nk-row{grid-template-columns:1fr auto}.nk-death{grid-row:2}}
@@ -193,7 +195,7 @@
         <a href="../index.html#aktualnosci"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg><span>ul. 3-go Maja 36, Czerwionka-Leszczyny</span></a>
       </div>
       <div class="right">
-        <a href="../index.html#budowa" class="topbar-btn-wsparcie">Wsparcie budowy</a>
+        <a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener" class="topbar-btn-wsparcie">Wsparcie budowy</a>
       </div>
     </div>
   </div>
@@ -205,6 +207,7 @@
           <div class="brand-name">Parafia Najświętszego Serca Pana Jezusa<small>Czerwionka-Leszczyny · od 1925</small></div>
         </a>
         <nav class="main">
+          <a href="../index.html">Strona główna</a>
           <div class="dropdown">
             <a href="#" class="has-sub">O kościele</a>
             <div class="dropdown-menu">
@@ -335,9 +338,9 @@
           <p>Cmentarz Parafii Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach jest miejscem pochówku wiernych od ponad stu lat. Podzielony jest na sektory oznaczone literami A–L.</p>
           <p>Cmentarz otwarty jest codziennie. Wszelkie sprawy dotyczące miejsc pochówku, opłat i dokumentacji można załatwić w kancelarii parafialnej.</p>
           <ul>
-            <li>Grobów ewidencjonowanych: <strong>2 348</strong></li>
-            <li>Osób pochowanych: <strong>3 924</strong></li>
-            <li>Sektory: <strong>A, B, C, D, E, F, G, H, I, J, K, L</strong></li>
+            <li>Grobów ewidencjonowanych: <strong id="stat-groby">2 348</strong></li>
+            <li>Osób pochowanych: <strong id="stat-osoby">3 924</strong></li>
+            <li>Sektory: <strong id="stat-sektory">A, B, C, D, E, F, G, H, I, J, K, L</strong></li>
           </ul>
         </div>
         <div class="info-card">
@@ -350,17 +353,17 @@
           <h3>Opłaty i dokumenty</h3>
           <p>Wszelkie informacje o opłatach za miejsca pochówku, przedłużanie prawa do grobu oraz dokumenty do pobrania:</p>
           <div class="info-docs">
-            <a href="../grobydane/Karta_Dysponenta_Grobu.html" target="_blank" class="info-doc-link">
+            <a href="/druki/Karta_Dysponenta_Grobu.html" target="_blank" class="info-doc-link">
               <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
               <div>
                 <span class="info-doc-title">Karta Dysponenta Grobu</span>
                 <span class="info-doc-sub">Formularz PDF do pobrania</span>
               </div>
             </a>
-            <a href="../grobydane/Karta_Zrzeczenie_Dysponenta_Grobu.html" target="_blank" class="info-doc-link">
+            <a href="/druki/Karta_Zrzeczenie_Dysponenta_Grobu.html" target="_blank" class="info-doc-link">
               <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
               <div>
-                <span class="info-doc-title">Karta Zrzeczenia Dysponenta Grobu</span>
+                <span class="info-doc-title">Prośba o Likwidację Grobu</span>
                 <span class="info-doc-sub">Formularz PDF do pobrania</span>
               </div>
             </a>
@@ -424,7 +427,7 @@
         <ul>
           <li><a href="kontakt.html">Kancelaria</a></li>
           <li><a href="polityka-prywatnosci.html">Polityka prywatności</a></li>
-          <li><a href="../index.html#budowa">Wsparcie budowy</a></li>
+          <li><a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener">Wsparcie budowy</a></li>
           <li><a href="../admin/login.html" style="color:var(--copper-light);font-weight:700">→ Panel administracyjny</a></li>
         </ul>
       </div>
@@ -473,6 +476,12 @@ document.querySelectorAll('.page-tab-btn').forEach(btn => {
 });
 
 // ── LOAD DATA ─────────────────────────────────────────────────────────────────
+fetch('/api/cmentarz/stats').then(function(r){ return r.json(); }).then(function(s){
+  if (document.getElementById('stat-groby'))   document.getElementById('stat-groby').textContent   = s.groby.toLocaleString('pl');
+  if (document.getElementById('stat-osoby'))   document.getElementById('stat-osoby').textContent   = s.osoby.toLocaleString('pl');
+  if (document.getElementById('stat-sektory')) document.getElementById('stat-sektory').textContent = s.sektory.join(', ');
+}).catch(function(){});
+
 async function init() {
   try {
     const [dbRes, liveRes] = await Promise.all([
@@ -560,7 +569,7 @@ function renderGroby() {
 function loadMoreGroby() { grobyPage++; renderGroby(); }
 
 function renderGrobRow(g, idx) {
-  const href = g._live ? `grob.html?type=live&id=${g.pogrzeb_id || g.id}` : `grob.html?i=${idx}`;
+  const href = g._live ? `grob.html?type=live&id=${g.pogrzeb_id || g.id}` : `grob.html?id=${g.id}`;
   const persons = g.pochowani.map(p => {
     const age = getAge(p.data_urodzenia, p.data_smierci);
     const ur = p.data_urodzenia ? fmtShort(p.data_urodzenia) : '?';
@@ -672,11 +681,11 @@ function escH(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').r
 
 // ── ROCZNICE STRIP ───────────────────────────────────────────────────────────
 const GRAVE_SVG = `<svg class="roc-grave-icon" viewBox="0 0 52 62" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="6" y="16" width="40" height="36" rx="4" fill="#f4ede0" stroke="#d8cdb6" stroke-width="1.5"/>
-  <path d="M26 2 C16 2 10 8 10 16 H42 C42 8 36 2 26 2 Z" fill="#f4ede0" stroke="#d8cdb6" stroke-width="1.5"/>
-  <line x1="26" y1="26" x2="26" y2="40" stroke="#7a1f2b" stroke-width="2" stroke-linecap="round"/>
-  <line x1="19" y1="31" x2="33" y2="31" stroke="#7a1f2b" stroke-width="2" stroke-linecap="round"/>
-  <rect x="2" y="50" width="48" height="10" rx="3" fill="#d8cdb6"/>
+  <rect x="6" y="16" width="40" height="36" rx="4" fill="${kol('beige')}" stroke="${kol('line')}" stroke-width="1.5"/>
+  <path d="M26 2 C16 2 10 8 10 16 H42 C42 8 36 2 26 2 Z" fill="${kol('beige')}" stroke="${kol('line')}" stroke-width="1.5"/>
+  <line x1="26" y1="26" x2="26" y2="40" stroke="${kol('burgundy')}" stroke-width="2" stroke-linecap="round"/>
+  <line x1="19" y1="31" x2="33" y2="31" stroke="${kol('burgundy')}" stroke-width="2" stroke-linecap="round"/>
+  <rect x="2" y="50" width="48" height="10" rx="3" fill="${kol('line')}"/>
 </svg>`;
 
 function getUpcomingAnniversaries(windowDays) {
@@ -708,7 +717,7 @@ function getUpcomingAnniversaries(windowDays) {
         results.push({
           imie_nazwisko: p.imie_nazwisko,
           lokalizacja: g.lokalizacja,
-          grob_idx: allGroby.indexOf(g),
+          grob_id: g.id,
           yearsAgo,
           annivDateStr: `${d}.${m}`,
           diff
@@ -743,7 +752,7 @@ function renderRoczniceStrip() {
     let badge = '';
     if (isToday) badge = '<div class="roc-today-badge">Dziś</div>';
     else if (isTomorrow) badge = '<div class="roc-today-badge" style="background:var(--copper)">Jutro</div>';
-    const href = r.grob_idx >= 0 ? `grob.html?i=${r.grob_idx}` : '#';
+    const href = r.grob_id ? `grob.html?id=${r.grob_id}` : '#';
     return `<a class="roc-card${isToday ? ' today' : ''}" href="${href}" style="text-decoration:none;display:block">
       ${GRAVE_SVG}
       <div class="roc-sp">Ś.P.</div>
@@ -769,6 +778,44 @@ function renderRoczniceStrip() {
 
 // ── START ─────────────────────────────────────────────────────────────────────
 init();
+
+// ── HAMBURGER MENU ────────────────────────────────────────────────────────────
+(function(){
+  var nav=document.querySelector('nav.main');
+  var toggle=document.querySelector('.menu-toggle');
+  if(!nav||!toggle) return;
+  var overlay=document.createElement('div');
+  overlay.style.cssText='display:none;position:fixed;inset:0;z-index:40;cursor:pointer';
+  document.body.appendChild(overlay);
+  function openNav(){
+    nav.style.cssText='display:flex;position:absolute;top:80px;left:0;right:0;flex-direction:column;background:var(--cream);padding:16px;border-bottom:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.1);z-index:100';
+    overlay.style.display='block';
+  }
+  function closeNav(){
+    nav.style.display='none';
+    overlay.style.display='none';
+    document.querySelectorAll('.dropdown.open').forEach(function(d){d.classList.remove('open');});
+  }
+  toggle.addEventListener('click',function(e){
+    e.stopPropagation();
+    nav.style.display==='flex' ? closeNav() : openNav();
+  });
+  overlay.addEventListener('click', closeNav);
+  document.querySelectorAll('.dropdown > a').forEach(function(trigger){
+    trigger.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var dd=trigger.closest('.dropdown');
+      var wasOpen=dd.classList.contains('open');
+      document.querySelectorAll('.dropdown.open').forEach(function(d){d.classList.remove('open');});
+      if(!wasOpen) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.dropdown'))
+      document.querySelectorAll('.dropdown.open').forEach(function(d){d.classList.remove('open');});
+  });
+})();
 </script>
 </body>
 </html>

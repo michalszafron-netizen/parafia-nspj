@@ -22,13 +22,13 @@
   .btn-sm{padding:5px 12px;border:1px solid var(--line);border-radius:5px;font-size:.82rem;font-weight:600;cursor:pointer;background:var(--cream);color:var(--ink)}
   .btn-sm:hover{background:var(--beige)}
   .btn-sm.btn-primary{background:var(--burgundy);color:#fff;border-color:var(--burgundy)}
-  .btn-sm.btn-primary:hover{background:var(--burgundy-dark,#5e1620)}
+  .btn-sm.btn-primary:hover{background:var(--burgundy-dark)}
   .btn-sm.btn-danger{background:#fde2dd;color:var(--burgundy);border-color:#f5c0bb}
   .btn-sm.btn-danger:hover{background:#f5c0bb}
   .perm-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--cream)}
   .perm-row input[type=checkbox]{margin-top:2px;accent-color:var(--burgundy);flex-shrink:0}
   .perm-row .perm-desc{font-size:.82rem;color:var(--ink-soft);margin-top:2px;line-height:1.4}
-  .perm-rodo{color:#b87a4a;font-weight:600;font-size:.78rem}
+  .perm-rodo{color:var(--copper);font-weight:600;font-size:.78rem}
 </style>
 </head>
 <body>
@@ -601,7 +601,7 @@ function renderIntencjeList(intencje, currentId) {
     var checked = (i.id === currentId) ? 'checked' : '';
     var label   = fmtDate(i.date) + (i.time ? ' · ' + i.time : '') + ' — ' + (i.intention || '(brak opisu)');
     return '<label style="display:flex;align-items:flex-start;gap:10px;padding:7px 6px;border-radius:6px;cursor:pointer;'
-      + (i.id===currentId ? 'background:var(--cream-dark,#f0ece4)' : '') + '">'
+      + (i.id===currentId ? 'background:var(--cream-dark)' : '') + '">'
       + '<input type="radio" name="hp_intencja" value="'+i.id+'" '+checked+' style="margin-top:2px;accent-color:var(--burgundy)" onchange="selectedIntencjaId=this.value;highlightSelected()">'
       + '<span style="font-size:.85rem;line-height:1.4">'+label+'</span></label>';
   }).join('');
@@ -611,7 +611,7 @@ function renderIntencjeList(intencje, currentId) {
 function highlightSelected() {
   document.querySelectorAll('#hp-intencja-list label').forEach(function(el) {
     var inp = el.querySelector('input');
-    el.style.background = inp && inp.checked ? 'var(--cream-dark,#f0ece4)' : '';
+    el.style.background = inp && inp.checked ? 'var(--cream-dark)' : '';
   });
 }
 function clearIntencja() {

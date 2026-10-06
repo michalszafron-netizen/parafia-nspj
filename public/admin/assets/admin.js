@@ -1,3 +1,6 @@
+// Kolor z palety (/admin/assets/kolory.css) — do okien wydruku, które nie mają naszego CSS
+function kol(n){return getComputedStyle(document.documentElement).getPropertyValue('--'+n).trim()}
+
 // Wspólne skrypty panelu admina.
 // Mobilny przełącznik sidebara (off-canvas przy szerokości <=980px).
 (function () {
@@ -56,18 +59,18 @@ window.printBrandedReport = function (opts) {
 
   var html = '<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>'
     + '@page{size:A4 ' + (landscape ? 'landscape' : 'portrait') + ';margin:13mm}'
-    + 'body{font-family:Georgia,\'Times New Roman\',serif;color:#2b2520;margin:0;padding:22px}'
-    + '.rep-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #7a1f2b;padding-bottom:12px}'
+    + 'body{font-family:Georgia,\'Times New Roman\',serif;color:'+kol('ink')+';margin:0;padding:22px}'
+    + '.rep-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid '+kol('burgundy')+';padding-bottom:12px}'
     + '.rep-head img{height:54px}'
-    + '.rep-head .pn{font-size:18px;font-weight:bold;color:#7a1f2b;line-height:1.2}'
-    + '.rep-head .pn small{display:block;font-size:11px;letter-spacing:1.5px;color:#b87a4a;text-transform:uppercase;font-weight:normal;margin-top:2px}'
-    + 'h2{font-size:16px;margin:14px 0 2px;color:#2b2520}'
-    + '.meta{font-size:11px;color:#5a5048;margin-bottom:12px}'
+    + '.rep-head .pn{font-size:18px;font-weight:bold;color:'+kol('burgundy')+';line-height:1.2}'
+    + '.rep-head .pn small{display:block;font-size:11px;letter-spacing:1.5px;color:'+kol('copper')+';text-transform:uppercase;font-weight:normal;margin-top:2px}'
+    + 'h2{font-size:16px;margin:14px 0 2px;color:'+kol('ink')+'}'
+    + '.meta{font-size:11px;color:'+kol('ink-soft')+';margin-bottom:12px}'
     + 'table{width:100%;border-collapse:collapse;font-size:10.5px}'
-    + 'th{background:#7a1f2b;color:#fff;text-align:left;padding:6px 8px;font-weight:bold;border:1px solid #5e1620}'
-    + 'td{padding:5px 8px;border:1px solid #d8cdb6;vertical-align:top}'
-    + 'tbody tr:nth-child(even){background:#f4ede0}'
-    + '.foot{margin-top:16px;border-top:1px solid #d8cdb6;padding-top:8px;font-size:10px;color:#5a5048;display:flex;justify-content:space-between;gap:12px}'
+    + 'th{background:'+kol('burgundy')+';color:#fff;text-align:left;padding:6px 8px;font-weight:bold;border:1px solid '+kol('burgundy-dark')+'}'
+    + 'td{padding:5px 8px;border:1px solid '+kol('line')+';vertical-align:top}'
+    + 'tbody tr:nth-child(even){background:'+kol('beige')+'}'
+    + '.foot{margin-top:16px;border-top:1px solid '+kol('line')+';padding-top:8px;font-size:10px;color:'+kol('ink-soft')+';display:flex;justify-content:space-between;gap:12px}'
     + '</style></head><body>'
     + '<div class="rep-head"><img src="' + logo + '" alt=""><div class="pn">Parafia Najświętszego Serca Pana Jezusa<small>Czerwionka-Leszczyny</small></div></div>'
     + '<h2>' + esc(title) + '</h2>'
@@ -105,42 +108,40 @@ window.printZgloszeniePogrzebuDoc = function (d) {
   var todayStr = today.getDate()+'.'+(today.getMonth()+1)+'.'+today.getFullYear();
 
   var logoHtml = logoSrc
-    ? '<img src="'+logoSrc+'" alt="Herb parafii" style="width:58px;height:58px;object-fit:contain;flex-shrink:0">'
-    : '<div style="width:58px;height:58px;border:1pt solid #aaa;border-radius:50%;flex-shrink:0"></div>';
+    ? '<img src="'+logoSrc+'" alt="Herb parafii" style="width:44px;height:44px;object-fit:contain;flex-shrink:0">'
+    : '<div style="width:44px;height:44px;border:1pt solid #aaa;border-radius:50%;flex-shrink:0"></div>';
 
   var css =
-    '@page{margin:15mm 20mm}'+
-    'body{font-family:"Times New Roman",Times,serif;font-size:11.5pt;color:#000;background:#fff;margin:0}'+
-    '.wrap{max-width:168mm;margin:0 auto}'+
-    '.hdr{display:flex;align-items:center;gap:6mm;border-bottom:1.5pt solid #000;padding-bottom:5mm;margin-bottom:7mm}'+
-    '.hdr-logo{flex-shrink:0}'+
-    '.hdr-text{flex:1;text-align:center}'+
-    '.hdr-text .rz{font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 2mm}'+
-    '.hdr-text .name{font-size:14pt;font-weight:bold;margin:0 0 1.5mm}'+
-    '.hdr-text .city{font-size:8.5pt;text-transform:uppercase;letter-spacing:2px;color:#333;margin:0}'+
-    '.hdr-spacer{width:58px;flex-shrink:0}'+
-    '.doc-title{text-align:center;font-size:15pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;margin:6mm 0 8mm;border-bottom:1pt solid #aaa;padding-bottom:4mm}'+
-    '.field{display:flex;align-items:flex-end;margin-bottom:6mm}'+
-    '.fl{font-size:10pt;min-width:60mm;flex-shrink:0;padding-right:3mm;line-height:1.3}'+
-    '.fv{flex:1;border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
-    '.field-pogrzeb{display:flex;align-items:flex-end;margin-bottom:6mm}'+
-    '.field-pogrzeb .fl{min-width:60mm}'+
-    '.field-pogrzeb .fv-date{border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;width:50mm;flex-shrink:0;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
-    '.field-pogrzeb .sep{padding:0 4mm 1.5mm;font-size:10pt;flex-shrink:0}'+
-    '.field-pogrzeb .fv-godz{border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;width:22mm;flex-shrink:0;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
-    '.cmt-head{display:flex;align-items:flex-end;margin-bottom:3mm}'+
-    '.cmt-grid{display:flex;gap:6mm;margin-bottom:6mm}'+
+    '@page{margin:0;size:A4 portrait}'+
+    'body{font-family:"Times New Roman",Times,serif;font-size:10.5pt;color:#000;background:#fff;margin:0;padding:22px 36px}'+
+    '.hdr{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:3pt solid '+kol('burgundy')+';padding-bottom:10px;margin-bottom:16px}'+
+    '.hdr-left{display:flex;align-items:center;gap:9px}'+
+    '.hdr-left img{height:34px;flex-shrink:0}'+
+    '.hdr-title{font-size:13px;letter-spacing:1.5px;color:'+kol('burgundy')+';font-weight:700;margin:0;text-transform:uppercase;max-width:130px}'+
+    '.hdr-right{text-align:right;font-size:8.5px;color:'+kol('ink-soft')+';line-height:1.55;flex-shrink:0;min-width:220px}'+
+    '.hdr-right .par-name{font-weight:600}'+
+    '.doc-title{text-align:center;font-size:13pt;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;margin:4mm 0 5mm;border-bottom:1.5pt solid '+kol('burgundy')+';padding-bottom:2.5mm;color:'+kol('ink')+'}'+
+    '.field{display:flex;align-items:flex-end;margin-bottom:5mm}'+
+    '.fl{font-size:9.5pt;min-width:52mm;flex-shrink:0;padding-right:3mm;line-height:1.3;color:'+kol('burgundy')+';font-style:italic}'+
+    '.fv{flex:1;border-bottom:1pt solid '+kol('burgundy')+';padding:0 2mm 1mm;font-size:10.5pt;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
+    '.field-pogrzeb{display:flex;align-items:flex-end;margin-bottom:5mm}'+
+    '.field-pogrzeb .fl{min-width:52mm}'+
+    '.field-pogrzeb .fv-date{border-bottom:1pt solid '+kol('burgundy')+';padding:0 2mm 1mm;font-size:10.5pt;width:26mm;flex-shrink:0;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
+    '.field-pogrzeb .sep{padding:0 3mm 1.5mm;font-size:9.5pt;flex-shrink:0}'+
+    '.field-pogrzeb .fv-godz{border-bottom:1pt solid '+kol('burgundy')+';padding:0 2mm 1mm;font-size:10.5pt;width:20mm;flex-shrink:0;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box}'+
+    '.cmt-head{display:flex;align-items:flex-end;margin-bottom:2.5mm}'+
+    '.cmt-grid{display:flex;gap:5mm;margin-bottom:5mm}'+
     '.ci{flex:1}'+
-    '.ci .cl{font-size:8.5pt;margin-bottom:1.5mm;color:#333}'+
-    '.ci .cv{border-bottom:1pt solid #555;padding:0 2mm 1mm;font-size:11pt;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box;width:100%}'+
-    '.sig{display:flex;justify-content:space-between;align-items:flex-end;margin-top:15mm}'+
+    '.ci .cl{font-size:8pt;margin-bottom:1mm;color:'+kol('burgundy')+';font-style:italic}'+
+    '.ci .cv{border-bottom:1pt solid '+kol('burgundy')+';padding:0 2mm 1mm;font-size:10.5pt;background:transparent;border-top:none;border-left:none;border-right:none;font-family:"Times New Roman",Times,serif;color:#000;outline:none;box-sizing:border-box;width:100%}'+
+    '.sig{display:flex;justify-content:space-between;align-items:flex-end;margin-top:12mm}'+
     '.sig-note{font-size:8.5pt;color:#666}'+
     '.sig-r{text-align:center}'+
     '.sig-r .sl{border-top:1pt solid #000;width:68mm;margin-bottom:2mm}'+
     '.sig-r .slb{font-size:8.5pt}'+
-    '.print-btn{position:fixed;top:14px;right:14px;background:#7a1f2b;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:999}'+
+    '.print-btn{position:fixed;top:14px;right:14px;background:'+kol('burgundy')+';color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:999}'+
     '.print-btn:hover{background:#9a2f3b}'+
-    '@media print{.print-btn{display:none!important}}';
+    '@media print{.print-btn{display:none!important}body{padding:8mm 14mm 6mm}}';
 
   var html =
     '<!DOCTYPE html><html lang="pl"><head><meta charset="utf-8">'+
@@ -149,15 +150,9 @@ window.printZgloszeniePogrzebuDoc = function (d) {
     '<button class="print-btn" onclick="window.print()">🖨️ Drukuj / PDF</button>'+
     '<div class="wrap">'+
     '<div class="hdr">'+
-      '<div class="hdr-logo">'+logoHtml+'</div>'+
-      '<div class="hdr-text">'+
-        '<p class="rz">Parafia Rzymskokatolicka</p>'+
-        '<p class="name">Najświętszego Serca Pana Jezusa</p>'+
-        '<p class="city">Czerwionka-Leszczyny</p>'+
-      '</div>'+
-      '<div class="hdr-spacer"></div>'+
+      '<div class="hdr-left"><img src="'+logoSrc+'" alt="" style="height:34px;flex-shrink:0"><div><p class="hdr-title">Zgłoszenie Pogrzebu</p></div></div>'+
+      '<div class="hdr-right"><div class="par-name">Parafia pw. Najświętszego Serca Pana Jezusa</div><div style="font-weight:600">ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny</div><div>tel. 32 43 12 992</div></div>'+
     '</div>'+
-    '<div class="doc-title">Zgłoszenie Pogrzebu</div>'+
     '<div class="field"><div class="fl">Nazwisko i Imię</div><input type="text" class="fv" value="'+v(imieNazwisko)+'"></div>'+
     '<div class="field"><div class="fl">Data Zgonu</div><input type="text" class="fv" value="'+v(fmtDate(d.data_zgonu))+'"></div>'+
     '<div class="field-pogrzeb">'+
@@ -214,14 +209,14 @@ window.printSwiadectwoChrztuDoc = function (d) {
   var css=
     '@page{size:A4 landscape;margin:7mm 10mm}'+
     'body{font-family:"Times New Roman",Times,serif;font-size:9pt;color:#000;background:#fff;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+
-    '.cert{width:100%;box-sizing:border-box;border:2.5pt double #7a1f2b;padding:0}'+
-    '.cert-inner{border:1pt solid #b87a4a;margin:2.5pt;padding:4mm 6mm 3.5mm}'+
-    '.cert-head{display:flex;align-items:flex-start;gap:5mm;margin-bottom:3mm;padding-bottom:2.5mm;border-bottom:1pt solid #7a1f2b}'+
-    '.seal-box{flex-shrink:0;width:30mm;min-height:26mm;border:1pt solid #aaa;border-radius:3pt;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2mm;padding:2mm;text-align:center}'+
-    '.seal-box img{width:28px;height:28px;object-fit:contain}'+
+    '.cert{width:100%;box-sizing:border-box;border:2.5pt double '+kol('burgundy')+';padding:0}'+
+    '.cert-inner{border:1pt solid '+kol('copper')+';margin:2.5pt;padding:4mm 6mm 3.5mm}'+
+    '.cert-head{display:flex;align-items:flex-start;gap:5mm;margin-bottom:3mm;padding-bottom:2.5mm;border-bottom:1pt solid '+kol('burgundy')+'}'+
+    '.seal-box{flex-shrink:0;width:56mm;height:24mm;border:1pt solid #aaa;border-radius:3pt;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5mm;padding:3mm 6mm;text-align:center}'+
+    '.seal-box img{width:22px;height:22px;object-fit:contain}'+
     '.seal-box small{font-size:6.5pt;color:#888;letter-spacing:.3px}'+
     '.title-block{flex:1}'+
-    '.title-block .main-title{font-family:Georgia,"Times New Roman",serif;font-size:16pt;font-weight:bold;letter-spacing:.8px;color:#7a1f2b;line-height:1;margin-bottom:1mm}'+
+    '.title-block .main-title{font-family:Georgia,"Times New Roman",serif;font-size:16pt;font-weight:bold;letter-spacing:.8px;color:'+kol('burgundy')+';line-height:1;margin-bottom:1mm}'+
     '.title-block .subtitle{font-size:7pt;color:#555;font-style:italic;margin-bottom:2.5mm;line-height:1.3}'+
     '.title-block .ksiega-row{font-size:8.5pt;display:flex;align-items:baseline;gap:2mm}'+
     '.title-block .ksiega-row span{font-weight:bold}'+
@@ -234,7 +229,7 @@ window.printSwiadectwoChrztuDoc = function (d) {
     '.fval{display:block;margin-top:1mm}'+
     '.wyznanie-block{flex-shrink:0;min-width:33mm}'+
     '.wyznanie-block .flabel{font-size:8.5pt}'+
-    '.cert-footer{margin-top:3mm;padding-top:2.5mm;border-top:1pt solid #7a1f2b;display:flex;align-items:flex-end;gap:5mm}'+
+    '.cert-footer{margin-top:3mm;padding-top:2.5mm;border-top:1pt solid '+kol('burgundy')+';display:flex;align-items:flex-end;gap:5mm}'+
     '.footer-confirm{flex:1;font-size:7pt;font-style:italic;color:#333;line-height:1.3}'+
     '.footer-confirm strong{font-size:8.5pt;font-style:normal;font-weight:bold;color:#000}'+
     '.footer-miejsce{flex:1}'+
@@ -243,7 +238,7 @@ window.printSwiadectwoChrztuDoc = function (d) {
     '.footer-sig{flex:1;text-align:center}'+
     '.footer-sig .sig-line{border-top:1pt solid #000;margin:0 auto 1.5mm;width:50mm}'+
     '.footer-sig .sig-lbl{font-size:7.5pt}'+
-    '.print-btn{position:fixed;top:14px;right:14px;background:#7a1f2b;color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:999}'+
+    '.print-btn{position:fixed;top:14px;right:14px;background:'+kol('burgundy')+';color:#fff;border:none;padding:9px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.3);z-index:999}'+
     '@media print{.print-btn{display:none!important}}';
 
   var html=

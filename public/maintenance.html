@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Prace konserwacyjne — Parafia NSPJ Czerwionka-Leszczyny</title>
@@ -10,7 +11,7 @@
   body {
     font-family: Georgia, 'Times New Roman', serif;
     background: #faf7f3;
-    color: #2b2520;
+    color: var(--ink);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -32,7 +33,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 28px;
-    box-shadow: 0 4px 24px rgba(122,31,43,.1);
+    box-shadow: 0 4px 24px rgba(var(--burgundy-rgb),.1);
   }
   .logo-ring img {
     width: 64px;
@@ -45,20 +46,20 @@
     font-weight: 600;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: #b87a4a;
+    color: var(--copper);
     margin-bottom: 6px;
   }
   .title {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 28px;
     font-weight: 700;
-    color: #7a1f2b;
+    color: var(--burgundy);
     margin-bottom: 8px;
     line-height: 1.2;
   }
   .subtitle {
     font-size: 14px;
-    color: #5a5048;
+    color: var(--ink-soft);
     margin-bottom: 32px;
     line-height: 1.6;
   }
@@ -78,18 +79,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #b87a4a;
+    color: var(--copper);
     margin-bottom: 12px;
   }
   .card h3 {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 15px;
-    color: #7a1f2b;
+    color: var(--burgundy);
     margin-bottom: 6px;
   }
   .card p {
     font-size: 13.5px;
-    color: #5a5048;
+    color: var(--ink-soft);
     line-height: 1.65;
   }
   .contact {
@@ -99,7 +100,7 @@
     margin-top: 10px;
   }
   .contact a {
-    color: #7a1f2b;
+    color: var(--burgundy);
     text-decoration: none;
     font-size: 13.5px;
     font-weight: 600;
@@ -120,7 +121,7 @@
   .cross {
     width: 28px;
     height: 28px;
-    fill: #b87a4a;
+    fill: var(--copper);
   }
 </style>
 </head>

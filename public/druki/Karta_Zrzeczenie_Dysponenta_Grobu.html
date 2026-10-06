@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prośba o Likwidację Grobu — Parafia NSPJ Czerwionka-Leszczyny</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--ink); background: #fff;
+  padding: 22px 36px; font-size: 11pt; line-height: 1.55;
+}
+
+/* ── Nagłówek — styl intencje/ogłoszenia ── */
+.head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; border-bottom: 3px solid var(--burgundy);
+  padding-bottom: 10px; margin-bottom: 20px;
+}
+.head-left { display: flex; align-items: center; gap: 9px; }
+.head-left img { height: 34px; flex-shrink: 0; }
+.head-title {
+  font-size: 11px; letter-spacing: 1.5px; color: var(--burgundy);
+  font-weight: 700; margin: 0; text-transform: uppercase; max-width: 155px;
+}
+.head-right {
+  text-align: right; font-size: 8.5px; color: var(--ink-soft);
+  line-height: 1.55; flex-shrink: 0; min-width: 220px;
+}
+.head-right .par-name { font-weight: 600; }
+
+/* ── Tytuł dokumentu ── */
+.doc-title {
+  text-align: center; font-size: 15pt; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--ink); margin: 10px 0 24px;
+}
+
+/* ── Pola formularza ── */
+.field { margin-bottom: 18px; }
+.field-label { font-size: 10pt; color: var(--ink-soft); margin-bottom: 2px; }
+.field-line {
+  border: none; border-bottom: 1pt solid var(--burgundy);
+  width: 100%; padding: 2px 4px 2px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 11pt; color: var(--ink); background: transparent;
+  outline: none;
+}
+
+/* Śp. pole inline */
+.sp-row { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 18px; }
+.sp-label { font-size: 11pt; flex-shrink: 0; padding-bottom: 3px; }
+.sp-line {
+  flex: 1; border: none; border-bottom: 1pt solid var(--burgundy);
+  padding: 2px 4px 2px; font-family: Georgia, 'Times New Roman', serif;
+  font-size: 11pt; color: var(--ink); background: transparent; outline: none;
+}
+
+/* Lokalizacja grobu — 3 pola w rzędzie */
+.lok-row { display: flex; align-items: flex-end; gap: 0; margin-bottom: 18px; }
+.lok-label { font-size: 11pt; flex-shrink: 0; padding-bottom: 3px; margin-right: 6px; }
+.lok-item { display: flex; align-items: flex-end; gap: 6px; margin-right: 18px; }
+.lok-item-label { font-size: 11pt; flex-shrink: 0; padding-bottom: 3px; }
+.lok-item-line {
+  border: none; border-bottom: 1pt solid var(--burgundy);
+  padding: 2px 4px 2px; font-family: Georgia, 'Times New Roman', serif;
+  font-size: 11pt; color: var(--ink); background: transparent; outline: none;
+}
+.lok-item-line.sektor { width: 40px; }
+.lok-item-line.rzad   { width: 40px; }
+.lok-item-line.miejsce { width: 36px; }
+
+/* Sekcja — nagłówek */
+.section-head {
+  font-size: 10pt; font-weight: 700; color: var(--ink);
+  margin: 22px 0 12px;
+}
+
+/* Podpisy */
+.sigs {
+  display: flex; justify-content: space-between;
+  margin-top: 48px;
+}
+.sig { text-align: center; }
+.sig-line {
+  border-top: 1pt solid var(--ink);
+  width: 160px; margin: 0 auto 4px;
+}
+.sig-label { font-size: 9pt; color: var(--ink-soft); }
+
+/* Przycisk druku */
+.print-btn {
+  position: fixed; top: 14px; right: 14px;
+  background: var(--burgundy); color: #fff; border: none;
+  padding: 9px 18px; border-radius: 6px; font-size: 13px;
+  cursor: pointer; font-family: Arial, sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,.3); z-index: 999;
+}
+.print-btn:hover { background: var(--burgundy-dark); }
+
+@media print {
+  .print-btn { display: none !important; }
+  body { padding: 8mm 14mm 6mm; }
+}
+@page { margin: 0; size: A4 portrait; }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Drukuj / PDF</button>
+
+<!-- Nagłówek -->
+<div class="head">
+  <div class="head-left">
+    <img src="/public/img/logo1.png" alt="Logo parafii">
+    <div><p class="head-title">Prośba o likwidację grobu</p></div>
+  </div>
+  <div class="head-right">
+    <div class="par-name">Parafia pw. Najświętszego Serca Pana Jezusa</div>
+    <div style="font-weight:600">ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny</div>
+    <div>tel. 32 43 12 992</div>
+  </div>
+</div>
+
+<!-- Tytuł -->
+<div class="doc-title">Proszę o likwidację grobu</div>
+
+<!-- Śp. -->
+<div class="sp-row">
+  <span class="sp-label">Śp.</span>
+  <input type="text" class="sp-line" placeholder="imię i nazwisko zmarłego...">
+</div>
+
+<!-- Data zgonu -->
+<div class="field">
+  <div class="field-label">Data zgonu:</div>
+  <input type="text" class="field-line" style="max-width:200px" placeholder="DD.MM.RRRR">
+</div>
+
+<!-- Lokalizacja grobu -->
+<div class="lok-row">
+  <span class="lok-label">Lokalizacja grobu:</span>
+  <div class="lok-item">
+    <span class="lok-item-label">sektor:</span>
+    <input type="text" class="lok-item-line sektor">
+  </div>
+  <div class="lok-item">
+    <span class="lok-item-label">rząd:</span>
+    <input type="text" class="lok-item-line rzad">
+  </div>
+  <div class="lok-item">
+    <span class="lok-item-label">miejsce:</span>
+    <input type="text" class="lok-item-line miejsce">
+  </div>
+</div>
+
+<!-- Dane opiekuna grobu -->
+<div class="section-head">Dane opiekuna grobu:</div>
+
+<div class="field">
+  <div class="field-label">Imię i nazwisko</div>
+  <input type="text" class="field-line">
+</div>
+
+<div class="field">
+  <div class="field-label">Adres</div>
+  <input type="text" class="field-line">
+</div>
+
+<!-- Podpisy -->
+<div class="sigs">
+  <div class="sig">
+    <div class="sig-line"></div>
+    <div class="sig-label">Podpis Opiekuna</div>
+  </div>
+  <div class="sig">
+    <div class="sig-line" style="width:220px"></div>
+    <div class="sig-label">Podpis Administratora Cmentarza</div>
+  </div>
+</div>
+
+</body>
+</html>

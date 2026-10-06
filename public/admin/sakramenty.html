@@ -39,7 +39,7 @@
   .modal-form .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
   .modal-form label{font-size:.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:3px}
   .modal-form input,.modal-form select,.modal-form textarea{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.88rem;width:100%;background:var(--white);box-sizing:border-box}
-  .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .modal-form input:focus,.modal-form select:focus,.modal-form textarea:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.18)}
   .modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
 
   /* Del banner */
@@ -197,7 +197,7 @@ function showToast(msg){var t=document.getElementById('sak-toast');t.textContent
 
 // ─── Stats ────────────────────────────────────────────────────────────────
 function renderStats(){
-  var rok=2026;
+  var rok=new Date().getFullYear();
   var bierz=allData.filter(function(d){return d.type==='bierzmowanie'&&d.rok===rok;});
   var gotowych=bierz.filter(function(d){return d.status==='gotowy';}).length;
   var chrz=allData.filter(function(d){return d.type==='chrzciny'&&d.rok===rok;});
@@ -291,7 +291,7 @@ function buildFilterOptions(){
   var yearList=Object.keys(years).sort(function(a,b){return b-a;});
   var ysel=document.getElementById('sak-year');
   ysel.innerHTML='<option value="">Wszystkie lata</option>'+yearList.map(function(y){return '<option value="'+y+'">'+y+'</option>';}).join('');
-  ysel.value=yearList.includes(currentYear)?currentYear:'';
+  ysel.value='';
 
   var ssel=document.getElementById('sak-status');
   ssel.innerHTML='<option value="">Każdy status</option>'+Object.keys(STATUS_LABELS).map(function(k){return '<option value="'+k+'">'+STATUS_LABELS[k].l+'</option>';}).join('');

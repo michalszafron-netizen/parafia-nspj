@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Karta Dysponenta Grobu — Parafia NSPJ Czerwionka-Leszczyny</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    background: #fff;
+    padding: 28px 38px;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-bottom: 3px solid var(--burgundy);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .head img { height: 64px; width: 64px; object-fit: contain; }
+  .head-text { flex: 1; }
+  .head-title { font-family: 'Playfair Display', Georgia, serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--burgundy); }
+  .head-parish { font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: 0.5px; margin: 1px 0; }
+  .head-address { font-size: 10.5px; color: var(--ink-soft); }
+
+  .doc-title {
+    text-align: center;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px; font-weight: 700; color: var(--burgundy);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin: 16px 0 18px;
+  }
+
+  .section { margin-bottom: 16px; border: 1.5px solid #c9baa8; border-radius: 2px; }
+  .section-head {
+    background: var(--burgundy); color: #fff;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    padding: 6px 12px; text-align: center;
+  }
+
+  .field-row { display: flex; gap: 0; border-bottom: 1px solid #e0d5c7; }
+  .field-row:last-child { border-bottom: none; }
+  .field {
+    flex: 1;
+    padding: 6px 8px 5px;
+    border-right: 1px solid #e0d5c7;
+    min-height: 38px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .field:last-child { border-right: none; }
+  .field-label {
+    font-size: 9px; font-weight: 700; color: var(--burgundy);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  /* ── Inputy ── */
+  .field input, .field select {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #c9baa8;
+    background: transparent;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 12px;
+    color: var(--ink);
+    padding: 2px 1px 1px;
+    outline: none;
+    flex: 1;
+  }
+  .field input:focus { border-bottom-color: var(--burgundy); background: #fffaf7; }
+  .field input::placeholder { color: #c9baa8; font-style: italic; font-size: 10.5px; }
+
+  /* ── Tabela pochowanych ── */
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl th {
+    background: var(--burgundy); color: #fff;
+    font-size: 10.5px; font-weight: 700; padding: 7px 10px;
+    text-align: left; letter-spacing: 0.3px;
+    border-right: 1px solid rgba(255,255,255,.3);
+  }
+  .tbl th:last-child { border-right: none; }
+  .tbl td { border: 1px solid var(--line); padding: 0; }
+  .tbl tr:nth-child(odd) td { background: #faf7f3; }
+  .tbl td input {
+    width: 100%; height: 100%;
+    border: none; background: transparent;
+    padding: 5px 8px;
+    font-family: Georgia, serif; font-size: 11.5px; color: var(--ink);
+    outline: none; display: block; min-height: 26px;
+  }
+  .tbl td input:focus { background: #fffaf7; }
+
+  /* ── Deklaracja ── */
+  .decl { margin: 18px 0 14px; font-size: 11.5px; line-height: 1.7; color: #3a3028; }
+  .decl p { margin-bottom: 8px; }
+
+  /* ── Podpisy ── */
+  .sigs { display: flex; gap: 40px; margin-top: 32px; margin-bottom: 18px; }
+  .sig { flex: 1; text-align: center; }
+  .sig-line { border-bottom: 1.5px dotted var(--burgundy); height: 1px; margin-bottom: 6px; }
+  .sig-label { font-size: 10.5px; color: var(--ink-soft); font-style: italic; }
+
+  .separator { border: none; border-top: 1.5px solid #c9baa8; margin: 16px 0; }
+  .rodo { font-size: 11px; color: #3a3028; line-height: 1.65; margin-bottom: 28px; }
+
+  .foot { border-top: 1.5px solid #c9baa8; padding-top: 8px; text-align: center; font-size: 10px; color: var(--ink-soft); margin-top: 8px; }
+  .foot span { color: var(--copper); font-weight: 600; }
+
+  /* ── Przycisk ── */
+  .print-btn {
+    position: fixed; top: 18px; right: 22px;
+    background: var(--burgundy); color: #fff;
+    border: none; padding: 9px 20px; border-radius: 6px;
+    font-size: 13px; font-family: Georgia, serif;
+    cursor: pointer; box-shadow: 0 3px 12px rgba(var(--burgundy-rgb),.35); z-index: 100;
+  }
+  .print-btn:hover { background: var(--burgundy-dark); }
+
+  @page { margin: 0; size: A4 portrait; }
+  .section-head, .tbl th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* ── Druk: inputy wyglądają jak zwykły tekst ── */
+  @media print {
+    body { padding: 8mm 14mm 6mm; }
+    .no-print { display: none !important; }
+    .field input, .field select { border-bottom: none; background: transparent !important; }
+    .tbl td input { background: transparent !important; }
+    .field input:focus, .tbl td input:focus { background: transparent !important; }
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖶 Drukuj / PDF</button>
+
+<div class="head">
+  <img src="/public/img/logo1.png" alt="Logo NSPJ">
+  <div class="head-text">
+    <div class="head-title">Parafia Rzymskokatolicka</div>
+    <div class="head-parish">Najświętszego Serca Pana Jezusa</div>
+    <div class="head-address">ul. 3 Maja 36 &nbsp;·&nbsp; 44-230 Czerwionka-Leszczyny &nbsp;·&nbsp; tel. 32 43 12 992</div>
+  </div>
+</div>
+
+<div class="doc-title">Karta Dysponenta Grobu</div>
+
+<!-- Dane dysponenta -->
+<div class="section">
+  <div class="section-head">Dane dysponenta</div>
+  <div style="padding:0">
+    <div class="field-row">
+      <div class="field">
+        <span class="field-label">Imię</span>
+        <input type="text" placeholder="wpisz imię…">
+      </div>
+      <div class="field">
+        <span class="field-label">Nazwisko</span>
+        <input type="text" placeholder="wpisz nazwisko…">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field" style="flex:2">
+        <span class="field-label">Adres zamieszkania</span>
+        <input type="text" placeholder="ulica, nr domu, kod pocztowy, miejscowość…">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <span class="field-label">Nr telefonu</span>
+        <input type="text" placeholder="np. 500 000 000">
+      </div>
+      <div class="field">
+        <span class="field-label">E-mail</span>
+        <input type="text" placeholder="">
+      </div>
+      <div class="field">
+        <span class="field-label">PESEL</span>
+        <input type="text" placeholder="" maxlength="11">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dane grobu -->
+<div class="section">
+  <div class="section-head">Dane grobu</div>
+  <div style="padding:0">
+    <div class="field-row">
+      <div class="field">
+        <span class="field-label">Sektor</span>
+        <input type="text" placeholder="np. A">
+      </div>
+      <div class="field">
+        <span class="field-label">Rząd</span>
+        <input type="text" placeholder="np. 3">
+      </div>
+      <div class="field">
+        <span class="field-label">Kwatera (nr grobu)</span>
+        <input type="text" placeholder="np. 12">
+      </div>
+      <div class="field" style="flex:2">
+        <span class="field-label">Dzierżawa grobu opłacona do</span>
+        <input type="text" placeholder="np. 31.12.2030">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field" style="flex:2">
+        <span class="field-label">Typ grobu</span>
+        <input type="text" placeholder="np. ziemny, murowany…">
+      </div>
+      <div class="field" style="flex:3">
+        <span class="field-label">Nr archiwalny</span>
+        <input type="text" placeholder="">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dane pochowanych -->
+<div class="section">
+  <div class="section-head">Dane pochowanych</div>
+  <div style="padding:0">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:22%">Imię</th>
+          <th style="width:25%">Nazwisko</th>
+          <th style="width:26%">Data urodzenia</th>
+          <th style="width:27%">Data śmierci</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text" placeholder="DD.MM.RRRR"></td><td><input type="text" placeholder="DD.MM.RRRR"></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text" placeholder="DD.MM.RRRR"></td><td><input type="text" placeholder="DD.MM.RRRR"></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text" placeholder="DD.MM.RRRR"></td><td><input type="text" placeholder="DD.MM.RRRR"></td></tr>
+        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text" placeholder="DD.MM.RRRR"></td><td><input type="text" placeholder="DD.MM.RRRR"></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Deklaracja -->
+<div class="decl">
+  <p>Potwierdzam ustanowienie mnie dysponentem grobu zgodnie z powyższymi danymi.</p>
+  <p>Jednocześnie oświadczam, iż zapoznałem/-am się z Regulaminem Cmentarza Parafii NSPJ w Czerwionce-Leszczynach i zgadzam się z jego postanowieniami oraz zobowiązuję się go przestrzegać.</p>
+  <p>Oświadczam, że jestem jedynym dysponentem grobu. Oświadczam, że nikt nie rości sobie praw do stania się dysponentem grobu i nie wnosi zastrzeżeń do ustanowienia mojej osoby dysponentem grobu.</p>
+</div>
+
+<div class="sigs">
+  <div class="sig">
+    <div class="sig-line"></div>
+    <div class="sig-label">Podpis dysponenta</div>
+  </div>
+  <div class="sig">
+    <div class="sig-line"></div>
+    <div class="sig-label">Podpis i pieczęć zarządcy cmentarza</div>
+  </div>
+</div>
+
+<hr class="separator">
+
+<div class="rodo">
+  <p>Wyrażam zgodę na przetwarzanie moich danych osobowych przez administratora cmentarza — Parafię Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach, ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny, w celach związanych z prowadzeniem ewidencji cmentarza, zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO) z dnia 27 kwietnia 2016 r.</p>
+</div>
+
+<div class="sigs" style="margin-top:10px">
+  <div class="sig" style="flex:0.7">
+    <div class="sig-line"></div>
+    <div class="sig-label">Data</div>
+  </div>
+  <div class="sig">
+    <div class="sig-line"></div>
+    <div class="sig-label">Podpis dysponenta</div>
+  </div>
+</div>
+
+<div class="foot">
+  Parafia Najświętszego Serca Pana Jezusa &nbsp;·&nbsp; ul. 3 Maja 36, 44-230 Czerwionka-Leszczyny &nbsp;·&nbsp; tel. <span>32 43 12 992</span>
+</div>
+
+</body>
+</html>

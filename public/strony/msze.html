@@ -1,6 +1,7 @@
 ﻿<!doctype html>
 <html lang="pl">
 <head>
+<link rel="stylesheet" href="/admin/assets/kolory.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Msze Święte i Intencje mszalne · Parafia NSPJ Czerwionka-Leszczyny</title>
@@ -44,7 +45,7 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root{--beige:#f4ede0;--beige-deep:#ebe1cd;--cream:#faf6ee;--burgundy:#7a1f2b;--burgundy-dark:#5e1620;--copper:#b87a4a;--copper-light:#d6a572;--ink:#2b2520;--ink-soft:#5a5048;--line:#d8cdb6;--white:#ffffff}
+  
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:90px} body{margin:0;padding:0}
   body{font-family:'Lato',sans-serif;color:var(--ink);background:var(--beige);line-height:1.65}
@@ -57,9 +58,9 @@
 
   /* HEADER kopia z index */
   .sticky-header{position:sticky;top:0;z-index:50}
-  .topbar{background:var(--burgundy-dark);color:#e8d9b8;font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
+  .topbar{background:var(--burgundy-dark);color:var(--beige);font-size:.82rem;line-height:1;min-height:40px;display:flex;align-items:center}
   .topbar .container,.topbar .container-wide{display:flex;justify-content:space-between;align-items:center;width:100%;padding:4px 24px;gap:12px}
-  .topbar a{color:#e8d9b8;text-decoration:none;display:inline-flex;align-items:center}
+  .topbar a{color:var(--beige);text-decoration:none;display:inline-flex;align-items:center}
   .topbar a:hover{color:#fff}
   .topbar .left,.topbar .right{display:flex;gap:18px;align-items:center}
   .topbar svg{flex-shrink:0;margin-right:6px}
@@ -80,10 +81,10 @@
   nav.main a{padding:10px 12px;font-weight:400;font-size:.9rem;color:var(--ink);border-radius:6px;transition:background .15s;position:relative;white-space:nowrap;text-decoration:none}
   nav.main a:hover{background:var(--beige);text-decoration:none}
   nav.main a.has-sub::after{content:"▾";font-size:.7rem;margin-left:6px;color:var(--copper)}
-  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,217,184,.35);color:#e8d9b8;transition:all .15s;margin-left:4px;text-decoration:none}
-  .topbar-admin:hover{background:rgba(232,217,184,.15);border-color:rgba(232,217,184,.7);color:#fff}
+  .topbar-admin{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--beige-rgb),.35);color:var(--beige);transition:all .15s;margin-left:4px;text-decoration:none}
+  .topbar-admin:hover{background:rgba(var(--beige-rgb),.15);border-color:rgba(var(--beige-rgb),.7);color:#fff}
   .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:8px}
-  .topbar-btn-wsparcie{background:#e8d9b8;color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;transition:all .15s;white-space:nowrap}
+  .topbar-btn-wsparcie{background:var(--beige);color:var(--burgundy-dark)!important;font-weight:700;padding:5px 14px;border-radius:4px;font-size:.82rem;transition:all .15s;white-space:nowrap}
   .topbar-btn-wsparcie:hover{background:#fff;text-decoration:none!important}
   .dropdown{position:relative}
   .dropdown-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--cream);border:1px solid var(--line);border-radius:8px;min-width:230px;z-index:200;box-shadow:0 8px 32px rgba(43,37,32,.14);padding:6px 0}
@@ -92,10 +93,10 @@
   .dropdown-menu a:hover{background:var(--beige);text-decoration:none}
   .dropdown-menu hr{border:none;border-top:1px solid var(--line);margin:4px 12px}
   .footer-social{display:flex;gap:10px;margin-top:18px}
-  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(246,233,211,.06);border:1px solid rgba(246,233,211,.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
-  .footer-social a:hover{background:rgba(246,233,211,.14);border-color:rgba(246,233,211,.4);color:#f6e9d3;text-decoration:none}
+  .footer-social a{width:36px;height:36px;border-radius:50%;background:rgba(var(--cream-rgb),.06);border:1px solid rgba(var(--cream-rgb),.15);display:grid;place-items:center;color:var(--copper-light);transition:all .15s}
+  .footer-social a:hover{background:rgba(var(--cream-rgb),.14);border-color:rgba(var(--cream-rgb),.4);color:var(--cream);text-decoration:none}
   .footer-social .social-badge{position:absolute;bottom:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:var(--burgundy);border:1.5px solid var(--ink);display:grid;place-items:center}
-  .footer-social .social-badge svg{width:8px;height:8px;color:#e8d9b8}
+  .footer-social .social-badge svg{width:8px;height:8px;color:var(--beige)}
   .footer-social svg{width:16px;height:16px}
   @media(max-width:980px){nav.main{display:none} .menu-toggle{display:block}}
 
@@ -212,25 +213,31 @@
   .mass-intention {
     font-size: 1.05rem; color: var(--ink); line-height: 1.5;
   }
+  .mass-row.free-slot .mass-intention {
+    color: #3d7a54; font-style: italic;
+  }
+  .mass-row.free-slot .mass-time {
+    color: #6aaa82;
+  }
   .no-intentions {
     padding: 20px 24px; font-size: .95rem; color: var(--ink-soft); font-style: italic; text-align: center;
   }
 
   /* FOOTER */
-  footer.site{background:var(--ink);color:#d8cdb6;padding:60px 0 30px;margin-top:40px}
+  footer.site{background:var(--ink);color:var(--line);padding:60px 0 30px;margin-top:40px}
   footer.site a{color:var(--copper-light);text-decoration:none}
   .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
   .footer-brand{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
-  .footer-brand .brand-name{color:#f6e9d3;font-size:1.15rem}
+  .footer-brand .brand-name{color:var(--cream);font-size:1.15rem}
   .footer-brand .brand-name small{color:var(--copper-light)}
   footer.site p{color:rgba(216,205,182,.78);font-size:.92rem}
-  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:#f6e9d3;margin-bottom:1rem}
+  footer.site h5{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;color:var(--cream);margin-bottom:1rem}
   footer.site ul{list-style:none;padding:0;margin:0}
   footer.site ul li{margin-bottom:.6rem;font-size:.92rem}
   footer.site ul a{color:rgba(216,205,182,.78)}
-  footer.site ul a:hover{color:#f6e9d3;text-decoration:none}
-  .footer-bank{font-size:.83rem;background:rgba(246,233,211,.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(246,233,211,.1)}
-  .footer-bank b{color:#f6e9d3;display:block;font-weight:700;margin-bottom:4px}
+  footer.site ul a:hover{color:var(--cream);text-decoration:none}
+  .footer-bank{font-size:.83rem;background:rgba(var(--cream-rgb),.06);padding:14px;border-radius:6px;margin-top:14px;border:1px solid rgba(var(--cream-rgb),.1)}
+  .footer-bank b{color:var(--cream);display:block;font-weight:700;margin-bottom:4px}
   .footer-bank code{font-family:'Lato',monospace;color:var(--copper-light);font-weight:700;letter-spacing:.5px}
   .footer-bottom{border-top:1px solid rgba(216,205,182,.14);margin-top:40px;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:.85rem;color:rgba(216,205,182,.55)}
   @media(max-width:980px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px}}
@@ -250,8 +257,13 @@
   .pf-form{display:grid;gap:10px}
   .pf-form label{font-size:.78rem;font-weight:700;color:var(--ink-soft);margin-bottom:-6px}
   .pf-form input,.pf-form select,.pf-form textarea{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-size:.9rem;font-family:'Lato',sans-serif;width:100%;box-sizing:border-box;background:#fff}
-  .pf-form input:focus,.pf-form select:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(184,122,74,.18)}
+  .pf-form input:focus,.pf-form select:focus{border-color:var(--copper);outline:none;box-shadow:0 0 0 2px rgba(var(--copper-rgb),.18)}
   .pf-form .hint{font-size:.74rem;color:var(--ink-soft);margin-top:-4px}
+  .pf-rodo{margin-top:16px;padding:12px 14px;background:var(--cream);border:1px solid var(--line);border-radius:8px;font-size:.76rem;line-height:1.5;color:var(--ink-soft)}
+  .pf-rodo p{margin:0 0 8px;font-size:.76rem}
+  .pf-rodo a{color:var(--burgundy);font-weight:700}
+  .pf-consent{display:flex;gap:9px;align-items:flex-start;font-size:.8rem;font-weight:700;color:var(--ink);cursor:pointer;margin:0}
+  .pf-consent input{width:16px;height:16px;flex-shrink:0;margin:1px 0 0;accent-color:var(--burgundy);cursor:pointer}
   .pf-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
   .pf-btn-cancel{padding:9px 18px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:.88rem;color:var(--ink);font-family:'Lato',sans-serif}
   .pf-btn-cancel:hover{background:var(--beige)}
@@ -269,7 +281,7 @@
       <span><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.61 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58z"/></svg><a href="tel:+48324312992">32 43 12 992</a></span>
     </div>
     <div class="right">
-      <a href="../index.html#budowa" class="topbar-btn-wsparcie">Wsparcie budowy</a>
+      <a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener" class="topbar-btn-wsparcie">Wsparcie budowy</a>
     </div>
   </div>
 </div>
@@ -425,7 +437,7 @@
           <li><a href="kontakt.html">Kancelaria</a></li>
           <li style="display:none"><a href="#">RODO</a></li><!-- TODO: osobna strona RODO w przyszłości -->
           <li><a href="polityka-prywatnosci.html">Polityka prywatności</a></li>
-          <li><a href="../index.html#budowa">Wsparcie budowy</a></li>
+          <li><a href="https://wsparcie.nspjczerwionka.pl/" target="_blank" rel="noopener">Wsparcie budowy</a></li>
           <li><a href="../admin/login.html" style="color:var(--copper-light);font-weight:700">→ Panel administracyjny</a></li>
         </ul>
       </div>
@@ -547,7 +559,8 @@
         rowsHtml = '<div class="no-intentions">Brak intencji na ten dzień</div>';
       } else {
         rowsHtml = dayInts.map(function(m) {
-          return '<div class="mass-row">'
+          var isFree = /^wolna\s+intencja/i.test((m.intention || '').trim());
+          return '<div class="mass-row' + (isFree ? ' free-slot' : '') + '">'
             + '<div class="mass-time">' + esc(m.time) + '</div>'
             + '<div class="mass-intention">' + esc(m.intention) + '</div>'
             + '</div>';
@@ -614,6 +627,11 @@
       <input type="text" id="pf-intention" placeholder="np. Za śp. Marię Kowalską — od rodziny">
       <div class="hint">* pola wymagane</div>
     </div>
+    <div class="pf-rodo">
+      <p><strong>Ochrona danych.</strong> Administratorem Twoich danych jest Parafia Najświętszego Serca Pana Jezusa w Czerwionce-Leszczynach. Imię i nazwisko, numer telefonu oraz treść intencji wykorzystamy wyłącznie po to, aby przyjąć intencję, skontaktować się w sprawie jej potwierdzenia i wysłać przypomnienie SMS. Treść intencji wraz z datą i godziną mszy publikujemy w kalendarzu na tej stronie i odczytujemy w kościele — Twojego imienia, nazwiska i telefonu nie publikujemy.</p>
+      <p>Szczegóły, w tym Twoje prawa: <a href="polityka-prywatnosci.html#intencje" target="_blank" rel="noopener">polityka prywatności</a>. Intencję możesz też zamówić osobiście w kancelarii parafialnej.</p>
+      <label class="pf-consent"><input type="checkbox" id="pf-rodo"> Zapoznałem/am się z informacją o przetwarzaniu danych *</label>
+    </div>
     <div class="pf-btns">
       <button class="pf-btn-cancel" onclick="closeIntForm()">Anuluj</button>
       <button class="pf-btn-submit" onclick="submitIntForm()">Wyślij zgłoszenie</button>
@@ -631,7 +649,13 @@
     }
   }).catch(function() {});
 
+  // Po wysłaniu treść okna jest podmieniana na podziękowanie — przy ponownym otwarciu przywracamy formularz
+  var pfBox = document.querySelector('.pf-box');
+  var pfBoxHtml = pfBox ? pfBox.innerHTML : '';
+
   window.openIntForm = function() {
+    if (pfBox && !document.getElementById('pf-imie')) pfBox.innerHTML = pfBoxHtml;
+    document.getElementById('pf-rodo').checked = false;
     document.getElementById('pf-date').value = new Date().toISOString().split('T')[0];
     document.getElementById('pf-imie').value = '';
     document.getElementById('pf-tel').value = '';
@@ -660,12 +684,22 @@
       alert('Podaj prawidłowy numer telefonu komórkowego (9 cyfr, np. 500 123 456 lub +48 500 123 456).');
       return;
     }
+    if (!document.getElementById('pf-rodo').checked) {
+      alert('Zaznacz, że zapoznałeś/aś się z informacją o przetwarzaniu danych.');
+      return;
+    }
     var btn = document.querySelector('.pf-btn-submit');
     if (btn) { btn.disabled = true; btn.textContent = 'Wysyłam...'; }
     fetch('/api/intencje/pending', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({imie: imie, telefon: tel, date: date, time: time, type: type, intention: intention, submitted_at: new Date().toISOString()})
+      body: JSON.stringify({imie: imie, telefon: tel, date: date, time: time, type: type, intention: intention})
+    }).then(function(r) {
+      if (!r.ok) {
+        return r.json().catch(function() { return {}; }).then(function(e) {
+          throw new Error(e.error || 'Błąd przesyłania zgłoszenia. Proszę spróbować ponownie.');
+        });
+      }
     }).then(function() {
       var box = document.querySelector('.pf-box');
       if (box) {
@@ -681,9 +715,9 @@
           + '<button onclick="closeIntForm()" style="padding:10px 28px;background:var(--burgundy);color:#fff;border:none;border-radius:7px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:Lato,sans-serif">Zamknij</button>'
           + '</div>';
       }
-    }).catch(function() {
+    }).catch(function(err) {
       if (btn) { btn.disabled = false; btn.textContent = 'Wyślij zgłoszenie'; }
-      alert('Błąd przesyłania zgłoszenia. Proszę spróbować ponownie.');
+      alert(err && err.message ? err.message : 'Błąd przesyłania zgłoszenia. Proszę spróbować ponownie.');
     });
   };
 

@@ -1,0 +1,38 @@
+/* ===== PALETA KOLORÓW PARAFII NSPJ — JEDYNE MIEJSCE Z KOLORAMI =====
+   Zmiana koloru tutaj zmienia go w całym portalu i panelu admina.
+   Przy zmianie hexa zaktualizuj też jego wersję -rgb (te same liczby w systemie dziesiętnym). */
+:root{
+  --burgundy:#B12D15;
+  --burgundy-dark:#751A10;
+  --copper:#C05D42;
+  --copper-light:#E0A276;
+  --cream:#FFF8F4;
+  --beige:#F5E7DD;
+  --beige-deep:#EBD8C8;
+  --bg:#FCF7F3;
+  --white:#FFFFFF;
+  --ink:#2B211D;
+  --ink-soft:#675850;
+  --line:#E5D6CC;
+  --green:#3C804B;
+  --amber:#C88722;
+  --red:#C43A2B;
+  --blue:#2E678B;
+
+  /* wersje RGB do przezroczystości: rgba(var(--burgundy-rgb),.3) */
+  --burgundy-rgb:177,45,21;
+  --burgundy-dark-rgb:117,26,16;
+  --copper-rgb:192,93,66;
+  --copper-light-rgb:224,162,118;
+  --cream-rgb:255,248,244;
+  --beige-rgb:245,231,221;
+  --beige-deep-rgb:235,216,200;
+  --bg-rgb:252,247,243;
+  --ink-rgb:43,33,29;
+  --ink-soft-rgb:103,88,80;
+  --line-rgb:229,214,204;
+  --green-rgb:60,128,75;
+  --amber-rgb:200,135,34;
+  --red-rgb:196,58,43;
+  --blue-rgb:46,103,139;
+}
